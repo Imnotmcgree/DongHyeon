@@ -155,5 +155,12 @@ input{
         max-width: 970px;
         margin: 0 auto;
     }
-
+    button{
+        &[type="submit"]{
+            width: 140px;
+            position: absolute;
+            right: -30px;
+            bottom: 0px;
+        }
+    }
 }

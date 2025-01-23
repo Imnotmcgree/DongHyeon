@@ -142,4 +142,10 @@ input[type=checkbox]:checked::after {
 .form-2 .form-section {
   max-width: 970px;
   margin: 0 auto;
+}
+.form-2 button[type=submit] {
+  width: 140px;
+  position: absolute;
+  right: -30px;
+  bottom: 0px;
 }/*# sourceMappingURL=form.css.map */
