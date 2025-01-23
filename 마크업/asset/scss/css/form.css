@@ -1,6 +1,7 @@
-form {
-  font-size: 1.13em;
+.form-section {
+  font-size: 1.125rem;
 }
+
 form input {
   border-radius: 100px;
   border: 2px solid #ccc;
@@ -80,7 +81,6 @@ input[type=checkbox]:checked::after {
 
 .form-type1 {
   background: #fff;
-  padding: 45px 100px;
   position: relative;
   border-radius: 10px;
 }
@@ -148,9 +148,6 @@ input[type=checkbox]:checked::after {
 .form-1 .form-section button {
   margin: 24px 0 50px;
 }
-.form-1 .form-section .account {
-  font-size: 1.13em;
-}
 .form-1 .form-section .account::before {
   content: "";
   display: block;
@@ -158,6 +155,9 @@ input[type=checkbox]:checked::after {
   height: 1px;
   background: #EBEAED;
   margin-bottom: 25px;
+}
+.form-1 .form-section .sign-up .form-check label {
+  font-size: 0.89em;
 }
 
 .form-2 .tit01 {
@@ -167,6 +167,9 @@ input[type=checkbox]:checked::after {
 .form-2 .form-section {
   max-width: 970px;
   margin: 0 auto;
+}
+.form-2 .form-type1 {
+  padding: 40px 100px;
 }
 .form-2 button[type=submit] {
   width: 140px;

@@ -60,10 +60,24 @@ h1, h2, h3, h4, .fs-1, .fs-2, .fs-3 {
   line-height: 1.5;
 }
 
+textarea {
+  resize: none;
+  border-radius: 10px;
+  border: 2px solid #ccc;
+}
+
 .tit01 {
   font-size: 42px;
-  line-height: 52px;
   letter-spacing: 1px;
+  text-align: center;
+  text-underline-position: from-font;
+  text-decoration-skip-ink: none;
+  color: #1E0E62;
+  font-weight: 700;
+}
+
+.tit02 {
+  font-size: 22px;
   text-align: center;
   text-underline-position: from-font;
   text-decoration-skip-ink: none;
@@ -528,9 +542,10 @@ caption, .text-hide {
   align-items: flex-start !important;
 }
 
-form {
-  font-size: 1.13em;
+.form-section {
+  font-size: 1.125rem;
 }
+
 form input {
   border-radius: 100px;
   border: 2px solid #ccc;
@@ -610,7 +625,6 @@ input[type=checkbox]:checked::after {
 
 .form-type1 {
   background: #fff;
-  padding: 45px 100px;
   position: relative;
   border-radius: 10px;
 }
@@ -678,9 +692,6 @@ input[type=checkbox]:checked::after {
 .form-1 .form-section button {
   margin: 24px 0 50px;
 }
-.form-1 .form-section .account {
-  font-size: 1.13em;
-}
 .form-1 .form-section .account::before {
   content: "";
   display: block;
@@ -688,6 +699,9 @@ input[type=checkbox]:checked::after {
   height: 1px;
   background: #EBEAED;
   margin-bottom: 25px;
+}
+.form-1 .form-section .sign-up .form-check label {
+  font-size: 0.89em;
 }
 
 .form-2 .tit01 {
@@ -697,6 +711,9 @@ input[type=checkbox]:checked::after {
 .form-2 .form-section {
   max-width: 970px;
   margin: 0 auto;
+}
+.form-2 .form-type1 {
+  padding: 40px 100px;
 }
 .form-2 button[type=submit] {
   width: 140px;
@@ -741,4 +758,79 @@ input[type=checkbox]:checked::after {
 }
 .form-4 button[type=submit] {
   width: 100%;
+}
+
+.contact1 {
+  display: flex;
+  justify-content: center;
+  gap: 130px;
+  padding: 60px 0 100px;
+}
+.contact1 #name {
+  flex: 1;
+}
+.contact1 button {
+  width: 90px;
+}
+.contact1 textarea {
+  height: 170px;
+  padding-top: 13px;
+}
+.contact1 .tit01, .contact1 .tit02 {
+  text-align: left;
+}
+.contact1 .title-info span {
+  display: block;
+  margin: 25px 0 35px;
+}
+.contact1-con1 {
+  max-width: 370px;
+}
+.contact1-con2 {
+  max-width: 470px;
+}
+.contact1-con2 .title-info {
+  padding-bottom: 40px;
+  border-bottom: 2px solid #ccc;
+}
+.contact1-con2 .title-info a {
+  display: flex;
+  align-items: center;
+  gap: 14.5px;
+  font-size: 1.13em;
+}
+.contact1-con2 .title-info a::before {
+  content: "";
+  display: block;
+  width: 19px;
+  height: 15px;
+  background: url(./../img/contact-img/phone.png) no-repeat top center/contain;
+}
+.contact1-con2 .title-info a:last-child {
+  margin-top: 15px;
+}
+.contact1-con2 .title-info a:last-child::before {
+  background-image: url(./../img/contact-img/mail.png);
+}
+.contact1-con2 .sns {
+  padding-top: 40px;
+}
+.contact1-con2 .sns .tit02 {
+  padding-bottom: 20px;
+}
+.contact1-con2 .sns ul li {
+  display: flex;
+}
+.contact1-con2 .sns ul li div {
+  flex: 1;
+}
+.contact1-con2 .sns ul li div a {
+  display: flex;
+  align-items: flex-start;
+  gap: 16px;
+}
+.contact1-con2 .sns ul li div a img {
+  width: 20px;
+  height: 20px;
+  object-fit: contain;
 }/*# sourceMappingURL=style.css.map */

@@ -1,7 +1,8 @@
 @import '../abstracts/variables';
-
+.form-section{
+    font-size: 1.125rem;
+}
 form{
-    font-size: 1.13em;
     input{
         border-radius:100px;
         border: 2px solid #ccc;
@@ -87,7 +88,7 @@ input{
 
 .form-type1{
     background: #fff;
-    padding: 45px 100px;
+    // padding: 45px 100px;
     position: relative;
     border-radius: 10px;
     .type1-wrap{
@@ -161,7 +162,6 @@ input{
         }
 
         .account{
-            font-size: 1.13em;
             &::before{
                 content: '';
                 display: block;
@@ -169,6 +169,14 @@ input{
                 height: 1px;
                 background: #EBEAED;
                 margin-bottom: 25px;
+            }
+        }
+
+        .sign-up{
+            .form-check{
+                label{
+                    font-size: 0.89em;
+                }
             }
         }
 
@@ -183,6 +191,9 @@ input{
     .form-section{
         max-width: 970px;
         margin: 0 auto;
+    }
+    .form-type1{
+        padding: 40px 100px;
     }
     button{
         &[type="submit"]{
