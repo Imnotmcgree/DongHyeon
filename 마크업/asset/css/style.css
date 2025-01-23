@@ -92,6 +92,10 @@ h1, h2, h3, h4, .fs-1, .fs-2, .fs-3 {
   color: #1DA1F2;
 }
 
+.text-gray {
+  color: rgba(21, 20, 57, 0.4);
+}
+
 caption, .text-hide {
   font: 0/0 a;
   color: transparent;
@@ -208,6 +212,10 @@ caption, .text-hide {
   margin-top: 30px !important;
 }
 
+.mT50 {
+  margin-top: 50px !important;
+}
+
 .mT60 {
   margin-top: 60px !important;
 }
@@ -258,6 +266,46 @@ caption, .text-hide {
 
 .ml-auto {
   margin-left: auto !important;
+}
+
+.gap10 {
+  gap: calc(10 * 1px) !important;
+}
+
+.gap20 {
+  gap: calc(10 * 2px) !important;
+}
+
+.gap30 {
+  gap: calc(10 * 3px) !important;
+}
+
+.gap40 {
+  gap: calc(10 * 4px) !important;
+}
+
+.gap50 {
+  gap: calc(10 * 5px) !important;
+}
+
+.gap60 {
+  gap: calc(10 * 6px) !important;
+}
+
+.gap70 {
+  gap: calc(10 * 7px) !important;
+}
+
+.gap80 {
+  gap: calc(10 * 8px) !important;
+}
+
+.gap90 {
+  gap: calc(10 * 9px) !important;
+}
+
+.gap100 {
+  gap: calc(10 * 10px) !important;
 }
 
 .fs18 {
@@ -525,53 +573,53 @@ input[type=checkbox]:checked::after {
   transform: rotate(45deg);
 }
 
-.check-one.active {
+.line {
+  border: 2px solid #EBEAED;
+  border-radius: 10px;
+}
+
+.form-type1.active {
   border-color: #25DAC5;
 }
 
-.check-one {
+.form-type1 {
   padding: 45px 100px;
-  border: 2px solid #EBEAED;
-  border-radius: 10px;
   position: relative;
 }
-.check-one .check-one-contents {
-  flex: 1;
+.form-type1 .type1-wrap {
+  position: relative;
 }
-.check-one .check-one-contents .card-info {
+.form-type1 .type1-contents .info {
   font-size: 0.88em;
   letter-spacing: 2px;
   margin-bottom: 7px;
 }
-.check-one .form-check {
-  position: relative;
-  display: flex;
-  align-items: flex-start;
-  padding: 0;
-}
-.check-one .credit-card-bg {
+.form-type1 .credit-card-bg {
   position: absolute;
   top: 26px;
   right: 30px;
 }
-.check-one .credit-card-bg img {
+.form-type1 .credit-card-bg img {
   display: inline-block;
   margin-right: 20px;
 }
-.check-one .credit-card-bg img:last-child {
+.form-type1 .credit-card-bg img:last-child {
   margin: 0;
 }
-.check-one input[type=checkbox] {
+.form-type1 input[type=text] {
+  display: block;
+}
+.form-type1 input[type=checkbox] {
   margin: 4px 0 0;
   border-radius: 50%;
   cursor: pointer;
 }
-.check-one input[type=checkbox]:checked {
+.form-type1 input[type=checkbox]:checked {
   display: flex;
   justify-content: center;
   align-items: center;
 }
-.check-one input[type=checkbox]:checked::after {
+.form-type1 input[type=checkbox]:checked::after {
   position: static;
   display: block;
   width: 10px;
@@ -609,10 +657,10 @@ input[type=checkbox]:checked::after {
 .form-1 .form-section button {
   margin: 24px 0 50px;
 }
-.form-1 .form-section .sign-in {
+.form-1 .form-section .account {
   font-size: 1.13em;
 }
-.form-1 .form-section .sign-in::before {
+.form-1 .form-section .account::before {
   content: "";
   display: block;
   width: 100%;
@@ -634,4 +682,19 @@ input[type=checkbox]:checked::after {
   position: absolute;
   right: -30px;
   bottom: 0px;
+}
+
+.form-3 .tit01 {
+  margin-top: 100px;
+  margin-bottom: 45px;
+}
+.form-3 .form-section {
+  max-width: 770px;
+  margin: 0 auto;
+}
+.form-3 .form-type1 {
+  padding: 90px 100px;
+}
+.form-3 button[type=submit] {
+  width: 120px;
 }/*# sourceMappingURL=style.css.map */

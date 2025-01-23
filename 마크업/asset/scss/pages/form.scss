@@ -44,28 +44,28 @@ input{
           }
     }
 }
-.check-one.active{
+
+.line{
+    border: 2px solid #EBEAED;
+    border-radius: 10px;
+}
+
+.form-type1.active{
     border-color: $color-cyan;
 }
 
-.check-one{
+.form-type1{
     padding: 45px 100px;
-    border: 2px solid #EBEAED;
-    border-radius: 10px;
     position: relative;
-    .check-one-contents{
-        flex: 1;
-        .card-info{
+    .type1-wrap{
+        position: relative;
+    }
+    .type1-contents{
+        .info{
             font-size: 0.88em;
             letter-spacing: 2px;
             margin-bottom: 7px;
         }
-    }
-    .form-check{
-        position: relative;
-        display: flex;
-        align-items: flex-start;
-        padding: 0;
     }
 
     .credit-card-bg{
@@ -80,6 +80,9 @@ input{
         }
     }
     input{
+        &[type="text"]{
+            display: block;
+        };
         &[type="checkbox"]{
             margin: 4px 0 0;
             border-radius: 50%;
@@ -131,7 +134,7 @@ input{
             margin: 24px 0 50px;
         }
 
-        .sign-in{
+        .account{
             font-size: 1.13em;
             &::before{
                 content: '';
@@ -161,6 +164,25 @@ input{
             position: absolute;
             right: -30px;
             bottom: 0px;
+        }
+    }
+}
+
+.form-3{
+    .tit01{
+        margin-top: 100px;
+        margin-bottom: 45px;
+    }
+    .form-section{
+        max-width: 770px;
+        margin: 0 auto;
+    }
+    .form-type1{
+        padding: 90px 100px;
+    }
+    button{
+        &[type="submit"]{
+            width: 120px;
         }
     }
 }

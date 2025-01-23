@@ -39,53 +39,53 @@ input[type=checkbox]:checked::after {
   transform: rotate(45deg);
 }
 
-.check-one.active {
+.line {
+  border: 2px solid #EBEAED;
+  border-radius: 10px;
+}
+
+.form-type1.active {
   border-color: #25DAC5;
 }
 
-.check-one {
+.form-type1 {
   padding: 45px 100px;
-  border: 2px solid #EBEAED;
-  border-radius: 10px;
   position: relative;
 }
-.check-one .check-one-contents {
-  flex: 1;
+.form-type1 .type1-wrap {
+  position: relative;
 }
-.check-one .check-one-contents .card-info {
+.form-type1 .type1-contents .info {
   font-size: 0.88em;
   letter-spacing: 2px;
   margin-bottom: 7px;
 }
-.check-one .form-check {
-  position: relative;
-  display: flex;
-  align-items: flex-start;
-  padding: 0;
-}
-.check-one .credit-card-bg {
+.form-type1 .credit-card-bg {
   position: absolute;
   top: 26px;
   right: 30px;
 }
-.check-one .credit-card-bg img {
+.form-type1 .credit-card-bg img {
   display: inline-block;
   margin-right: 20px;
 }
-.check-one .credit-card-bg img:last-child {
+.form-type1 .credit-card-bg img:last-child {
   margin: 0;
 }
-.check-one input[type=checkbox] {
+.form-type1 input[type=text] {
+  display: block;
+}
+.form-type1 input[type=checkbox] {
   margin: 4px 0 0;
   border-radius: 50%;
   cursor: pointer;
 }
-.check-one input[type=checkbox]:checked {
+.form-type1 input[type=checkbox]:checked {
   display: flex;
   justify-content: center;
   align-items: center;
 }
-.check-one input[type=checkbox]:checked::after {
+.form-type1 input[type=checkbox]:checked::after {
   position: static;
   display: block;
   width: 10px;
@@ -123,10 +123,10 @@ input[type=checkbox]:checked::after {
 .form-1 .form-section button {
   margin: 24px 0 50px;
 }
-.form-1 .form-section .sign-in {
+.form-1 .form-section .account {
   font-size: 1.13em;
 }
-.form-1 .form-section .sign-in::before {
+.form-1 .form-section .account::before {
   content: "";
   display: block;
   width: 100%;
@@ -148,4 +148,19 @@ input[type=checkbox]:checked::after {
   position: absolute;
   right: -30px;
   bottom: 0px;
+}
+
+.form-3 .tit01 {
+  margin-top: 100px;
+  margin-bottom: 45px;
+}
+.form-3 .form-section {
+  max-width: 770px;
+  margin: 0 auto;
+}
+.form-3 .form-type1 {
+  padding: 90px 100px;
+}
+.form-3 button[type=submit] {
+  width: 120px;
 }/*# sourceMappingURL=form.css.map */
