@@ -212,6 +212,10 @@ caption, .text-hide {
   margin-top: 30px !important;
 }
 
+.mT40 {
+  margin-top: 40px !important;
+}
+
 .mT50 {
   margin-top: 50px !important;
 }
@@ -250,14 +254,6 @@ caption, .text-hide {
 
 .txtL {
   text-align: left !important;
-}
-
-.mT40 {
-  margin-top: calc(var(--gap) * 10) !important;
-}
-
-.mT48 {
-  margin-top: calc(var(--gap) * 12) !important;
 }
 
 .mt-auto {
@@ -573,9 +569,39 @@ input[type=checkbox]:checked::after {
   transform: rotate(45deg);
 }
 
+.info {
+  letter-spacing: 2px;
+}
+
+.form-section {
+  border-radius: 10px;
+}
+
 .line {
   border: 2px solid #EBEAED;
   border-radius: 10px;
+}
+
+.tab-nav {
+  text-align: center;
+  background: #fff;
+  margin: 0px !important;
+  border-top-left-radius: 10px;
+  border-top-right-radius: 10px;
+}
+.tab-nav li {
+  height: 70px;
+  line-height: 70px;
+}
+.tab-nav li.active {
+  border-bottom: 3px solid #1E0E62;
+}
+
+.rounded-form {
+  display: block;
+  border-radius: 100px;
+  height: 50px;
+  line-height: 50px;
 }
 
 .form-type1.active {
@@ -583,8 +609,10 @@ input[type=checkbox]:checked::after {
 }
 
 .form-type1 {
+  background: #fff;
   padding: 45px 100px;
   position: relative;
+  border-radius: 10px;
 }
 .form-type1 .type1-wrap {
   position: relative;
@@ -626,13 +654,6 @@ input[type=checkbox]:checked::after {
   height: 10px;
   border-radius: 50%;
   background-color: #1E0E62;
-}
-
-.rounded-form {
-  display: block;
-  border-radius: 100px;
-  height: 50px;
-  line-height: 50px;
 }
 
 .form-1 {
@@ -697,4 +718,27 @@ input[type=checkbox]:checked::after {
 }
 .form-3 button[type=submit] {
   width: 120px;
+}
+
+.form-4 {
+  width: 100vw;
+  height: 100vh;
+  background: linear-gradient(to top, rgba(47, 24, 147, 0.5), rgba(47, 24, 147, 0)), url(./../img/form-img/form4-bg.jpg) no-repeat center/cover;
+  justify-content: center;
+}
+.form-4 .tit01 {
+  padding-top: 100px;
+  margin-bottom: 60px;
+}
+.form-4 .form-section {
+  max-width: 570px;
+  margin: 0 auto;
+}
+.form-4 .form-type1 {
+  padding: 60px 70px;
+  border-top-left-radius: 0;
+  border-top-right-radius: 0;
+}
+.form-4 button[type=submit] {
+  width: 100%;
 }/*# sourceMappingURL=style.css.map */

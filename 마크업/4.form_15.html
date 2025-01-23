@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Form_4</title>
+
+    <link rel="stylesheet" href="./asset/css/bootstrap.min.css">
+    <link rel="stylesheet" href="./asset/css/swiper-bundle.min.css">
+    <link rel="stylesheet" href="./asset/css/style.min.css">
+
+    <script src="./asset/js/jquery-3.7.1.min.js"></script>
+    <script src="./asset/js/bootstrap.bundle.min.js"></script>
+    <script src="./asset/js/swiper-bundle.min.js"></script>
+</head>
+<body>
+    <div class="wrap">
+        <main class="form-4">
+            <h1 class="tit01 text-white">Checkout</h1>
+            <section class="form-section">
+
+                <ul class="tab-nav row" role="tablist">
+                    <li role="presentation" class="col-6 active">
+                        <a href="#" role="tab" aria-selected="true" class="info text-navy">CREDIT CARD</a>
+                    </li>
+                    <li role="presentation" class="col-6">
+                        <a href="#" role="tab" aria-selected="false" class="info text-navy">PAYPAL</a>
+                    </li>
+                </ul>
+                
+                <form class="form-type1">
+                    <div class="type1-wrap">
+                        <span class="type1-contents">
+                            <div class="row">
+                                <div class="col-6">
+                                    <label class="text-navy info" for="first-name" >
+                                        FIRST NAME
+                                    </label>
+                                    <input class="col-12" type="text" id="first-name"placeholder="First name">
+                                </div>
+                                <div class="col-6">
+                                    <label class="text-navy info" for="last-name">
+                                        LAST NAME
+                                    </label>
+                                    <input class="col-12" type="text" id="last-name" placeholder="Last name">
+                                </div>
+                            </div>
+                            <div class="row mT20">
+                                <div class="col-9">
+                                    <label class="text-navy info" for="card-number" >
+                                        CARD NUMBER
+                                    </label>
+                                    <input class="col-12" type="text" id="card-number">
+                                </div>
+                                <div class="col-3">
+                                    <label class="text-navy info" for="cvv">
+                                        CVV
+                                    </label>
+                                    <input class="col-12" type="text" id="cvv">
+                                </div>
+                            </div>
+                            <div class="row mT20">
+                                <div class="col-6">
+                                    <label class="text-navy info" for="exp-date" >
+                                        EXP DATE
+                                    </label>
+                                    <input class="col-12" type="text" id="exp-date" placeholder="MM/YYYY">
+                                </div>
+                                <div class="col-6">
+                                    <label class="text-navy info" for="country">
+                                        COUNTRY
+                                    </label>
+                                    <input class="col-12" type="text" id="country">
+                                </div>
+                            </div>
+                            <div class="mT40">
+                                <button type="submit" class="cyan text-white rounded-form">Purchase</button>
+                            </div>
+                        </span>
+                    </div>
+                </form>
+            </section>
+        </main>
+    </div>
+</body>
+</html>
