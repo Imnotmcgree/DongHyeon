@@ -551,7 +551,10 @@ form input {
   border: 2px solid #ccc;
   height: 50px;
   line-height: 50px;
-  padding-left: 24px;
+  padding-left: 24px !important;
+}
+form input[type=checkbox] {
+  padding-left: 0px !important;
 }
 
 input[type=email], input[type=password] {
