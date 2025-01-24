@@ -61,40 +61,6 @@ caption, .text-hide{font: 0/0 a;color: transparent;text-shadow: none;background-
     word-wrap: break-word;
 }
 
-@for $i from 1 through 6 {
-    .mt-#{$i}{
-        margin-top: calc(var(--gap) * #{$i}) !important;
-    }
-
-    .mb-#{$i}{
-        margin-bottom: calc(var(--gap) * #{$i}) !important;
-    }
-
-    .mr-#{$i}{
-        margin-right: calc(var(--gap) * #{$i}) !important;
-    }
-
-    .ml-#{$i}{
-        margin-left: calc(var(--gap) * #{$i}) !important;
-    }
-
-    .pt-#{$i}{
-        padding-top: calc(var(--gap) * #{$i}) !important;
-    }
-
-    .pb-#{$i}{
-        padding-bottom: calc(var(--gap) * #{$i}) !important;
-    }
-
-    .pr-#{$i}{
-        padding-right: calc(var(--gap) * #{$i}) !important;
-    }
-
-    .pl-#{$i}{
-        padding-left: calc(var(--gap) * #{$i}) !important;
-    }
-}
-
 .d-flex{display: flex !important;}
 .align-items-center{align-items: center !important;}
 .align-items-end{align-items: flex-end !important;}
