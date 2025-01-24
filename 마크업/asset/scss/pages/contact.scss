@@ -1,9 +1,13 @@
+@import "../abstracts/variables";
+
 .contact1{
     display: flex;
     justify-content: center;
     gap: 130px;
     padding: 60px 0 100px;
-
+    @include container-max-width(lg){
+        display: block;
+    }
     #name{
         flex: 1;
     }
@@ -30,9 +34,16 @@
 
     &-con1{
         max-width: 370px;
+        @include container-max-width(lg){
+            max-width: 100%;
+        }
     }
 
     &-con2{
+        @include container-max-width(lg){
+            margin-top: 100px;
+            max-width: 100%;
+        }
         max-width: 470px;
         .title-info{
             padding-bottom: 40px;

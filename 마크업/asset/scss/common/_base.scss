@@ -44,7 +44,6 @@ img{
 button{
 	cursor: pointer;
 	outline: 0 !important;
-	border: none !important;
 	&.no-style{
 		background: none;
 		line-height: 1;
@@ -108,4 +107,17 @@ textarea{
 
 .text-gray{
 	color: #15143966;
+}
+
+.bg-blue{
+	background: #4267B2;
+}
+.bg-navy{
+	background: #1E0E62;
+}
+.bg-magenta{
+	background: #E93A7D;
+}
+.bg-ylw{
+	background: #FFFC00;
 }

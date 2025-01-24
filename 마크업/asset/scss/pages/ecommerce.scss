@@ -1,0 +1,199 @@
+@import "../abstracts/variables";
+
+header{
+    .info{
+        font-size: 0.88em;
+        font-weight: 600;
+    }
+}
+
+.ecommerce-header{
+    padding: 100px 0px 80px;
+}
+
+.product{
+    width: 270px;
+    height: 430px;
+    &-pic{
+        width: 270px;
+        height: 350px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        border-radius: 10px;
+        overflow: hidden;
+        img{
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+    }
+    &-info{
+        margin-top: 20px;
+    }
+    &-name{
+        font-weight: 600;
+        font-size: 1.13em;
+        color: #1E0E62;
+    }
+    &-price{
+        width: 67px;
+        height: 30px;
+        border-radius: 20px;
+        background: #EBEAED;
+        color: #15143966;
+        font-weight: 600;
+        line-height: 30px;
+        text-align: center;
+    }
+    &-colors{
+        margin-top: 12px;
+        display: flex;
+        gap: 5px;
+        li{
+            width: 20px;
+            height: 20px;
+            text-indent: -9999px;
+            border-radius: 50%;
+            a{
+                display: block;
+                width: 100%;
+                height: 100%;
+            }
+        }
+    }
+}
+
+.ecommerce-wrap{
+    .ecommerce-nav{
+        ul{
+            display: flex;
+            gap: 35px;
+            li{
+                a{
+                    font-size: 1.13em;
+                    font-weight: 600;
+                    color: #1E0E62;
+                    display: block;
+                    width: 100%;
+                    height: 100%;
+                }
+            }
+            li.active{
+                display: flex;
+                flex-direction: column;
+                &::after{
+                    content: '';
+                    width: 100%;
+                    height: 2px;
+                    background: #15143966;
+                }
+                a{
+                    color: #15143966;
+                }
+            }
+        }
+    }
+}
+
+.ecomerce-1{
+    main{
+        padding: 20px 0 110px;
+    }
+}
+
+.ecommerce-2{
+    main{
+        padding: 30px 0 100px;
+    }
+    .ecommerce-nav{
+        ul{
+            li{
+                a{
+                    font-size: 0.88em;
+                    letter-spacing: 2px;
+                    color: #15143966;
+                }
+            }
+            li.active{
+                display: flex;
+                flex-direction: column;
+                &::after{
+                   display: none;
+                }
+                a{
+                    color: #1E0E62;
+                }
+            }
+        }
+
+        ul:last-child{
+            li{
+                a{
+                    display: flex;
+                    justify-content: center;
+                    align-items: center;
+                    gap: 5px;
+                }
+                a::after{
+                    content: '';
+                    display: block;
+                    width: 11px;
+                    height: 11px;
+                    background: url(../img/ecommerce-img/arr1.png) no-repeat center;
+                }
+            }
+        }
+    }
+
+    .product{
+        width: auto;
+        height: auto;
+        display: flex;
+        gap: 30px;
+        &-pic{
+            width: 270px;
+            height: 208px;
+        }
+        &-info{
+            margin-top: 0;
+            >div{
+                height: 100%;
+                display: flex;
+                flex-direction: column;
+                justify-content: space-between;
+            }
+        }
+        &-name{
+            font-size: 1.38em;
+        }
+        &-price{
+            font-size: 0.88em;
+            width: auto;
+            text-align: left;
+            background: none;
+            letter-spacing: 2px;
+        }
+        &-ment{
+            color: #15143966;
+        }
+    }
+
+    .purchase{
+        display: flex;
+        align-items: center;
+        color: #482BE7;
+        gap:11px;
+        .purchase-btn{
+            width: 110px;
+            height: 40px;
+            border: 2px solid #482BE7;
+            border-radius: 100px;
+            background: #fff;
+            font-weight: 600;
+        }
+        a{
+            font-weight: 600;
+        }
+    }
+}

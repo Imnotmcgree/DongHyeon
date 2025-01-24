@@ -4,6 +4,14 @@
   gap: 130px;
   padding: 60px 0 100px;
 }
+@media (max-width: 1024px) {
+  .contact1 {
+    display: block;
+  }
+  .contact1 .container {
+    max-width: 992px;
+  }
+}
 .contact1 #name {
   flex: 1;
 }
@@ -24,8 +32,25 @@
 .contact1-con1 {
   max-width: 370px;
 }
+@media (max-width: 1024px) {
+  .contact1-con1 {
+    max-width: 100%;
+  }
+  .contact1-con1 .container {
+    max-width: 992px;
+  }
+}
 .contact1-con2 {
   max-width: 470px;
+}
+@media (max-width: 1024px) {
+  .contact1-con2 {
+    margin-top: 100px;
+    max-width: 100%;
+  }
+  .contact1-con2 .container {
+    max-width: 992px;
+  }
 }
 .contact1-con2 .title-info {
   padding-bottom: 40px;
