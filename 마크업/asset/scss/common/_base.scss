@@ -81,7 +81,7 @@ textarea{
 	text-underline-position: from-font;
 	text-decoration-skip-ink: none;
 	color: #1E0E62;
-	font-weight: 700;
+	font-weight: 600;
 }
 
 .tit03{
@@ -89,7 +89,7 @@ textarea{
 	text-underline-position: from-font;
 	text-decoration-skip-ink: none;
 	color: #1E0E62;
-	font-weight: 700;
+	font-weight: 600;
 }
 
 button.cyan{
@@ -133,4 +133,36 @@ button.cyan{
 }
 .bg-ylw{
 	background: #FFFC00;
+}
+
+.toggle {
+    width: 42px;
+    height: 30px;
+    background-color: #ccc;
+    border-radius: 25px;
+    border: none;
+    position: relative;
+    cursor: pointer;
+    transition: background-color 0.3s;
+    display: flex;
+    align-items: center;
+    padding: 2px;
+}
+
+.toggle-circle {
+    width: 24px;
+    height: 24px;
+    background-color: white;
+    border-radius: 50%;
+    position: absolute;
+    left: 3px;
+    transition: transform 0.3s;
+}
+
+.toggle.active {
+    background-color: #25DAC5; 
+}
+
+.toggle.active .toggle-circle {
+    transform: translateX(12px);
 }
