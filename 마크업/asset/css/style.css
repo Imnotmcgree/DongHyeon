@@ -609,6 +609,29 @@ input[type=checkbox]:checked::after {
   font-size: 0.89em;
 }
 
+.form-2[type=radio] {
+  width: 20px;
+  height: 20px;
+  border-radius: 6px;
+  margin-right: 8px;
+  cursor: pointer;
+  appearance: none;
+  border: 1px solid #ccc;
+}
+.form-2[type=radio]:checked {
+  background-color: #25DAC5;
+}
+.form-2[type=radio]:checked::after {
+  content: "";
+  position: absolute;
+  left: 7px;
+  top: 5px;
+  width: 6px;
+  height: 12px;
+  border: solid #1E0E62;
+  border-width: 0 3px 3px 0;
+  transform: rotate(45deg);
+}
 .form-2 .tit01 {
   margin-top: 100px;
   margin-bottom: 45px;

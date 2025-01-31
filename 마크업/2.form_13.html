@@ -12,6 +12,14 @@
     <script src="./asset/js/jquery-3.7.1.min.js"></script>
     <script src="./asset/js/bootstrap.bundle.min.js"></script>
     <script src="./asset/js/swiper-bundle.min.js"></script>
+    <script>
+        $(document).ready(function() {
+            $('.form-type1').click(function() {
+                $('.form-type1.active').removeClass('active');
+                $(this).toggleClass('active');
+            });
+        });
+    </script>
 </head>
 <body>
     <div class="wrap">
