@@ -84,6 +84,19 @@ textarea {
   font-weight: 700;
 }
 
+.tit03 {
+  font-size: 18px;
+  text-underline-position: from-font;
+  text-decoration-skip-ink: none;
+  color: #1E0E62;
+  font-weight: 700;
+}
+
+button.cyan {
+  background: #25DAC5;
+  border: none !important;
+}
+
 .cyan {
   background: #25DAC5;
 }
@@ -1012,6 +1025,7 @@ input[type=checkbox]:checked::after {
   border-right: 2px solid #EBEAED;
 }
 .ecommerce-3 section.bottom .rounded-form {
+  width: 140px;
   height: 40px;
 }
 
@@ -1019,4 +1033,86 @@ input[type=checkbox]:checked::after {
 .product-quantity input::-webkit-inner-spin-button {
   -webkit-appearance: none;
   margin: 0;
+}
+
+.contents-wrap {
+  max-width: 970px;
+  margin: 100px auto;
+}
+.contents-wrap .top {
+  margin-bottom: 30px;
+}
+.contents-wrap .top .tit01 {
+  text-align: left;
+}
+.contents-wrap .steps {
+  display: flex;
+  gap: 30px;
+  margin-bottom: 60px;
+}
+.contents-wrap .steps:last-of-type {
+  margin-bottom: 0;
+}
+.contents-wrap .steps-num {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 40px;
+  height: 40px;
+  border-radius: 100px;
+  color: rgba(21, 20, 57, 0.4);
+  background: #EBEAED;
+  font-size: 1.13em;
+  position: relative;
+  font-weight: 600;
+}
+.contents-wrap .steps-num::after {
+  content: "";
+  width: 2px;
+  height: calc(100% + 250px);
+  background: #EBEAED;
+  position: absolute;
+  top: 100%;
+  left: 50%;
+  transform: translateX(-50%);
+}
+.contents-wrap .steps:last-child .steps-num::after {
+  display: none;
+}
+.contents-wrap .steps-info {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  max-width: 720px;
+  text-align: left;
+}
+.contents-wrap .steps-info h5 {
+  margin-top: 10px;
+}
+.contents-wrap .steps-info p {
+  color: rgba(21, 20, 57, 0.4);
+}
+.contents-wrap .steps-info .video-info {
+  display: flex;
+  gap: 30px;
+}
+.contents-wrap .steps-info .video-info .video {
+  width: 170px;
+  height: 110px;
+  border-radius: 5px;
+  background: pink;
+}
+.contents-wrap .steps-info .video-info .video-text {
+  max-width: 300px;
+}
+.contents-wrap .steps-info .video-info .video-text p {
+  color: #1e0e62;
+}
+.contents-wrap .steps-info .video-info .video-text span {
+  display: inline-block;
+  margin-top: 10px;
+  color: rgba(21, 20, 57, 0.4);
+}
+.contents-wrap .steps button {
+  width: 160px;
 }/*# sourceMappingURL=style.css.map */

@@ -1,0 +1,83 @@
+@import "../abstracts/variables";
+
+.contents-wrap{
+    max-width: 970px;
+    margin: 100px auto;
+    .top{
+        margin-bottom: 30px;
+        .tit01{
+            text-align: left;
+        }
+    }
+    .steps{
+        display: flex;
+        gap: 30px;
+        margin-bottom: 60px;
+        &:last-of-type{
+            margin-bottom: 0;
+        }
+        &-num{
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            width: 40px;
+            height: 40px;
+            border-radius: 100px;
+            color: #15143966;
+            background: #EBEAED;
+            font-size: 1.13em;
+            position: relative;
+            font-weight: 600;
+            &::after{
+                content: '';
+                width: 2px;
+                height: calc(100% + 250px);
+                background: #EBEAED;
+                position: absolute;
+                top: 100%;
+                left: 50%; 
+                transform: translateX(-50%);
+            }
+        }
+        &:last-child .steps-num::after {
+            display: none;
+        }
+        &-info{
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+            max-width: 720px;
+            text-align: left;
+            h5{
+                margin-top: 10px;
+            }
+            p{
+                color: #15143966;
+            }
+            .video-info{
+                display: flex;
+                gap: 30px;
+                .video{
+                    width: 170px;
+                    height: 110px;
+                    border-radius: 5px;
+                    background: pink;
+                }
+                .video-text{
+                    max-width: 300px;
+                    p{
+                        color: #1e0e62;
+                    }
+                    span{
+                        display: inline-block;
+                        margin-top: 10px;
+                        color: #15143966;
+                    }
+                }
+            }
+        }
+        button{
+            width: 160px;
+        }
+    }
+}
