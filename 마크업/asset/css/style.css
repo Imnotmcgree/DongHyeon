@@ -899,6 +899,7 @@ input[type=checkbox]:checked::after {
 }
 
 .ecommerce-wrap .ecommerce-nav ul {
+  overflow-x: scroll;
   display: flex;
   gap: 35px;
 }
@@ -909,6 +910,7 @@ input[type=checkbox]:checked::after {
   display: block;
   width: 100%;
   height: 100%;
+  text-wrap: nowrap;
 }
 .ecommerce-wrap .ecommerce-nav ul li.active {
   display: flex;
@@ -926,6 +928,25 @@ input[type=checkbox]:checked::after {
 
 .ecommerce-1 main {
   padding: 20px 0 110px;
+}
+.ecommerce-1 .product-pic {
+  width: auto;
+}
+@media (max-width: 1024px) {
+  .ecommerce-1 li article:nth-child(3), .ecommerce-1 li article:nth-child(4) {
+    margin-top: 40px;
+  }
+  .ecommerce-1 li article .container {
+    max-width: 992px;
+  }
+}
+@media (max-width: 768px) {
+  .ecommerce-1 li article:nth-child(2), .ecommerce-1 li article:nth-child(3), .ecommerce-1 li article:nth-child(4) {
+    margin-top: 40px;
+  }
+  .ecommerce-1 li article .container {
+    max-width: 768px;
+  }
 }
 
 .ecommerce-2 main {
@@ -993,7 +1014,7 @@ input[type=checkbox]:checked::after {
 }
 @media (max-width: 768px) {
   .ecommerce-2 .product:nth-child(even) {
-    margin-top: 20px;
+    margin-top: 60px;
   }
   .ecommerce-2 .product:nth-child(even) .container {
     max-width: 768px;
@@ -1004,6 +1025,15 @@ input[type=checkbox]:checked::after {
   align-items: center;
   color: #482BE7;
   gap: 11px;
+}
+@media (max-width: 1024px) {
+  .ecommerce-2 .purchase {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+  .ecommerce-2 .purchase .container {
+    max-width: 992px;
+  }
 }
 .ecommerce-2 .purchase .purchase-btn {
   width: 110px;
