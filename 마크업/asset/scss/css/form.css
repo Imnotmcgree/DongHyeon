@@ -107,6 +107,17 @@ input[type=checkbox]:checked::after {
 .form-type1 .credit-card-bg img:last-child {
   margin: 0;
 }
+@media (max-width: 768px) {
+  .form-type1 .credit-card-bg {
+    position: static;
+    display: block;
+    margin-bottom: 30px;
+    text-align: right;
+  }
+  .form-type1 .credit-card-bg .container {
+    max-width: 768px;
+  }
+}
 .form-type1 input[type=text] {
   display: block;
 }
@@ -197,6 +208,14 @@ input[type=checkbox]:checked::after {
 .form-2 .form-type1 {
   padding: 40px 100px;
 }
+@media (max-width: 768px) {
+  .form-2 .form-type1 {
+    padding: 20px 50px;
+  }
+  .form-2 .form-type1 .container {
+    max-width: 768px;
+  }
+}
 .form-2 button[type=submit] {
   width: 140px;
   position: absolute;
@@ -215,8 +234,37 @@ input[type=checkbox]:checked::after {
 .form-3 .form-type1 {
   padding: 90px 100px;
 }
+@media (max-width: 768px) {
+  .form-3 .form-type1 {
+    padding: 90px 20px;
+  }
+  .form-3 .form-type1 .container {
+    max-width: 768px;
+  }
+}
 .form-3 button[type=submit] {
   width: 120px;
+}
+@media (max-width: 768px) {
+  .form-3 button[type=submit] {
+    margin-top: 50px;
+    width: 100%;
+  }
+  .form-3 button[type=submit] .container {
+    max-width: 768px;
+  }
+}
+.form-3 div.mT50 {
+  display: flex;
+  justify-content: space-between;
+}
+@media (max-width: 768px) {
+  .form-3 div.mT50 {
+    display: block;
+  }
+  .form-3 div.mT50 .container {
+    max-width: 768px;
+  }
 }
 
 .form-4 {

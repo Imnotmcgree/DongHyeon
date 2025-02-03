@@ -15,90 +15,92 @@
 </head>
 <body>
     <div class="wrap">
-        <main class="form-3">
-            <section class="form-section">
-                <h1 class="tit01">Create Billing Account</h1>
-                <form class="form-type1 line">
-                    <div class="type1-wrap">
-                        <span class="type1-contents">
-                            <div class="row">
-                                <div class="col-6">
-                                    <label class="text-navy info" for="first-name">
-                                        FIRST NAME
-                                    </label>
-                                    <input class="col-12" type="text" id="first-name">
+        <div class="container">
+            <main class="form-3">
+                <section class="form-section">
+                    <h1 class="tit01">Create Billing Account</h1>
+                    <form class="form-type1 line">
+                        <div class="type1-wrap">
+                            <span class="type1-contents">
+                                <div class="row">
+                                    <div class="col-md-6 col-12">
+                                        <label class="text-navy info" for="first-name">
+                                            FIRST NAME
+                                        </label>
+                                        <input class="col-12" type="text" id="first-name">
+                                    </div>
+                                    <div class="col-md-6 col-12">
+                                        <label class="text-navy info" for="last-name">
+                                            LAST NAME
+                                        </label>
+                                        <input class="col-12" type="text" id="last-name">
+                                    </div>
                                 </div>
-                                <div class="col-6">
-                                    <label class="text-navy info" for="last-name">
-                                        LAST NAME
-                                    </label>
-                                    <input class="col-12" type="text" id="last-name">
+                                <div class="row mT30">
+                                    <div class="col-md-8 col-12">
+                                        <label class="text-navy info" for="address">
+                                            ADDRESS
+                                        </label>
+                                        <input class="col-12" type="text" id="address">
+                                    </div>
+                                    <div class="col-md-4 col-12">
+                                        <label class="text-navy info" for="postal-zip">
+                                            POSTAL / ZIP
+                                        </label>
+                                        <input class="col-12" type="text" id="postal-zip">
+                                    </div>
                                 </div>
-                            </div>
-                            <div class="row mT30">
-                                <div class="col-8">
-                                    <label class="text-navy info" for="address">
-                                        ADDRESS
-                                    </label>
-                                    <input class="col-12" type="text" id="address">
+                                <div class="row mT30">
+                                    <div class="col-md-6 col-12">
+                                        <label class="text-navy info" for="city">
+                                            CITY
+                                        </label>
+                                        <input class="col-12" type="text" id="city">
+                                    </div>
+                                    <div class="col-md-6 col-12">
+                                        <label class="text-navy info" for="country">
+                                            COUNTRY
+                                        </label>
+                                        <input class="col-12" type="text" id="country">
+                                    </div>
                                 </div>
-                                <div class="col-4">
-                                    <label class="text-navy info" for="postal-zip">
-                                        POSTAL / ZIP
-                                    </label>
-                                    <input class="col-12" type="text" id="postal-zip">
+                                <div class="row mT30">
+                                    <div class="col-md-6 col-12">
+                                        <label class="text-navy info" for="card-number">
+                                            CARD NUMBER
+                                        </label>
+                                        <input class="col-12" type="text" id="card-number">
+                                    </div>
+                                    <div class="col-md-4 col-12">
+                                        <label class="text-navy info" for="expiration">
+                                            EXPIRATION
+                                        </label>
+                                        <input class="col-12" type="text" id="expiration">
+                                    </div>
+                                    <div class="col-md-2 col-12">
+                                        <label class="text-navy info" for="cvv">
+                                            CVV
+                                        </label>
+                                        <input class="col-12" type="text" id="cvv">
+                                    </div>
                                 </div>
-                            </div>
-                            <div class="row mT30">
-                                <div class="col-6">
-                                    <label class="text-navy info" for="city">
-                                        CITY
-                                    </label>
-                                    <input class="col-12" type="text" id="city">
+    
+                                <div class="mT50">
+                                    <div class="d-flex gap30">
+                                        <img src="./asset/img/form-img/paypal.png" alt="">
+                                        <p class="text-gray">
+                                            Use your debit or credit card <br> to pay with PayPal
+                                        </p>
+                                    </div>
+                                    <button type="submit" class="cyan text-white rounded-form">Sign In</button>
                                 </div>
-                                <div class="col-6">
-                                    <label class="text-navy info" for="country">
-                                        COUNTRY
-                                    </label>
-                                    <input class="col-12" type="text" id="country">
-                                </div>
-                            </div>
-                            <div class="row mT30">
-                                <div class="col-6">
-                                    <label class="text-navy info" for="card-number">
-                                        CARD NUMBER
-                                    </label>
-                                    <input class="col-12" type="text" id="card-number">
-                                </div>
-                                <div class="col-4">
-                                    <label class="text-navy info" for="expiration">
-                                        EXPIRATION
-                                    </label>
-                                    <input class="col-12" type="text" id="expiration">
-                                </div>
-                                <div class="col-2">
-                                    <label class="text-navy info" for="cvv">
-                                        CVV
-                                    </label>
-                                    <input class="col-12" type="text" id="cvv">
-                                </div>
-                            </div>
-
-                            <div class="mT50 d-flex justify-content-between">
-                                <div class="d-flex gap30">
-                                    <img src="./asset/img/form-img/paypal.png" alt="">
-                                    <p class="text-gray">
-                                        Use your debit or credit card <br> to pay with PayPal
-                                    </p>
-                                </div>
-                                <button type="submit" class="cyan text-white rounded-form">Sign In</button>
-                            </div>
-                        </span>
-                    </div>
-                </form>
-
-            </section>
-        </main>
+                            </span>
+                        </div>
+                    </form>
+    
+                </section>
+            </main>
+        </div>
     </div>
 </body>
 </html>

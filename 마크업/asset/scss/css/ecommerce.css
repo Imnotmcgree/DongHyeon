@@ -153,6 +153,14 @@
 .ecommerce-2 .product-ment {
   color: rgba(21, 20, 57, 0.4);
 }
+@media (max-width: 768px) {
+  .ecommerce-2 .product:nth-child(even) {
+    margin-top: 20px;
+  }
+  .ecommerce-2 .product:nth-child(even) .container {
+    max-width: 768px;
+  }
+}
 .ecommerce-2 .purchase {
   display: flex;
   align-items: center;

@@ -175,6 +175,11 @@
         &-ment{
             color: #15143966;
         }
+        &:nth-child(even) {
+            @include container-max-width(md){
+                margin-top: 20px;
+            }
+        }
     }
 
     .purchase{
