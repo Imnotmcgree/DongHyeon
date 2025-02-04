@@ -237,6 +237,9 @@ input{
             position: absolute;
             right: -30px;
             bottom: 0px;
+            @include container-max-width(lg){
+                right: 0px;
+            }
         }
     }
     

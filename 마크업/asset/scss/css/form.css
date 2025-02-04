@@ -222,6 +222,14 @@ input[type=checkbox]:checked::after {
   right: -30px;
   bottom: 0px;
 }
+@media (max-width: 992px) {
+  .form-2 button[type=submit] {
+    right: 0px;
+  }
+  .form-2 button[type=submit] .container {
+    max-width: 1028px;
+  }
+}
 
 .form-3 .tit01 {
   margin-top: 100px;
