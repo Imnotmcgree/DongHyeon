@@ -1,0 +1,32 @@
+// 유틸리티
+caption, .text-hide{font: 0/0 a;color: transparent;text-shadow: none;background-color: transparent;border: 0;padding: 0;margin: 0}
+.clearfix:after {content:''; display:table; clear:both;}
+.floatL {float:left;}
+.floatR {float:right;}
+.blind, .sr-only{position: absolute;width: 1px;height: 1px;padding: 0;margin: -1px;overflow: hidden;clip: rect(0, 0, 0, 0);white-space: nowrap;border: 0;}
+.hidden {position:absolute; top:-9999em; left:-9999em; width:0; height:0; font-size:0; text-indent:-9999em;}
+
+@for $i from 1 through 10 {
+    .gap#{10 * $i}{gap: calc(10 * #{$i}px) !important;}
+}
+
+.fs18{
+    font-size: 1.13em;
+}
+
+.text-clamp{
+    --clamp: 3;
+    display: -webkit-box !important;
+    overflow: hidden;
+    max-height: calc(1.5em * var(--clamp));
+    line-height: 1.5em !important;
+    text-overflow: ellipsis;
+    -webkit-line-clamp: var(--clamp);
+    -webkit-box-orient: vertical;
+    word-wrap: break-word;
+}
+
+.d-flex{display: flex !important;}
+.align-items-center{align-items: center !important;}
+.align-items-end{align-items: flex-end !important;}
+.align-items-start{align-items: flex-start !important;}

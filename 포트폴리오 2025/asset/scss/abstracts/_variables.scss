@@ -1,0 +1,61 @@
+$grid-breakpoints: ( 
+	sm: 576px,
+	md: 768px,
+	lg: 992px,
+	xl: 1200px,
+);
+
+
+// 추가된 변수
+$container-max-widths: (
+  "sm": 576px,
+  "md": 768px,
+  "lg": 1028px,
+  "xl": 1170px,
+);
+
+@mixin container-max-width($breakpoint) {
+    @media (max-width: map-get($grid-breakpoints, $breakpoint)) {
+        @content; // 콘텐츠 블록을 허용
+        .container {
+            max-width: map-get($container-max-widths, $breakpoint);
+            @if $breakpoint == xl {
+                padding-right: 0;
+                padding-left: 0;
+            }
+        }
+    }
+};
+
+
+$color-body: #333;
+$color-dark: #191919;
+$color-white: #fff;
+
+$color-gray : #B3B3B3; 
+$color-light : #999; 
+$color-gray2 : #ccc; 
+$color-line : #eee; 
+
+$color-primary: #1DA1F2;
+$color-cyan: #25DAC5;
+
+
+// Typography
+$font-DMsans: 'DM Sans', -apple-system, sans-serif; 
+
+$base-rem: 20px;
+$base-rem-mobile: 16px;
+
+$line-height-base: 1.5;
+
+$font-weight-light: 300;
+$font-weight-normal: 400;
+$font-weight-medium: 500;
+$font-weight-bold: 700;
+
+// util
+$radius : 20px ;
+
+// animation
+$animation-timing: cubic-bezier(0.165, 0.84, 0.44, 1);
