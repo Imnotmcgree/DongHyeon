@@ -1,0 +1,57 @@
+/* ios-spinner.scss */
+
+.spinner {
+    // ===== Customizable variables =====
+    $size: 44px; // 전체 크기
+    $color: #6b7280; // 막대 색상
+    $thickness: 3px; // 막대 두께
+    $length: 12px; // 막대 길이
+    $duration: 1s; // 회전 주기
+    $count: 12; // 막대 개수
+
+    position: relative;
+    width: $size;
+    height: $size;
+
+    span {
+        position: absolute;
+        left: 50%;
+        top: 50%;
+        width: $thickness;
+        height: $length;
+        background: $color;
+        border-radius: $thickness;
+        opacity: .25;
+        transform-origin: center center;
+        animation: ios-fade $duration linear infinite;
+        will-change: opacity, transform;
+    }
+
+    // 12개 막대 자동 생성
+    @for $i from 1 through $count {
+        span:nth-child(#{$i}) {
+            $angle: (360deg / $count) * ($i - 1);
+            transform: translate(-50%, -50%) rotate($angle) translateY(-($size/2 - $length/2));
+            animation-delay: -($duration * ($i - 1) / $count);
+        }
+    }
+}
+
+// 애니메이션 정의
+@keyframes ios-fade {
+    0% {
+        opacity: 1;
+    }
+
+    100% {
+        opacity: .25;
+    }
+}
+
+// 모션 최소화 환경 대응
+@media (prefers-reduced-motion: reduce) {
+    .spinner span {
+        animation: none;
+        opacity: 1;
+    }
+}
