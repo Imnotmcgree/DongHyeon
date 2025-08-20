@@ -1,11 +1,46 @@
 @charset "utf-8";
 // 기본베이스 : 폰트, 컬러, 타이포
-@import url('https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,100..1000;1,9..40,100..1000&family=Noto+Sans+KR:wght@100..900&display=swap');
+
+@font-face {
+    font-family: 'Instagram Sans';
+    src: url('../font/Instagram Sans.ttf') format('truetype');
+    font-weight: 400;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: 'Instagram Sans';
+    src: url('../font/Instagram Sans Light.ttf') format('truetype');
+    font-weight: 300;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: 'Instagram Sans';
+    src: url('../font/Instagram Sans Medium.ttf') format('truetype');
+    font-weight: 500;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: 'Instagram Sans';
+    src: url('../font/Instagram Sans Bold.ttf') format('truetype');
+    font-weight: 700;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: 'Instagram Sans';
+    src: url('../font/Instagram Sans Headline.otf') format('opentype');
+    font-weight: 800; // Headline은 더 두꺼운 굵기로 설정
+    font-style: normal;
+}
+
 
 body, p, span, h1, h2, h3, h4, h5, h6, ul, ol, li, dl, dt, dd, table, th, td, form, fieldset, legend, input, textarea, button, select, label{
 	margin: 0;
 	padding: 0;
-	font-family: $font-DMsans;
+	font-family: $font-sans;
 	color: inherit;
 	outline: 0;
 }
