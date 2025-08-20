@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    <title>HELLO !</title>
 
     <link rel="stylesheet" href="./asset/css/bootstrap.min.css">
     <link rel="stylesheet" href="./asset/css/swiper-bundle.min.css">
@@ -12,45 +12,52 @@
     <script src="./asset/js/jquery-3.7.1.min.js"></script>
     <script src="./asset/js/bootstrap.bundle.min.js"></script>
     <script src="./asset/js/swiper-bundle.min.js"></script>
+    <script src="./asset/js/index.js"></script>
 </head>
 <body>
     <div class="warp">
-        <div class="card-secetion">
-            <div class="character-area">
-                <div>
-                    <p class="connect-text">Connect-ing</p>
-                    <div class="spinner" role="status" aria-label="연결 중">
-                        <span></span>
-                        <span></span>
-                        <span></span>
-                        <span></span>
-                        <span></span>
-                        <span></span>
-                        <span></span>
-                        <span></span>
-                        <span></span>
-                        <span></span>
-                        <span></span>
-                        <span></span>
+        <div class="card-section-wrap">
+            <div class="card-section">
+                <div class="character-area">
+                    <div class="connect">
+                        <p class="connect-text">
+                            새로운 만남을 기다리고 있습니다...
+                        </p>
+                        <div class="spinner" role="status" aria-label="연결 중">
+                            <span></span>
+                            <span></span>
+                            <span></span>
+                            <span></span>
+                            <span></span>
+                            <span></span>
+                            <span></span>
+                            <span></span>
+                            <span></span>
+                            <span></span>
+                            <span></span>
+                            <span></span>
+                        </div>
+                    </div>
+                    <div class="character">
+                        <video src="./asset/video/default.mp4" preload="auto" muted playsinline></video>
                     </div>
                 </div>
-                <video src="./asset/video/default.mp4"></video>
-            </div>
-
-            <div>
-                <div class="profile">
-                    <div class="plofile-photo">
-                        <img src="./asset/img/char.png" alt="">
+    
+                <div class="profile-area">
+                    <div class="profile">
+                        <div class="profile-photo">
+                            <img src="./asset/img/char.png" alt="">
+                        </div>
+                        <div class="profile-info">
+                            <p class="id">@imnotmcgree</p>
+                            <p class="online">활동중</p>
+                        </div>
                     </div>
-                    <div class="profile-info">
-                        <p class="id">@imnotmcgree</p>
-                        <p class="online">1분전 활동</p>
-                    </div>
+    
+                    <button class="more">
+                        더 알아보기
+                    </button>
                 </div>
-
-                <button class="more">
-                    더 알아보기
-                </button>
             </div>
         </div>
     </div>
