@@ -4,7 +4,7 @@
     // ===== Customizable variables =====
     $size: 44px; // 전체 크기
     $color: #ffffff; // 막대 색상
-    $thickness: 3px; // 막대 두께
+    $thickness: 4px; // 막대 두께
     $length: 12px; // 막대 길이
     $duration: 1s; // 회전 주기
     $count: 12; // 막대 개수
@@ -30,7 +30,7 @@
     // 12개 막대 자동 생성
     @for $i from 1 through $count {
         span:nth-child(#{$i}) {
-            $angle: (360deg / $count) * ($i - 1);
+            $angle: (-360deg / $count) * ($i - 1);
             transform: translate(-50%, -50%) rotate($angle) translateY(-($size/2 - $length/2));
             animation-delay: -($duration * ($i - 1) / $count);
         }
@@ -118,14 +118,7 @@
 
         .card-back {
             transform: rotateY(180deg);
-            background-color: #1D64F1;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
-            color: white;
-            padding: 50px;
-            border-radius: 80px;
+            background-color: #FAFAFA;
             h1 {
                 font-size: 4rem;
                 margin-bottom: 20px;

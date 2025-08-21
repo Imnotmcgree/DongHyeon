@@ -77,9 +77,9 @@ $(document).ready(function() {
                 });
             }
         })
-        .type("준비된 퍼블리셔,", { speed: 1500 })
+        .type("가나다라,", { speed: 1500 })
         .pause(500)
-        .type(" 김동현입니다.", { speed: 1000 })
+        .type(" 마바사.", { speed: 1000 })
         .go();
     } else {
         gsap.set('.card-section-wrap', { opacity: 1, scale: 1 });
@@ -176,7 +176,7 @@ $(document).ready(function() {
         ellipsisInterval = setInterval(() => {
             ellipsisCount = (ellipsisCount + 1) % 4;
             ellipsisSpan.text('.'.repeat(ellipsisCount || 1).padEnd(3, '\u00A0'));
-        }, 500);
+        }, 2000);
         textInterval = setInterval(() => {
             textIndex = (textIndex + 1) % dynamicTexts.length;
             const newText = dynamicTexts[textIndex];
@@ -200,7 +200,7 @@ $(document).ready(function() {
                     });
                 }
             });
-        }, 3000);
+        }, 5000);
     }
 
     function splitText(element) {
@@ -223,7 +223,9 @@ $(document).ready(function() {
             gsap.to($moreButton, {
                 duration: 0.3,
                 scale: 1.05,
-                backgroundColor: '#1DA1F2', // 호버 시 변경될 색상
+                backgroundColor: '#1D64F1', // 호버 시 변경될 색상
+                color: '#fff', // 호버 시 변경될 색상
+                boxShadow: '0 0 0 3px #fff, 0 0 30px rgba(29,100,241,0.6)',
                 ease: 'power2.out'
             });
         }
@@ -236,6 +238,7 @@ $(document).ready(function() {
                 duration: 0.3,
                 scale: 1,
                 backgroundColor: '#000000', // 원래 배경색
+                boxShadow: '0 0 0 3px #fff',
                 ease: 'power2.out',
                 onComplete: () => {
                     pulseTimeline.resume();
