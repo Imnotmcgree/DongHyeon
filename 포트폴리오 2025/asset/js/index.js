@@ -77,9 +77,9 @@ $(document).ready(function() {
                 });
             }
         })
-        .type("가나다라,", { speed: 1500 })
+        .type("깃자동화,", { speed: 1500 })
         .pause(500)
-        .type(" 마바사.", { speed: 1000 })
+        .type(" 성공.", { speed: 1000 })
         .go();
     } else {
         gsap.set('.card-section-wrap', { opacity: 1, scale: 1 });
