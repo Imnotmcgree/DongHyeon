@@ -1,0 +1,168 @@
+@charset "utf-8";
+// 기본베이스 : 폰트, 컬러, 타이포
+@import url('https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,100..1000;1,9..40,100..1000&family=Noto+Sans+KR:wght@100..900&display=swap');
+
+body, p, span, h1, h2, h3, h4, h5, h6, ul, ol, li, dl, dt, dd, table, th, td, form, fieldset, legend, input, textarea, button, select, label{
+	margin: 0;
+	padding: 0;
+	font-family: $font-sans;
+	color: inherit;
+	outline: 0;
+}
+body{
+	* {
+		box-sizing: border-box;
+	} 
+}
+a{
+	color: inherit;
+	&:hover, &:focus, &:active{ 
+		color: inherit;
+		text-decoration: none;
+	}
+}
+li{
+	list-style: none
+}
+address, em{
+	font-style: normal
+}
+table{
+	width: 100%
+}
+
+u{
+	text-decoration-thickness: 1px;
+	text-underline-position: under;
+}
+
+img{
+	vertical-align: top;
+	max-width: 100%
+}
+
+button{
+	cursor: pointer;
+	outline: 0 !important;
+	&.no-style{
+		background: none;
+		line-height: 1;
+		border: 0;
+	}
+} 
+
+b, strong{
+	font-weight: 700;
+}
+
+h1, h2, h3, h4, .fs-1, .fs-2, .fs-3{
+	line-height: 1.5;
+}
+
+textarea{
+	resize:none;
+	border-radius: 10px;
+	border: 2px solid #ccc;
+}
+
+.tit01{
+	font-size: 42px;
+	letter-spacing: 1px;
+	text-align: center;
+	text-underline-position: from-font;
+	text-decoration-skip-ink: none;
+	color: #1E0E62;
+	font-weight: 700;
+}
+
+.tit02{
+	font-size: 22px;
+	text-align: center;
+	text-underline-position: from-font;
+	text-decoration-skip-ink: none;
+	color: #1E0E62;
+	font-weight: 600;
+}
+
+.tit03{
+	font-size: 18px;
+	text-underline-position: from-font;
+	text-decoration-skip-ink: none;
+	color: #1E0E62;
+	font-weight: 600;
+}
+
+button.cyan{
+	background: #25DAC5;
+	border: none !important;
+}
+
+.cyan{
+	background: #25DAC5;
+}
+
+.primary{
+	background: #1DA1F2;
+}
+
+.text-navy{
+	color: #1E0E62;
+	font-weight: 600;
+}
+
+.text-cyan{
+	color: #25DAC5;
+}
+
+.text-primary{
+	color: #1DA1F2;
+}
+
+.text-gray{
+	color: #15143966;
+}
+
+.bg-blue{
+	background: #4267B2;
+}
+.bg-navy{
+	background: #1E0E62;
+}
+.bg-magenta{
+	background: #E93A7D;
+}
+.bg-ylw{
+	background: #FFFC00;
+}
+
+.toggle {
+    width: 42px;
+    height: 30px;
+    background-color: #ccc;
+    border-radius: 25px;
+    border: none;
+    position: relative;
+    cursor: pointer;
+    transition: background-color 0.3s;
+    display: flex;
+    align-items: center;
+    padding: 2px;
+}
+
+.toggle-circle {
+    width: 24px;
+    height: 24px;
+    background-color: white;
+    border-radius: 50%;
+    position: absolute;
+    left: 3px;
+    transition: transform 0.3s;
+}
+
+.toggle.active {
+    background-color: #25DAC5; 
+}
+
+.toggle.active .toggle-circle {
+    transform: translateX(12px);
+}

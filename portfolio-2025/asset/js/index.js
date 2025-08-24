@@ -1,0 +1,249 @@
+$(document).ready(function() {
+    // ✅ 인트로 애니메이션 사용 여부 스위치 (true: 사용 / false: 사용 안 함)
+    const useIntroAnimation = true;
+    let pulseTimeline; // ✅ pulseTimeline을 더 넓은 범위에서 선언
+
+    if (useIntroAnimation) {
+        // --- Intro Animation Logic ---
+        AOS.init();
+        const introText = '.intro-txt';
+        const cardWrap = '.card-section-wrap';
+        const characterArea = '.character-area';
+        const profile = '.profile';
+        const moreButton = '.more';
+        const connectBox = '.connect'; // ✅ .connect 선택자 추가
+
+        // 1. 초기 상태 설정
+        gsap.set(cardWrap, { opacity: 0, scale: 0.8 });
+        gsap.set([characterArea, profile, moreButton, connectBox], { opacity: 0, y: 30 }); // ✅ .connect도 초기에 숨김
+        gsap.set(introText, { opacity: 1 });
+
+        new TypeIt(introText, {
+            speed: 200,
+            startDelay: 900,
+            afterComplete: function (instance) {
+                instance.destroy();
+                gsap.to(introText, {
+                    duration: 0.2,
+                    opacity: 0,
+                    ease: "power2.in",
+                    delay: 1,
+                    onComplete: () => {
+                        // 2. GSAP 타임라인
+                        const tl = gsap.timeline();
+                        
+                        tl.to(cardWrap, {
+                            duration: 0.8,
+                            opacity: 1,
+                            scale: 1,
+                            ease: "elastic.out(1, 0.5)",
+                        })
+                        .to(characterArea, {
+                            duration: 0.5,
+                            opacity: 1,
+                            y: 0,
+                            ease: "power2.out"
+                        }, "-=0.4")
+                        .to(profile, { // ✅ 프로필만 먼저 나타나도록 수정
+                            duration: 0.5,
+                            opacity: 1,
+                            y: 0,
+                            ease: "power2.out",
+                        }, "-=0.3")
+                        .to(connectBox, {
+                            duration: 0.5,
+                            opacity: 1,
+                            y: 0,
+                            ease: "power2.out"
+                        }, "-=0.2")
+                        .to(moreButton, { // ✅ moreButton을 1초 뒤에 별도로 애니메이션
+                            duration: 0.5,
+                            opacity: 1,
+                            y: 0,
+                            ease: "power2.out",
+                        }, "+=1"); // 앞선 애니메이션 흐름이 끝나고 1초 뒤
+                        
+                        // More 버튼 애니메이션 타임라인 생성 및 할당
+                        pulseTimeline = gsap.timeline({
+                            delay: 1.5, // moreButton 등장(1초) + 기존 delay(0.5초)
+                            repeat: -1,
+                            repeatDelay: 2
+                        })
+                        .to(moreButton, { duration: 0.2, scale: 1.05, ease: "power1.inOut" })
+                        .to(moreButton, { duration: 0.2, scale: 1, ease: "power1.inOut" })
+                        .to(moreButton, { duration: 0.2, scale: 1.05, ease: "power1.inOut" }, "-=0.1")
+                        .to(moreButton, { duration: 0.2, scale: 1, ease: "power1.inOut" });
+                    }
+                });
+            }
+        })
+        .type("깃자동화~!,", { speed: 1500 })
+        .pause(500)
+        .type(" 성공.", { speed: 1000 })
+        .go();
+    } else {
+        gsap.set('.card-section-wrap', { opacity: 1, scale: 1 });
+    }
+
+    // --- Video Hover Logic ---
+    const $video = $('.character video');
+    const video = $video[0];
+    const $moreButton = $('.more');
+    let animationFrameId;
+    let lastTime;
+    video.playbackRate = 2.0;
+
+    const playForward = () => {
+        if (!video.paused) return;
+        cancelAnimationFrame(animationFrameId);
+        video.playbackRate = 2.0;
+        video.play();
+    };
+
+    const reverseStep = (timestamp) => {
+        const elapsed = (timestamp - lastTime) / 1000;
+        lastTime = timestamp;
+        video.currentTime -= video.playbackRate * elapsed;
+        if (video.currentTime <= 0) {
+            cancelAnimationFrame(animationFrameId);
+            video.currentTime = 0;
+            video.pause();
+            return;
+        }
+        animationFrameId = requestAnimationFrame(reverseStep);
+    };
+
+    const playReverse = () => {
+        cancelAnimationFrame(animationFrameId);
+        video.pause();
+        if (video.currentTime >= video.duration) {
+            video.currentTime = video.duration - 0.01;
+        }
+        lastTime = performance.now();
+        animationFrameId = requestAnimationFrame(reverseStep);
+    };
+
+    video.addEventListener('loadedmetadata', () => {
+        video.currentTime = 0;
+        video.pause();
+    });
+
+    // --- Click Logic ---
+    $moreButton.on('click', function(e) {
+        e.preventDefault();
+        $moreButton.off('mouseenter mouseleave');
+        if (pulseTimeline) {
+            pulseTimeline.kill(); // 반복 애니메이션 완전 제거
+        }
+        // 클릭 시 호버 효과가 남아있지 않도록 원래 스타일로 즉시 복구
+        gsap.set($moreButton, { scale: 1, backgroundColor: '#000000' });
+        
+        const cardSection = '.card-section';
+        const tl = gsap.timeline({ onComplete: () => console.log("Animation Complete!") });
+        tl.to(cardSection, {
+            duration: 1.5,
+            rotationY: 180,
+            ease: "power4.inOut"
+        }).to(cardSection, {
+            duration: 1.2,
+            width: "100vw",
+            height: "100vh",
+            borderRadius: 0,
+            borderWidth: 0,
+            ease: "power4.inOut"
+        }, "-=1.0");
+    });
+
+    // --- Dynamic Text Animation ---
+    const dynamicTexts = [
+        '새로운 인연과',
+        '일상의 순간과',
+        '색다른 관점과',
+        '멋진 동료들과',
+        '가벼운 유머와',
+        '솔직한 소통과',
+        '의외의 발견과'];
+    let textIndex = 0;
+    const ellipsisSpan = $('.ellipsis');
+    let ellipsisCount = 0;
+    const dynamicTextSpan = $('.dynamic-text');
+    let ellipsisInterval = null;
+    let textInterval = null;
+
+    function startTextAnimation() {
+        if (ellipsisInterval) clearInterval(ellipsisInterval);
+        if (textInterval) clearInterval(textInterval);
+        ellipsisInterval = setInterval(() => {
+            ellipsisCount = (ellipsisCount + 1) % 4;
+            ellipsisSpan.text('.'.repeat(ellipsisCount || 1).padEnd(3, '\u00A0'));
+        }, 2000);
+        textInterval = setInterval(() => {
+            textIndex = (textIndex + 1) % dynamicTexts.length;
+            const newText = dynamicTexts[textIndex];
+            const oldChars = dynamicTextSpan.find('span');
+            const tl = gsap.timeline();
+            tl.to(oldChars, {
+                duration: 0.3,
+                opacity: 0,
+                rotationX: -90,
+                stagger: 0.05,
+                onComplete: () => {
+                    dynamicTextSpan.text(newText);
+                    splitText(dynamicTextSpan);
+                    const newChars = dynamicTextSpan.find('span');
+                    gsap.set(newChars, { opacity: 0, rotationX: 90 });
+                    gsap.to(newChars, {
+                        duration: 0.3,
+                        opacity: 1,
+                        rotationX: 0,
+                        stagger: 0.05
+                    });
+                }
+            });
+        }, 5000);
+    }
+
+    function splitText(element) {
+        const text = element.text();
+        element.empty();
+        for (let i = 0; i < text.length; i++) {
+            const char = (text[i] === ' ') ? '&nbsp;' : text[i];
+            element.append(`<span>${char}</span>`);
+        }
+    }
+
+    splitText(dynamicTextSpan);
+    startTextAnimation();
+
+    // --- Final Hover Handlers ---
+    $moreButton.on('mouseenter', () => {
+        playForward();
+        if (pulseTimeline) {
+            pulseTimeline.pause();
+            gsap.to($moreButton, {
+                duration: 0.3,
+                scale: 1.05,
+                backgroundColor: '#1D64F1', // 호버 시 변경될 색상
+                color: '#fff', // 호버 시 변경될 색상
+                boxShadow: '0 0 0 3px #fff, 0 0 30px rgba(29,100,241,0.6)',
+                ease: 'power2.out'
+            });
+        }
+    });
+
+    $moreButton.on('mouseleave', () => {
+        playReverse();
+        if (pulseTimeline) {
+            gsap.to($moreButton, {
+                duration: 0.3,
+                scale: 1,
+                backgroundColor: '#000000', // 원래 배경색
+                boxShadow: '0 0 0 3px #fff',
+                ease: 'power2.out',
+                onComplete: () => {
+                    pulseTimeline.resume();
+                }
+            });
+        }
+    });
+});

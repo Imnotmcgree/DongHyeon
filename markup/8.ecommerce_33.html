@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ecommerce_3</title>
+
+    <link rel="stylesheet" href="./asset/css/bootstrap.min.css">
+    <link rel="stylesheet" href="./asset/css/swiper-bundle.min.css">
+    <link rel="stylesheet" href="./asset/css/style.min.css">
+
+    <script src="./asset/js/jquery-3.7.1.min.js"></script>
+    <script src="./asset/js/bootstrap.bundle.min.js"></script>
+    <script src="./asset/js/swiper-bundle.min.js"></script>
+</head>
+<body>
+    <div class="wrap">
+        <div class="container">
+            <div class="ecommerce-wrap ecommerce-3">
+                <main>
+                    <div class="product-wrap">
+                        <article class="product-2 row">
+                            <div class="col-lg-6 col-12 p-0">
+                                <h3 class="info first text-navy">ITEM</h3>
+                                <div class="d-flex gap30">
+                                    <div class="product-pic">
+                                        <img src="./asset/img/ecommerce-img/product2.jpg" alt="">
+                                    </div>
+                                    <div class="product-info">
+                                        <p class="info text-gray">WEYZ</p>
+                                        <p class="product-name">
+                                            Tee-shirt ” ZEUS ” Réflective <br> - Blanc  
+                                        </p>
+                                        <div>
+                                            <p class="info text-gray">COLOR</p>
+                                            <ul class="product-colors">
+                                                <li>
+                                                    <input type="radio" id="blue" name="color" value="blue">
+                                                    <label for="blue" class="bg-blue">blue</label>
+                                                </li>
+                                                <li>
+                                                    <input type="radio" id="navy" name="color" value="navy">
+                                                    <label for="navy" class="bg-navy">navy</label>
+                                                </li>
+                                                <li>
+                                                    <input type="radio" id="magenta" name="color" value="magenta">
+                                                    <label for="magenta" class="bg-magenta">magenta</label>
+                                                </li>
+                                                <li>
+                                                    <input type="radio" id="yellow" name="color" value="yellow">
+                                                    <label for="yellow" class="bg-ylw">yellow</label>
+                                                </li>
+                                                <li>
+                                                    <input type="radio" id="primary" name="color" value="primary">
+                                                    <label for="primary" class="bg-primary">primary</label>
+                                                </li>
+                                            </ul>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-lg-4 col-12 p-0 d-flex flex-column justify-content-between">
+                                <div>
+                                    <h3 class="info text-navy">YOUR OPTIONS</h3>
+                                    <p class="info text-gray">SIZE</p>
+                                    <ul class="product-size">
+                                        <li>
+                                            <input type="radio" id="xs" name="size" value="xs">
+                                            <label for="xs">XS</label>
+                                        </li>
+                                        <li>
+                                            <input type="radio" id="s" name="size" value="s">
+                                            <label for="s">S</label>
+                                        </li>
+                                        <li>
+                                            <input type="radio" id="m" name="size" value="m">
+                                            <label for="m">M</label>
+                                        </li>
+                                        <li>
+                                            <input type="radio" id="l" name="size" value="l">
+                                            <label for="l">L</label>
+                                        </li>
+                                        <li>
+                                            <input type="radio" id="xl" name="size" value="xl">
+                                            <label for="xl">XL</label>
+                                        </li>
+                                        <li>
+                                            <input type="radio" id="xxl" name="size" value="xxl">
+                                            <label for="xxl">XXL</label>
+                                        </li>
+                                    </ul>
+                                </div>
+                                <div>
+                                    <p class="info text-gray">QUANTITY</p>
+                                    <ul class="product-quantity d-flex">
+                                        <li><button type="button" class="minus">-</button></li>
+                                        <li><input type="number" value="0" min="0"></li>
+                                        <li><button type="button" class="plus">+</button></li>
+                                    </ul>
+                                </div>
+                            </div>
+                            <div class="col-lg-2 col-12 p-0 d-flex flex-column justify-content-between">
+                                <h3 class="info text-navy">COST</h3>
+                                <div>
+                                    <p class="info text-gray">PRICE</p>
+                                    <p class="info text-navy">$24</p>
+                                </div>
+                                <div>
+                                    <p class="info text-gray">TOTAL</p>
+                                    <p class="info text-navy">$70</p>
+                                </div>
+                            </div>
+                        </article>
+                    </div>
+                </main>
+                <section class="bottom">
+                    <div class="row">
+                        <div class="p-0 col-lg-6 col-12 d-flex align-items-center gap10">
+                            <label class="info text-gray" for="promocode">PROMOCODE</label>
+                            <input type="text" class="line rounded-form" id="promocode">
+                        </div>
+                        <div class="p-0 col-lg-3 col-12 d-flex align-items-center gap10">
+                            <p class="info text-gray">DISCOUNT</p>
+                            <p class="info text-navy">5%</p>
+                        </div>
+                        <div class="p-0 col-lg-3 col-12 d-flex align-items-center gap10">
+                            <p class="info text-gray">TOTAL</p>
+                            <p class="info text-navy">$155</p>
+                        </div>
+                    </div>
+                </section>
+            </div>
+        </div>
+    </div>
+</body>
+<script>
+    $(document).ready(function () {
+        $(".minus").click(function () {
+            let input = $(".product-quantity input");
+            let value = parseInt(input.val());
+            if (value > 0) input.val(value - 1);
+        });
+
+        $(".plus").click(function () {
+            let input = $(".product-quantity input");
+            input.val(parseInt(input.val()) + 1);
+        });
+    });
+</script>
+</html>
