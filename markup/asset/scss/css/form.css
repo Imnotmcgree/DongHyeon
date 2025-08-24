@@ -25,7 +25,9 @@ input[type=checkbox] {
   border-radius: 6px;
   margin-right: 8px;
   cursor: pointer;
-  appearance: none;
+  -webkit-appearance: none;
+     -moz-appearance: none;
+          appearance: none;
   border: 1px solid #ccc;
 }
 input[type=checkbox]:checked {
@@ -180,7 +182,9 @@ input[type=checkbox]:checked::after {
   border-radius: 6px;
   margin-right: 8px;
   cursor: pointer;
-  appearance: none;
+  -webkit-appearance: none;
+     -moz-appearance: none;
+          appearance: none;
   border: 1px solid #ccc;
 }
 .form-2[type=radio]:checked {
@@ -296,4 +300,4 @@ input[type=checkbox]:checked::after {
 }
 .form-4 button[type=submit] {
   width: 100%;
-}/*# sourceMappingURL=form.css.map */
+}

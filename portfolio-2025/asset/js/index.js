@@ -1,6 +1,6 @@
 $(document).ready(function() {
     // ✅ 인트로 애니메이션 사용 여부 스위치 (true: 사용 / false: 사용 안 함)
-    const useIntroAnimation = true;
+    const useIntroAnimation = false;
     let pulseTimeline; // ✅ pulseTimeline을 더 넓은 범위에서 선언
 
     if (useIntroAnimation) {

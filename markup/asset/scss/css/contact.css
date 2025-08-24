@@ -95,5 +95,6 @@
 .contact1-con2 .sns ul li div a img {
   width: 20px;
   height: 20px;
-  object-fit: contain;
-}/*# sourceMappingURL=contact.css.map */
+  -o-object-fit: contain;
+     object-fit: contain;
+}

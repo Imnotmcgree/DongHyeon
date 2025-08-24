@@ -3,18 +3,18 @@
     {
       "format": "expanded",
       "extensionName": ".css",
-      "savePath": "/포트폴리오 2025/asset/css"
+      "savePath": "~/../css"
     },
     {
       "format": "compressed",
       "extensionName": ".min.css",
-      "savePath": "/포트폴리오 2025/asset/css"
+      "savePath": "~/../css"
     }
   ],
-  "liveSassCompile.settings.generateMap": false,
   "liveSassCompile.settings.includeItems": [
-    "/포트폴리오 2025/asset/scss/style.scss"
+    "portfolio-2025/asset/scss/style.scss"
   ],
+  "liveSassCompile.settings.generateMap": false,
   "liveSassCompile.settings.excludeList": [
     "**/node_modules/**",
     ".vscode/**"

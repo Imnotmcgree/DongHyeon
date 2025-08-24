@@ -23,7 +23,8 @@
 .product-pic img {
   width: 100%;
   height: 100%;
-  object-fit: cover;
+  -o-object-fit: cover;
+     object-fit: cover;
 }
 .product-info {
   margin-top: 20px;
@@ -419,4 +420,4 @@
 .product-quantity input::-webkit-inner-spin-button {
   -webkit-appearance: none;
   margin: 0;
-}/*# sourceMappingURL=ecommerce.css.map */
+}

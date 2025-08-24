@@ -2,7 +2,7 @@
 body, p, span, h1, h2, h3, h4, h5, h6, ul, ol, li, dl, dt, dd, table, th, td, form, fieldset, legend, input, textarea, button, select, label {
   margin: 0;
   padding: 0;
-  font-family: "DM Sans", -apple-system, sans-serif;
+  font-family: "Noto Sans KR", -apple-system, sans-serif;
   color: inherit;
   outline: 0;
 }
@@ -70,7 +70,8 @@ textarea {
   letter-spacing: 1px;
   text-align: center;
   text-underline-position: from-font;
-  text-decoration-skip-ink: none;
+  -webkit-text-decoration-skip-ink: none;
+          text-decoration-skip-ink: none;
   color: #1E0E62;
   font-weight: 700;
 }
@@ -79,7 +80,8 @@ textarea {
   font-size: 22px;
   text-align: center;
   text-underline-position: from-font;
-  text-decoration-skip-ink: none;
+  -webkit-text-decoration-skip-ink: none;
+          text-decoration-skip-ink: none;
   color: #1E0E62;
   font-weight: 600;
 }
@@ -87,7 +89,8 @@ textarea {
 .tit03 {
   font-size: 18px;
   text-underline-position: from-font;
-  text-decoration-skip-ink: none;
+  -webkit-text-decoration-skip-ink: none;
+          text-decoration-skip-ink: none;
   color: #1E0E62;
   font-weight: 600;
 }
@@ -471,7 +474,9 @@ input[type=checkbox] {
   border-radius: 6px;
   margin-right: 8px;
   cursor: pointer;
-  appearance: none;
+  -webkit-appearance: none;
+     -moz-appearance: none;
+          appearance: none;
   border: 1px solid #ccc;
 }
 input[type=checkbox]:checked {
@@ -626,7 +631,9 @@ input[type=checkbox]:checked::after {
   border-radius: 6px;
   margin-right: 8px;
   cursor: pointer;
-  appearance: none;
+  -webkit-appearance: none;
+     -moz-appearance: none;
+          appearance: none;
   border: 1px solid #ccc;
 }
 .form-2[type=radio]:checked {
@@ -841,7 +848,8 @@ input[type=checkbox]:checked::after {
 .contact1-con2 .sns ul li div a img {
   width: 20px;
   height: 20px;
-  object-fit: contain;
+  -o-object-fit: contain;
+     object-fit: contain;
 }
 
 .info {
@@ -869,7 +877,8 @@ input[type=checkbox]:checked::after {
 .product-pic img {
   width: 100%;
   height: 100%;
-  object-fit: cover;
+  -o-object-fit: cover;
+     object-fit: cover;
 }
 .product-info {
   margin-top: 20px;
@@ -1418,7 +1427,8 @@ input[type=checkbox]:checked::after {
 .feature-wrap .top-video img {
   width: 100%;
   height: 100%;
-  object-fit: cover;
+  -o-object-fit: cover;
+     object-fit: cover;
 }
 .feature-wrap .top-video a::before {
   content: "";
@@ -1500,7 +1510,8 @@ input[type=checkbox]:checked::after {
   width: 70px;
   height: 70px;
   border-radius: 10px;
-  object-fit: cover;
+  -o-object-fit: cover;
+     object-fit: cover;
 }
 .testimonial-wrap .client-info {
   font-size: 1.13em;
@@ -1554,7 +1565,8 @@ input[type=checkbox]:checked::after {
   width: 100%;
   height: 240px;
   border-radius: 10px;
-  object-fit: cover;
+  -o-object-fit: cover;
+     object-fit: cover;
 }
 .showcase-wrap .bottom .showcase-contents .content p {
   display: block;
@@ -1673,7 +1685,8 @@ input[type=checkbox]:checked::after {
   border-top-right-radius: 10px;
   width: 100%;
   height: 210px;
-  object-fit: cover;
+  -o-object-fit: cover;
+     object-fit: cover;
 }
 .pricing-table-wrap .memberships .membership .membership-info {
   border: 2px solid #EBEAED;
@@ -1694,4 +1707,4 @@ input[type=checkbox]:checked::after {
 .pricing-table-wrap .memberships .membership .membership-info a {
   font-size: 1.13em;
   text-align: center;
-}/*# sourceMappingURL=style.css.map */
+}
