@@ -77,7 +77,7 @@ $(document).ready(function() {
                 });
             }
         })
-        .type("깃자동화~!,", { speed: 1500 })
+        .type("깃자동화 연동 테스트 2시20분 기준,", { speed: 1500 })
         .pause(500)
         .type(" 성공.", { speed: 1000 })
         .go();
