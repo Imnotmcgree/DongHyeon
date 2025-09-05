@@ -102,8 +102,7 @@ textarea {
   letter-spacing: 1px;
   text-align: center;
   text-underline-position: from-font;
-  -webkit-text-decoration-skip-ink: none;
-          text-decoration-skip-ink: none;
+  text-decoration-skip-ink: none;
   color: #1E0E62;
   font-weight: 700;
 }
@@ -112,8 +111,7 @@ textarea {
   font-size: 22px;
   text-align: center;
   text-underline-position: from-font;
-  -webkit-text-decoration-skip-ink: none;
-          text-decoration-skip-ink: none;
+  text-decoration-skip-ink: none;
   color: #1E0E62;
   font-weight: 600;
 }
@@ -121,8 +119,7 @@ textarea {
 .tit03 {
   font-size: 18px;
   text-underline-position: from-font;
-  -webkit-text-decoration-skip-ink: none;
-          text-decoration-skip-ink: none;
+  text-decoration-skip-ink: none;
   color: #1E0E62;
   font-weight: 600;
 }
@@ -1131,9 +1128,24 @@ caption, .text-hide {
     opacity: 1;
   }
 }
-.wrap {
+#particles-js {
+  position: absolute;
+  top: 0;
+  left: 0;
   width: 100%;
   height: 100%;
+  z-index: 1;
+  opacity: 0;
+  transition: opacity 1.5s ease;
+}
+
+.wrap {
+  position: relative;
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
 }
 
 .intro-txt {
@@ -1149,13 +1161,17 @@ caption, .text-hide {
 }
 
 .card-section-wrap {
+  position: relative;
+  z-index: 2;
   width: 100%;
+  height: 100vh;
   display: flex;
   justify-content: center;
   align-items: center;
   perspective: 2000px;
   opacity: 0;
   transform: scale(0.8);
+  pointer-events: none;
 }
 .card-section-wrap .card-section {
   position: relative;
@@ -1164,6 +1180,7 @@ caption, .text-hide {
   flex-direction: column;
   align-items: center;
   border-radius: 80px;
+  pointer-events: auto;
 }
 .card-section-wrap .card-section .card-front, .card-section-wrap .card-section .card-back {
   position: absolute;
@@ -1185,6 +1202,7 @@ caption, .text-hide {
   height: 690px;
   padding: 40px;
   border-radius: 80px;
+  background: #fff;
   box-shadow: 0 28px 42.1px 6px rgba(0, 0, 0, 0.25);
 }
 @media (max-width: 768px) {
@@ -1266,8 +1284,7 @@ caption, .text-hide {
   left: 0;
   width: 100%;
   height: 100%;
-  -o-object-fit: cover;
-     object-fit: cover;
+  object-fit: cover;
 }
 .card-section-wrap .card-section .profile-area {
   display: flex;
@@ -1293,8 +1310,7 @@ caption, .text-hide {
   width: 100%;
   height: 100%;
   border-radius: 50%;
-  -o-object-fit: cover;
-     object-fit: cover;
+  object-fit: cover;
 }
 .card-section-wrap .card-section .profile-area .profile .profile-photo::after {
   content: "";

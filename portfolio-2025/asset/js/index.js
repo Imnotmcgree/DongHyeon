@@ -1,6 +1,6 @@
 $(document).ready(function() {
     // ✅ 인트로 애니메이션 사용 여부 스위치 (true: 사용 / false: 사용 안 함)
-    const useIntroAnimation = false;
+    const useIntroAnimation = true;
     let pulseTimeline; // ✅ pulseTimeline을 더 넓은 범위에서 선언
 
     if (useIntroAnimation) {
@@ -67,7 +67,11 @@ $(document).ready(function() {
                         pulseTimeline = gsap.timeline({
                             delay: 1.5, // moreButton 등장(1초) + 기존 delay(0.5초)
                             repeat: -1,
-                            repeatDelay: 2
+                            repeatDelay: 2,
+                            onStart: () => {
+                                // 파티클 배경 나타나게 하기
+                                document.getElementById('particles-js').style.opacity = '1';
+                            }
                         })
                         .to(moreButton, { duration: 0.2, scale: 1.05, ease: "power1.inOut" })
                         .to(moreButton, { duration: 0.2, scale: 1, ease: "power1.inOut" })
