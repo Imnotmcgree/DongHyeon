@@ -2,6 +2,8 @@ $(document).ready(function() {
     // ✅ 인트로 애니메이션 사용 여부 스위치 (true: 사용 / false: 사용 안 함)
     const useIntroAnimation = true;
     let pulseTimeline; // ✅ pulseTimeline을 더 넓은 범위에서 선언
+    let ellipsisInterval = null;
+    let textInterval = null;
 
     if (useIntroAnimation) {
         // --- Intro Animation Logic ---
@@ -81,9 +83,9 @@ $(document).ready(function() {
                 });
             }
         })
-        .type("깃자동화 연동 테스트 2시20분 기준,", { speed: 1500 })
+        .type("안녕하세요,", { speed: 1500 })
         .pause(500)
-        .type(" 성공.", { speed: 1000 })
+        .type(" 김동현입니다.", { speed: 1000 })
         .go();
     } else {
         gsap.set('.card-section-wrap', { opacity: 1, scale: 1 });
@@ -141,21 +143,68 @@ $(document).ready(function() {
         }
         // 클릭 시 호버 효과가 남아있지 않도록 원래 스타일로 즉시 복구
         gsap.set($moreButton, { scale: 1, backgroundColor: '#000000' });
-        
-        const cardSection = '.card-section';
-        const tl = gsap.timeline({ onComplete: () => console.log("Animation Complete!") });
-        tl.to(cardSection, {
-            duration: 1.5,
-            rotationY: 180,
-            ease: "power4.inOut"
-        }).to(cardSection, {
-            duration: 1.2,
-            width: "100vw",
-            height: "100vh",
-            borderRadius: 0,
-            borderWidth: 0,
-            ease: "power4.inOut"
-        }, "-=1.0");
+
+        // 진행중인 텍스트 애니메이션 정지
+        if (textInterval) clearInterval(textInterval);
+        if (ellipsisInterval) clearInterval(ellipsisInterval);
+
+        // 스피너 막대 즉시 숨기기
+        gsap.set('.spinner span', {
+            display: 'none'
+        });
+
+        // 1. 체크 이미지 애니메이션
+        gsap.to('.connect-img', {
+            duration: 0.8,
+            scale: 1,
+            opacity: 1,
+            ease: "elastic.out(1, 0.5)",
+            onComplete: () => {
+                // 2. 0.5초 후 텍스트 변경
+                setTimeout(() => {
+                    const connectTextElement = $('.connect-text');
+                    const oldSpans = connectTextElement.children();
+
+                    gsap.to(oldSpans, {
+                        duration: 0.3,
+                        opacity: 0,
+                        rotationX: -90,
+                        stagger: 0.1,
+                        onComplete: () => {
+                            connectTextElement.text('연결 성공 !');
+                            splitText(connectTextElement);
+                            const newChars = connectTextElement.find('span');
+                            gsap.set(newChars, { opacity: 0, rotationX: 90 });
+                            gsap.to(newChars, {
+                                duration: 0.3,
+                                opacity: 1,
+                                rotationX: 0,
+                                stagger: 0.05,
+                                onComplete: () => {
+                                    // 3. 0.5초 후 카드 뒤집기
+                                    setTimeout(() => {
+                                        const cardSection = '.card-section';
+                                        const tl = gsap.timeline({ onComplete: () => console.log("Animation Complete!") });
+                                        tl.to(cardSection, {
+                                            duration: 1.5,
+                                            rotationY: 180,
+                                            ease: "power4.inOut"
+                                        }).to(cardSection, {
+                                            duration: 1.2,
+                                            width: "100vw",
+                                            height: "100vh",
+                                            borderRadius: 0,
+                                            borderWidth: 0,
+                                            ease: "power4.inOut"
+                                        }, "-=1.0");
+                                    }, 500); // 0.5초 딜레이
+                                }
+                            });
+                        }
+                    });
+                }, 500); // 0.5초 딜레이
+            }
+        });
     });
 
     // --- Dynamic Text Animation ---
@@ -171,8 +220,7 @@ $(document).ready(function() {
     const ellipsisSpan = $('.ellipsis');
     let ellipsisCount = 0;
     const dynamicTextSpan = $('.dynamic-text');
-    let ellipsisInterval = null;
-    let textInterval = null;
+
 
     function startTextAnimation() {
         if (ellipsisInterval) clearInterval(ellipsisInterval);
