@@ -102,8 +102,7 @@ textarea {
   letter-spacing: 1px;
   text-align: center;
   text-underline-position: from-font;
-  -webkit-text-decoration-skip-ink: none;
-          text-decoration-skip-ink: none;
+  text-decoration-skip-ink: none;
   color: #1E0E62;
   font-weight: 700;
 }
@@ -112,8 +111,7 @@ textarea {
   font-size: 22px;
   text-align: center;
   text-underline-position: from-font;
-  -webkit-text-decoration-skip-ink: none;
-          text-decoration-skip-ink: none;
+  text-decoration-skip-ink: none;
   color: #1E0E62;
   font-weight: 600;
 }
@@ -121,8 +119,7 @@ textarea {
 .tit03 {
   font-size: 18px;
   text-underline-position: from-font;
-  -webkit-text-decoration-skip-ink: none;
-          text-decoration-skip-ink: none;
+  text-decoration-skip-ink: none;
   color: #1E0E62;
   font-weight: 600;
 }
@@ -1188,6 +1185,7 @@ caption, .text-hide {
   pointer-events: none;
 }
 .card-section-wrap .card-section {
+  width: 100%;
   position: relative;
   transform-style: preserve-3d;
   display: flex;
@@ -1298,8 +1296,7 @@ caption, .text-hide {
   left: 0;
   width: 100%;
   height: 100%;
-  -o-object-fit: cover;
-     object-fit: cover;
+  object-fit: cover;
 }
 .card-section-wrap .card-section .profile-area {
   display: flex;
@@ -1307,6 +1304,11 @@ caption, .text-hide {
   align-items: center;
   width: 100%;
   height: 77px;
+}
+@media (max-width: 576px) {
+  .card-section-wrap .card-section .profile-area {
+    flex-direction: column;
+  }
 }
 .card-section-wrap .card-section .profile-area .profile {
   display: flex;
@@ -1325,8 +1327,7 @@ caption, .text-hide {
   width: 100%;
   height: 100%;
   border-radius: 50%;
-  -o-object-fit: cover;
-     object-fit: cover;
+  object-fit: cover;
 }
 .card-section-wrap .card-section .profile-area .profile .profile-photo::after {
   content: "";
