@@ -1194,6 +1194,11 @@ caption, .text-hide {
   border-radius: 80px;
   pointer-events: auto;
 }
+@media (max-width: 768px) {
+  .card-section-wrap .card-section {
+    width: 100%;
+  }
+}
 .card-section-wrap .card-section .card-front, .card-section-wrap .card-section .card-back {
   position: absolute;
   top: 0;
@@ -1305,7 +1310,7 @@ caption, .text-hide {
   width: 100%;
   height: 77px;
 }
-@media (max-width: 576px) {
+@media (max-width: 768px) {
   .card-section-wrap .card-section .profile-area {
     flex-direction: column;
   }
@@ -1313,6 +1318,11 @@ caption, .text-hide {
 .card-section-wrap .card-section .profile-area .profile {
   display: flex;
   align-items: center;
+}
+@media (max-width: 768px) {
+  .card-section-wrap .card-section .profile-area .profile {
+    align-self: start;
+  }
 }
 .card-section-wrap .card-section .profile-area .profile .profile-photo {
   position: relative;
@@ -1364,6 +1374,11 @@ caption, .text-hide {
   border-radius: 50px;
   background: #000;
   color: #fff;
+}
+@media (max-width: 768px) {
+  .card-section-wrap .card-section .more {
+    width: 100%;
+  }
 }
 .card-section-wrap .card-section .more span {
   font-size: 20px;
