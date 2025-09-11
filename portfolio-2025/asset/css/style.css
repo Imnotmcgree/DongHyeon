@@ -1185,7 +1185,6 @@ caption, .text-hide {
   pointer-events: none;
 }
 .card-section-wrap .card-section {
-  width: 100%;
   position: relative;
   transform-style: preserve-3d;
   display: flex;
