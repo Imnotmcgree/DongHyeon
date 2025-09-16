@@ -129,10 +129,19 @@ $(document).ready(function() {
         animationFrameId = requestAnimationFrame(reverseStep);
     };
 
-    video.addEventListener('loadedmetadata', () => {
+    // iOS 비디오 초기 프레임 표시 문제 해결을 위한 함수
+    const setInitialFrame = () => {
         video.currentTime = 0;
         video.pause();
-    });
+    };
+
+    // 비디오 메타데이터가 이미 로드되었는지 확인하고, 그렇지 않다면 이벤트 리스너를 추가합니다.
+    // readyState 1 (HAVE_METADATA)는 비디오의 메타데이터(크기, 길이 등)가 로드되었음을 의미합니다.
+    if (video.readyState >= 1) {
+        setInitialFrame();
+    } else {
+        video.addEventListener('loadedmetadata', setInitialFrame);
+    }
 
     // --- Click Logic ---
     $moreButton.on('click', function(e) {
