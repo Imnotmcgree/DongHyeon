@@ -166,9 +166,7 @@
                 padding: 20px; // 패딩 축소
                 border-radius: 40px; // 모바일에 맞는 radius
             }
-            @include media-breakpoint-down(sm) {
-                padding: 30px;
-            }
+          
         }
 
         .card-back {

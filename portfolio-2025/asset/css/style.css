@@ -1241,11 +1241,6 @@ caption, .text-hide {
     border-radius: 40px;
   }
 }
-@media (max-width: 576px) {
-  .card-section-wrap .card-section .card-front {
-    padding: 30px;
-  }
-}
 .card-section-wrap .card-section .card-back {
   transform: rotateY(180deg);
   background-color: #FAFAFA;

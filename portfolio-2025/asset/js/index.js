@@ -139,8 +139,15 @@ $(document).ready(function() {
 
     // iOS 비디오 초기 프레임 표시 문제 해결을 위한 함수
     const setInitialFrame = () => {
+        // iOS Safari가 포스터/첫 프레임을 렌더링하도록 강제하는 트릭입니다.
+        // 비디오 시간을 0으로 설정하고, 브라우저가 해당 프레임으로 성공적으로 이동('seeked')하면
+        // 그 때 비디오를 일시정지시켜 첫 프레임이 화면에 그려지도록 합니다.
+        const forceRender = () => {
+            video.pause();
+            video.removeEventListener('seeked', forceRender);
+        };
+        video.addEventListener('seeked', forceRender);
         video.currentTime = 0;
-        video.pause();
     };
 
     // 비디오 메타데이터가 이미 로드되었는지 확인하고, 그렇지 않다면 이벤트 리스너를 추가합니다.
