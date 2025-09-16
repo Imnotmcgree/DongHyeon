@@ -7,9 +7,6 @@ $(document).ready(function() {
     window.addEventListener('resize', setRealVH);
     setRealVH(); // 페이지 로드 시 즉시 실행
 
-    // --- Device Type Detection ---
-    const isTouchDevice = 'ontouchstart' in window || navigator.maxTouchPoints > 0;
-
     // ✅ 인트로 애니메이션 사용 여부 스위치 (true: 사용 / false: 사용 안 함)
     const useIntroAnimation = true;
     let pulseTimeline; // ✅ pulseTimeline을 더 넓은 범위에서 선언
@@ -96,7 +93,7 @@ $(document).ready(function() {
         })
         .type("안녕하세요,", { speed: 1500 })
         .pause(500)
-        .type(" 김동현입니다.", { speed: 1000 })
+        .type(" 김동현입니다.1", { speed: 1000 })
         .go();
     } else {
         gsap.set('.card-section-wrap', { opacity: 1, scale: 1 });
@@ -305,40 +302,35 @@ $(document).ready(function() {
     splitText(dynamicTextSpan);
     startTextAnimation();
 
-    // --- Final Interaction Handlers ---
-    if (!isTouchDevice) {
-        // --- Desktop Hover Logic ---
-        $moreButton.on('mouseenter', () => {
-            playForward();
-            if (pulseTimeline) {
-                pulseTimeline.pause();
-                gsap.to($moreButton, {
-                    duration: 0.3,
-                    scale: 1.05,
-                    backgroundColor: '#1D64F1',
-                    color: '#fff',
-                    boxShadow: '0 0 0 3px #fff, 0 0 30px rgba(29,100,241,0.6)',
-                    ease: 'power2.out'
-                });
-            }
-        });
+    // --- Final Hover Handlers ---
+    // $moreButton.on('mouseenter', () => {
+    //     playForward();
+    //     if (pulseTimeline) {
+    //         pulseTimeline.pause();
+    //         gsap.to($moreButton, {
+    //             duration: 0.3,
+    //             scale: 1.05,
+    //             backgroundColor: '#1D64F1', // 호버 시 변경될 색상
+    //             color: '#fff', // 호버 시 변경될 색상
+    //             boxShadow: '0 0 0 3px #fff, 0 0 30px rgba(29,100,241,0.6)',
+    //             ease: 'power2.out'
+    //         });
+    //     }
+    // });
 
-        $moreButton.on('mouseleave', () => {
-            playReverse();
-            if (pulseTimeline) {
-                gsap.to($moreButton, {
-                    duration: 0.3,
-                    scale: 1,
-                    backgroundColor: '#000000',
-                    boxShadow: '0 0 0 3px #fff',
-                    ease: 'power2.out',
-                    onComplete: () => {
-                        pulseTimeline.resume();
-                    }
-                });
-            }
-        });
-    }
-    // Note: The click handler is now universal, but the playForward() inside it
-    // will be the primary trigger on touch devices.
+    // $moreButton.on('mouseleave', () => {
+    //     playReverse();
+    //     if (pulseTimeline) {
+    //         gsap.to($moreButton, {
+    //             duration: 0.3,
+    //             scale: 1,
+    //             backgroundColor: '#000000', // 원래 배경색
+    //             boxShadow: '0 0 0 3px #fff',
+    //             ease: 'power2.out',
+    //             onComplete: () => {
+    //                 pulseTimeline.resume();
+    //             }
+    //         });
+    //     }
+    // });
 });
