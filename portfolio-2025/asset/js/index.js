@@ -102,12 +102,19 @@ $(document).ready(function() {
     // --- Video Hover Logic ---
     const $video = $('.character video');
     const video = $video[0];
+    const $posterImage = $('.character-poster');
+    let videoRevealed = false;
     const $moreButton = $('.more');
     let animationFrameId;
     let lastTime;
     video.playbackRate = 2.0;
 
     const playForward = () => {
+        if (!videoRevealed) {
+            $posterImage.css('opacity', 0);
+            $video.css('opacity', 1);
+            videoRevealed = true;
+        }
         if (!video.paused) return;
         cancelAnimationFrame(animationFrameId);
         video.playbackRate = 2.0;

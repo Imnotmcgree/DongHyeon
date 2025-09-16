@@ -1262,7 +1262,7 @@ caption, .text-hide {
 }
 @media (max-width: 768px) {
   .card-section-wrap .card-section .character-area {
-    height: 350px;
+    height: 280px;
     border-radius: 30px;
   }
 }
@@ -1317,17 +1317,21 @@ caption, .text-hide {
 }
 @media (max-width: 768px) {
   .card-section-wrap .card-section .character-area .character {
-    width: 238px;
-    height: 290px;
+    width: 160px;
+    height: 200px;
   }
 }
-.card-section-wrap .card-section .character-area .character video {
+.card-section-wrap .card-section .character-area .character .character-poster, .card-section-wrap .card-section .character-area .character video {
   position: absolute;
   top: 0;
   left: 0;
   width: 100%;
   height: 100%;
   object-fit: cover;
+  transition: opacity 0.3s ease;
+}
+.card-section-wrap .card-section .character-area .character video {
+  opacity: 0;
   transform: translateZ(0);
 }
 .card-section-wrap .card-section .profile-area {
