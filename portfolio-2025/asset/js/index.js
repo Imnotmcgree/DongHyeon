@@ -1,4 +1,12 @@
 $(document).ready(function() {
+    // --- Mobile 100vh fix ---
+    const setRealVH = () => {
+        // window.innerHeight를 사용하여 실제 뷰포트 높이를 계산하고 CSS 변수 --vh에 저장합니다.
+        document.documentElement.style.setProperty('--vh', `${window.innerHeight * 0.01}px`);
+    };
+    window.addEventListener('resize', setRealVH);
+    setRealVH(); // 페이지 로드 시 즉시 실행
+
     // ✅ 인트로 애니메이션 사용 여부 스위치 (true: 사용 / false: 사용 안 함)
     const useIntroAnimation = true;
     let pulseTimeline; // ✅ pulseTimeline을 더 넓은 범위에서 선언
