@@ -1128,6 +1128,59 @@ caption, .text-hide {
   transform: translate(-50%, -50%) rotate(-330deg) translateY(-16px);
   animation-delay: -0.9166666667s;
 }
+@media (max-width: 576px) {
+  .spinner {
+    width: 28px;
+    height: 28px;
+  }
+  .spinner .connect-img {
+    top: 5px;
+    left: 5px;
+    height: 18px;
+    border-width: 1.5px;
+  }
+  .spinner span {
+    width: 3px;
+    height: 7px;
+    border-radius: 3px;
+  }
+  .spinner span:nth-of-type(1) {
+    transform: translate(-50%, -50%) rotate(0deg) translateY(-10.5px);
+  }
+  .spinner span:nth-of-type(2) {
+    transform: translate(-50%, -50%) rotate(-30deg) translateY(-10.5px);
+  }
+  .spinner span:nth-of-type(3) {
+    transform: translate(-50%, -50%) rotate(-60deg) translateY(-10.5px);
+  }
+  .spinner span:nth-of-type(4) {
+    transform: translate(-50%, -50%) rotate(-90deg) translateY(-10.5px);
+  }
+  .spinner span:nth-of-type(5) {
+    transform: translate(-50%, -50%) rotate(-120deg) translateY(-10.5px);
+  }
+  .spinner span:nth-of-type(6) {
+    transform: translate(-50%, -50%) rotate(-150deg) translateY(-10.5px);
+  }
+  .spinner span:nth-of-type(7) {
+    transform: translate(-50%, -50%) rotate(-180deg) translateY(-10.5px);
+  }
+  .spinner span:nth-of-type(8) {
+    transform: translate(-50%, -50%) rotate(-210deg) translateY(-10.5px);
+  }
+  .spinner span:nth-of-type(9) {
+    transform: translate(-50%, -50%) rotate(-240deg) translateY(-10.5px);
+  }
+  .spinner span:nth-of-type(10) {
+    transform: translate(-50%, -50%) rotate(-270deg) translateY(-10.5px);
+  }
+  .spinner span:nth-of-type(11) {
+    transform: translate(-50%, -50%) rotate(-300deg) translateY(-10.5px);
+  }
+  .spinner span:nth-of-type(12) {
+    transform: translate(-50%, -50%) rotate(-330deg) translateY(-10.5px);
+  }
+}
 
 @keyframes ios-fade {
   0% {
@@ -1267,7 +1320,7 @@ caption, .text-hide {
 }
 @media (max-width: 768px) {
   .card-section-wrap .card-section .character-area {
-    height: 350px;
+    height: 300px;
     border-radius: 30px;
   }
 }
@@ -1322,8 +1375,8 @@ caption, .text-hide {
 }
 @media (max-width: 768px) {
   .card-section-wrap .card-section .character-area .character {
-    width: 238px;
-    height: 290px;
+    width: 178px;
+    height: 240px;
   }
 }
 .card-section-wrap .card-section .character-area .character video {
@@ -1383,6 +1436,17 @@ caption, .text-hide {
   height: 20px;
   background: #fff;
   border-radius: 50%;
+}
+@media (max-width: 576px) {
+  .card-section-wrap .card-section .profile-area .profile .profile-photo {
+    width: 57px;
+    height: 57px;
+  }
+  .card-section-wrap .card-section .profile-area .profile .profile-photo::after {
+    border: 2px solid #00ff22;
+    width: 14px;
+    height: 14px;
+  }
 }
 .card-section-wrap .card-section .profile-area .profile .profile-info {
   margin-left: 10px;

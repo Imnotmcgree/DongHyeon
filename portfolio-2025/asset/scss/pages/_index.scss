@@ -49,6 +49,35 @@
             animation-delay: -($duration * ($i - 1) / $count);
         }
     }
+
+    @include media-breakpoint-down(sm) {
+        $size: 28px;
+        $thickness: 3px;
+        $length: 7px;
+
+        width: $size;
+        height: $size;
+
+        .connect-img {
+            top: 5px;
+            left: 5px;
+            height: 18px;
+            border-width: 1.5px;
+        }
+        
+        span {
+            width: $thickness;
+            height: $length;
+            border-radius: $thickness;
+        }
+        
+        @for $i from 1 through $count {
+            span:nth-of-type(#{$i}) {
+                $angle: (-360deg / $count) * ($i - 1);
+                transform: translate(-50%, -50%) rotate($angle) translateY(-($size/2 - $length/2));
+            }
+        }
+    }
 }
 
 // 애니메이션 정의
@@ -192,7 +221,7 @@
             border-radius: 50px;
 
             @include media-breakpoint-down(md) {
-                height: 350px; // 높이 축소
+                height: 300px; // 높이 축소
                 border-radius: 30px; // 모바일에 맞는 radius
             }
             
@@ -238,8 +267,8 @@
                 width: 298px;
                 height: 408px;
                 @include media-breakpoint-down(md) {
-                    width: 238px;
-                    height: 290px; // 높이 축소
+                    width: 178px;
+                    height: 240px; // 높이 축소
                 }
                 video{
                     position: absolute;
@@ -293,6 +322,15 @@
                         height: 20px;
                         background: #fff;
                         border-radius: 50%;
+                    }
+                    @include media-breakpoint-down(sm) {
+                        width: 57px;
+                        height: 57px;
+                        &::after{
+                            border: 2px solid #00ff22;
+                            width: 14px;
+                            height: 14px;
+                        }
                     }
                 }
                 .profile-info{

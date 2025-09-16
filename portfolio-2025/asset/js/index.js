@@ -52,7 +52,29 @@ $(document).ready(function() {
                             duration: 0.5,
                             opacity: 1,
                             y: 0,
-                            ease: "power2.out"
+                            ease: "power2.out",
+                            onComplete: () => {
+                                // iOS 비디오 첫 프레임 강제 표시
+                                const video = document.querySelector('.character video');
+                                if (video) {
+                                    // playsinline 속성이 있는 muted 비디오는 대부분의 모던 브라우저에서 자동 재생이 가능합니다.
+                                    // play()는 프로미스를 반환하므로 이를 활용합니다.
+                                    const playPromise = video.play();
+                                    if (playPromise !== undefined) {
+                                        playPromise.then(() => {
+                                            // 재생이 시작되면 즉시 일시정지하고 맨 처음으로 되돌립니다.
+                                            video.pause();
+                                            video.currentTime = 0;
+                                        }).catch(error => {
+                                            // 자동 재생이 차단된 경우(예: 일부 데스크톱 브라우저 정책)
+                                            // 비디오를 로드하고 첫 프레임으로 이동시키는 것으로 충분합니다.
+                                            video.load();
+                                            video.currentTime = 0;
+                                            console.log("Autoplay was prevented, but we are showing the first frame.");
+                                        });
+                                    }
+                                }
+                            }
                         }, "-=0.4")
                         .to(profile, { // ✅ 프로필만 먼저 나타나도록 수정
                             duration: 0.5,
@@ -138,18 +160,18 @@ $(document).ready(function() {
     };
 
     // iOS 비디오 초기 프레임 표시 문제 해결을 위한 함수
-    const setInitialFrame = () => {
-        video.currentTime = 0;
-        video.pause();
-    };
+    // const setInitialFrame = () => {
+    //     video.currentTime = 0;
+    //     video.pause();
+    // };
 
     // 비디오 메타데이터가 이미 로드되었는지 확인하고, 그렇지 않다면 이벤트 리스너를 추가합니다.
     // readyState 1 (HAVE_METADATA)는 비디오의 메타데이터(크기, 길이 등)가 로드되었음을 의미합니다.
-    if (video.readyState >= 1) {
-        setInitialFrame();
-    } else {
-        video.addEventListener('loadedmetadata', setInitialFrame);
-    }
+    // if (video.readyState >= 1) {
+    //     setInitialFrame();
+    // } else {
+    //     video.addEventListener('loadedmetadata', setInitialFrame);
+    // }
 
     // --- Click Logic ---
     $moreButton.on('click', function(e) {
