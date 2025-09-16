@@ -168,6 +168,10 @@ $(document).ready(function() {
     // --- Click Logic ---
     $moreButton.on('click', function(e) {
         e.preventDefault();
+
+        // 모바일 터치 환경을 위해 클릭 시에도 비디오를 활성화하고 재생합니다.
+        playForward();
+
         $moreButton.off('mouseenter mouseleave');
         if (pulseTimeline) {
             pulseTimeline.kill(); // 반복 애니메이션 완전 제거
