@@ -1164,6 +1164,7 @@ caption, .text-hide {
 }
 
 .intro-txt {
+  text-wrap: nowrap;
   font-size: 5rem;
   font-weight: bold;
   color: #333;
@@ -1233,8 +1234,11 @@ caption, .text-hide {
 @media (max-width: 768px) {
   .card-section-wrap .card-section .card-front {
     justify-content: start;
-    gap: 30px;
+    gap: 20px;
     width: 100%;
+    height: auto;
+    padding: 20px;
+    border-radius: 40px;
   }
 }
 @media (max-width: 576px) {
@@ -1260,6 +1264,12 @@ caption, .text-hide {
   height: 510px;
   background: #1D64F1;
   border-radius: 50px;
+}
+@media (max-width: 768px) {
+  .card-section-wrap .card-section .character-area {
+    height: 350px;
+    border-radius: 30px;
+  }
 }
 .card-section-wrap .card-section .character-area .connect {
   position: absolute;
@@ -1313,7 +1323,7 @@ caption, .text-hide {
 @media (max-width: 768px) {
   .card-section-wrap .card-section .character-area .character {
     width: 238px;
-    height: 318px;
+    height: 290px;
   }
 }
 .card-section-wrap .card-section .character-area .character video {
@@ -1323,6 +1333,7 @@ caption, .text-hide {
   width: 100%;
   height: 100%;
   object-fit: cover;
+  transform: translateZ(0);
 }
 .card-section-wrap .card-section .profile-area {
   display: flex;
@@ -1334,7 +1345,8 @@ caption, .text-hide {
 @media (max-width: 768px) {
   .card-section-wrap .card-section .profile-area {
     flex-direction: column;
-    height: 240px;
+    height: auto;
+    gap: 20px;
   }
 }
 .card-section-wrap .card-section .profile-area .profile {
@@ -1410,6 +1422,7 @@ caption, .text-hide {
 @media (max-width: 768px) {
   .card-section-wrap .card-section .more {
     width: 100%;
+    height: 60px;
   }
 }
 .card-section-wrap .card-section .more span {
