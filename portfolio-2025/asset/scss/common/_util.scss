@@ -216,3 +216,8 @@ caption, .text-hide{font: 0/0 a;color: transparent;text-shadow: none;background-
 .align-items-center{align-items: center !important;}
 .align-items-end{align-items: flex-end !important;}
 .align-items-start{align-items: flex-start !important;}
+
+// px to rem 변환 함수
+@function px-to-rem($px) {
+    @return ($px / 10) * 1rem;
+}
