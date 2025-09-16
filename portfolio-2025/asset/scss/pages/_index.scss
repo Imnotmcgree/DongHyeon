@@ -93,7 +93,6 @@
 }
 
 .intro-txt {
-    text-wrap: nowrap;
     font-size: 5rem;
     font-weight: bold;
     color: #333;
@@ -166,7 +165,9 @@
                 padding: 20px; // 패딩 축소
                 border-radius: 40px; // 모바일에 맞는 radius
             }
-          
+            @include media-breakpoint-down(sm) {
+                padding: 30px;
+            }
         }
 
         .card-back {
@@ -190,7 +191,7 @@
             border-radius: 50px;
 
             @include media-breakpoint-down(md) {
-                height: 280px; // 높이 축소
+                height: 350px; // 높이 축소
                 border-radius: 30px; // 모바일에 맞는 radius
             }
             
@@ -236,21 +237,16 @@
                 width: 298px;
                 height: 408px;
                 @include media-breakpoint-down(md) {
-                    width: 160px;
-                    height: 200px; // 높이 축소
+                    width: 238px;
+                    height: 290px; // 높이 축소
                 }
-                .character-poster, video {
+                video{
                     position: absolute;
                     top: 0;
                     left: 0;
                     width: 100%;
                     height: 100%;
                     object-fit: cover;
-                    transition: opacity 0.3s ease; // 부드러운 전환 효과
-                }
-                video{
-                    opacity: 0; // 비디오는 초기에 숨김
-                    transform: translateZ(0); // iOS 렌더링 버그 픽스
                 }
             }
         }

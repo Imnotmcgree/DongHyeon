@@ -7,9 +7,6 @@ $(document).ready(function() {
     window.addEventListener('resize', setRealVH);
     setRealVH(); // 페이지 로드 시 즉시 실행
 
-    // --- Device Type Detection ---
-    const isTouchDevice = 'ontouchstart' in window || navigator.maxTouchPoints > 0;
-
     // ✅ 인트로 애니메이션 사용 여부 스위치 (true: 사용 / false: 사용 안 함)
     const useIntroAnimation = true;
     let pulseTimeline; // ✅ pulseTimeline을 더 넓은 범위에서 선언
@@ -94,9 +91,9 @@ $(document).ready(function() {
                 });
             }
         })
-        .type("수정중1,", { speed: 1500 })
+        .type("안녕하세요,", { speed: 1500 })
         .pause(500)
-        .type(" 김동현입니다.1", { speed: 1000 })
+        .type(" 김동현입니다.", { speed: 1000 })
         .go();
     } else {
         gsap.set('.card-section-wrap', { opacity: 1, scale: 1 });
@@ -105,19 +102,12 @@ $(document).ready(function() {
     // --- Video Hover Logic ---
     const $video = $('.character video');
     const video = $video[0];
-    const $posterImage = $('.character-poster');
-    let videoRevealed = false;
     const $moreButton = $('.more');
     let animationFrameId;
     let lastTime;
     video.playbackRate = 2.0;
 
     const playForward = () => {
-        if (!videoRevealed) {
-            $posterImage.css('opacity', 0);
-            $video.css('opacity', 1);
-            videoRevealed = true;
-        }
         if (!video.paused) return;
         cancelAnimationFrame(animationFrameId);
         video.playbackRate = 2.0;
@@ -149,15 +139,8 @@ $(document).ready(function() {
 
     // iOS 비디오 초기 프레임 표시 문제 해결을 위한 함수
     const setInitialFrame = () => {
-        // iOS Safari가 포스터/첫 프레임을 렌더링하도록 강제하는 트릭입니다.
-        // 비디오 시간을 0으로 설정하고, 브라우저가 해당 프레임으로 성공적으로 이동('seeked')하면
-        // 그 때 비디오를 일시정지시켜 첫 프레임이 화면에 그려지도록 합니다.
-        const forceRender = () => {
-            video.pause();
-            video.removeEventListener('seeked', forceRender);
-        };
-        video.addEventListener('seeked', forceRender);
         video.currentTime = 0;
+        video.pause();
     };
 
     // 비디오 메타데이터가 이미 로드되었는지 확인하고, 그렇지 않다면 이벤트 리스너를 추가합니다.
@@ -171,10 +154,6 @@ $(document).ready(function() {
     // --- Click Logic ---
     $moreButton.on('click', function(e) {
         e.preventDefault();
-
-        // 모바일 터치 환경을 위해 클릭 시에도 비디오를 활성화하고 재생합니다.
-        playForward();
-
         $moreButton.off('mouseenter mouseleave');
         if (pulseTimeline) {
             pulseTimeline.kill(); // 반복 애니메이션 완전 제거
@@ -305,38 +284,35 @@ $(document).ready(function() {
     splitText(dynamicTextSpan);
     startTextAnimation();
 
-    // --- Final Interaction Handlers ---
-    if (!isTouchDevice) {
-        // --- Desktop Hover Logic ---
-        $moreButton.on('mouseenter', () => {
-            playForward();
-            if (pulseTimeline) {
-                pulseTimeline.pause();
-                gsap.to($moreButton, {
-                    duration: 0.3,
-                    scale: 1.05,
-                    backgroundColor: '#1D64F1', // 호버 시 변경될 색상
-                    color: '#fff', // 호버 시 변경될 색상
-                    boxShadow: '0 0 0 3px #fff, 0 0 30px rgba(29,100,241,0.6)',
-                    ease: 'power2.out'
-                });
-            }
-        });
+    // --- Final Hover Handlers ---
+    $moreButton.on('mouseenter', () => {
+        playForward();
+        if (pulseTimeline) {
+            pulseTimeline.pause();
+            gsap.to($moreButton, {
+                duration: 0.3,
+                scale: 1.05,
+                backgroundColor: '#1D64F1', // 호버 시 변경될 색상
+                color: '#fff', // 호버 시 변경될 색상
+                boxShadow: '0 0 0 3px #fff, 0 0 30px rgba(29,100,241,0.6)',
+                ease: 'power2.out'
+            });
+        }
+    });
 
-        $moreButton.on('mouseleave', () => {
-            playReverse();
-            if (pulseTimeline) {
-                gsap.to($moreButton, {
-                    duration: 0.3,
-                    scale: 1,
-                    backgroundColor: '#000000', // 원래 배경색
-                    boxShadow: '0 0 0 3px #fff',
-                    ease: 'power2.out',
-                    onComplete: () => {
-                        pulseTimeline.resume();
-                    }
-                });
-            }
-        });
-    }
+    $moreButton.on('mouseleave', () => {
+        playReverse();
+        if (pulseTimeline) {
+            gsap.to($moreButton, {
+                duration: 0.3,
+                scale: 1,
+                backgroundColor: '#000000', // 원래 배경색
+                boxShadow: '0 0 0 3px #fff',
+                ease: 'power2.out',
+                onComplete: () => {
+                    pulseTimeline.resume();
+                }
+            });
+        }
+    });
 });

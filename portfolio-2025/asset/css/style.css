@@ -1164,7 +1164,6 @@ caption, .text-hide {
 }
 
 .intro-txt {
-  text-wrap: nowrap;
   font-size: 5rem;
   font-weight: bold;
   color: #333;
@@ -1241,6 +1240,11 @@ caption, .text-hide {
     border-radius: 40px;
   }
 }
+@media (max-width: 576px) {
+  .card-section-wrap .card-section .card-front {
+    padding: 30px;
+  }
+}
 .card-section-wrap .card-section .card-back {
   transform: rotateY(180deg);
   background-color: #FAFAFA;
@@ -1262,7 +1266,7 @@ caption, .text-hide {
 }
 @media (max-width: 768px) {
   .card-section-wrap .card-section .character-area {
-    height: 280px;
+    height: 350px;
     border-radius: 30px;
   }
 }
@@ -1317,22 +1321,17 @@ caption, .text-hide {
 }
 @media (max-width: 768px) {
   .card-section-wrap .card-section .character-area .character {
-    width: 160px;
-    height: 200px;
+    width: 238px;
+    height: 290px;
   }
 }
-.card-section-wrap .card-section .character-area .character .character-poster, .card-section-wrap .card-section .character-area .character video {
+.card-section-wrap .card-section .character-area .character video {
   position: absolute;
   top: 0;
   left: 0;
   width: 100%;
   height: 100%;
   object-fit: cover;
-  transition: opacity 0.3s ease;
-}
-.card-section-wrap .card-section .character-area .character video {
-  opacity: 0;
-  transform: translateZ(0);
 }
 .card-section-wrap .card-section .profile-area {
   display: flex;
