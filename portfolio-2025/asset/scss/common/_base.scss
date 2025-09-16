@@ -1,6 +1,10 @@
 @charset "utf-8";
 // 기본베이스 : 폰트, 컬러, 타이포
 
+html {
+    font-size: 62.5%;
+}
+
 // rem 변환 함수 (기본 html font-size: 16px 기준)
 @function rem($px, $base: 16) {
 	@return ($px / $base) * 1rem;

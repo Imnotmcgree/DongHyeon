@@ -1,3 +1,7 @@
+html {
+  font-size: 62.5%;
+}
+
 @font-face {
   font-family: "Instagram Sans";
   src: url("../font/Instagram Sans.ttf") format("truetype");
@@ -1160,7 +1164,7 @@ caption, .text-hide {
 }
 
 .intro-txt {
-  font-size: 3rem;
+  font-size: 5rem;
   font-weight: bold;
   color: #333;
   opacity: 0;
@@ -1169,6 +1173,11 @@ caption, .text-hide {
   left: 50%;
   transform: translate(-50%, -50%);
   z-index: 100;
+}
+@media (max-width: 576px) {
+  .intro-txt {
+    font-size: 2rem;
+  }
 }
 
 .card-section-wrap {
@@ -1228,6 +1237,11 @@ caption, .text-hide {
     width: 100%;
   }
 }
+@media (max-width: 576px) {
+  .card-section-wrap .card-section .card-front {
+    padding: 30px;
+  }
+}
 .card-section-wrap .card-section .card-back {
   transform: rotateY(180deg);
   background-color: #FAFAFA;
@@ -1266,15 +1280,15 @@ caption, .text-hide {
   }
 }
 .card-section-wrap .card-section .character-area .connect .connect-text {
-  font-size: 1.5625rem;
+  font-size: 2.5rem;
   color: #fff;
   display: flex;
   justify-content: center;
   align-items: center;
 }
-@media (max-width: 768px) {
+@media (max-width: 576px) {
   .card-section-wrap .card-section .character-area .connect .connect-text {
-    font-size: 1.25rem;
+    font-size: 1.75rem;
   }
 }
 .card-section-wrap .card-section .character-area .connect .connect-text .dynamic-text {
@@ -1364,14 +1378,24 @@ caption, .text-hide {
 }
 .card-section-wrap .card-section .profile-area .profile .profile-info .id {
   font-family: "Instagram Sans", -apple-system, sans-serif;
-  font-size: 1.5625rem;
+  font-size: 2.5rem;
   font-weight: bold;
   color: #000;
 }
+@media (max-width: 576px) {
+  .card-section-wrap .card-section .profile-area .profile .profile-info .id {
+    font-size: 1.75rem;
+  }
+}
 .card-section-wrap .card-section .profile-area .profile .profile-info .online {
-  font-size: 1.125rem;
+  font-size: 1.8rem;
   font-weight: 500;
   color: #878787;
+}
+@media (max-width: 576px) {
+  .card-section-wrap .card-section .profile-area .profile .profile-info .online {
+    font-size: 1.26rem;
+  }
 }
 .card-section-wrap .card-section .more {
   width: 192px;
@@ -1389,13 +1413,18 @@ caption, .text-hide {
   }
 }
 .card-section-wrap .card-section .more span {
-  font-size: 1.25rem;
+  font-size: 2rem;
   font-weight: 500;
   color: #fff;
   display: flex;
   align-items: center;
   justify-content: center;
   gap: 15px;
+}
+@media (max-width: 576px) {
+  .card-section-wrap .card-section .more span {
+    font-size: 1.4rem;
+  }
 }
 .card-section-wrap .card-section .more span::before {
   content: "";

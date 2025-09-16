@@ -93,7 +93,7 @@
 }
 
 .intro-txt {
-    font-size: 3rem;
+    font-size: 5rem;
     font-weight: bold;
     color: #333;
     opacity: 0; // Initially hidden
@@ -103,6 +103,9 @@
     left: 50%;
     transform: translate(-50%, -50%);
     z-index: 100;
+    @include media-breakpoint-down(sm) {
+        font-size: 2rem;
+    }
 }
 
 .card-section-wrap{
@@ -159,6 +162,9 @@
                 gap: 30px;
                 width: 100%;
             }
+            @include media-breakpoint-down(sm) {
+                padding: 30px;
+            }
         }
 
         .card-back {
@@ -198,10 +204,7 @@
                     top: 20px;
                 }
                 .connect-text{
-                    font-size: rem(25);
-                    @include media-breakpoint-down(md) {
-                        font-size: rem(20);
-                    }
+                    @include responsive-font(25);
                     color: #fff;
                     display: flex;
                     justify-content: center;
@@ -287,12 +290,12 @@
                     margin-left: 10px;
                     .id{
                         font-family: $font-instagram;
-                        font-size: rem(25);
+                        @include responsive-font(25);
                         font-weight: bold;
                         color: #000;
                     }
                     .online{
-                        font-size: rem(18);
+                        @include responsive-font(18);
                         font-weight: 500;
                         color: #878787;
                     }
@@ -312,7 +315,7 @@
                 width: 100%;
             }
             span{
-                font-size: rem(20);
+                @include responsive-font(20);
                 font-weight: 500;
                 color: #fff;
                 display: flex;
