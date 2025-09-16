@@ -91,7 +91,7 @@ $(document).ready(function() {
                 });
             }
         })
-        .type("안녕하세요,", { speed: 1500 })
+        .type("수정중1,", { speed: 1500 })
         .pause(500)
         .type(" 김동현입니다.1", { speed: 1000 })
         .go();
