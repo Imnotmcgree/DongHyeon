@@ -231,7 +231,7 @@ $(document).ready(function() {
                                         }).to(cardSection, {
                                             duration: 1.2,
                                             width: "100vw",
-                                            height: "100vh",
+                                            height: "calc(var(--vh, 1vh) * 100)",
                                             borderRadius: 0,
                                             borderWidth: 0,
                                             ease: "power4.inOut"
