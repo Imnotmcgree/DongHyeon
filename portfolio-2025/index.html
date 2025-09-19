@@ -30,13 +30,13 @@
                                     <span class="dynamic-text">새로운 인연과</span>
                                     <span>&nbsp;연결중 입니다<span class="ellipsis">...</span></span>
                                 </p>
-    
+            
                                 <div class="spinner">
                                     <img class="connect-img" src="./asset/img/check.png" alt="">
                                     <!-- 12개의 span이 자동으로 생성됩니다 -->
                                     <span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span>
                                 </div>
-    
+            
                             </div>
                             <div class="character">
                                 <video muted playsinline preload="auto" poster="./asset/img/char.png">
@@ -44,7 +44,7 @@
                                 </video>
                             </div>
                         </div>
-        
+                
                         <div class="profile-area">
                             <div class="profile">
                                 <div class="profile-photo">
@@ -55,7 +55,7 @@
                                     <p class="online">활동중</p>
                                 </div>
                             </div>
-        
+                
                             <button class="more">
                                 <span>
                                     더 알아보기
@@ -64,10 +64,32 @@
                         </div>
                     </div>
                     <div class="card-back">
-                        <div class="container">
-                            <!-- This will be the new fullscreen layout -->
-                            <h1>뒤집었쓰</h1>
-                            <p>방가방바방가.</p>
+                        <div class="swiper">
+                            <div class="swiper-wrapper">
+                                <div class="swiper-slide section" data-hash="about">
+                                    <h2>depth1-1</h2>
+                                </div>
+                                <div class="swiper-slide section" data-hash="about">
+                                    <h2>depth1-2</h2>
+                                </div>
+                                <div class="swiper-slide section" data-hash="portfolio">
+                                    <h2>depth2</h2>
+                                </div>
+                                <div class="swiper-slide section" data-hash="contact">
+                                    <h2>depth3</h2>
+                                </div>
+                            </div>
+                            <!-- Custom Navigation -->
+                            <nav class="main-nav">
+                                <ul class="main-nav-list init">
+                                    <div class="active-background"></div>
+                                    <li class="nav-item">About</li>
+                                    <li class="nav-item">Works</li>
+                                    <li class="nav-item">Contact</li>
+                                </ul>
+                            </nav>
+                            <!-- Swiper's internal pagination (will be hidden) -->
+                            <div class="swiper-pagination"></div>
                         </div>
                     </div>
                 </div>

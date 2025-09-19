@@ -41,9 +41,29 @@ html {
 @font-face {
     font-family: 'Instagram Sans';
     src: url('../font/Instagram Sans Headline.otf') format('opentype');
-    font-weight: 800; // Headline은 더 두꺼운 굵기로 설정
+    font-weight: 800;
     font-style: normal;
 }
+
+@font-face {
+	font-family: 'InterVar';
+	src: url('../font/Inter-VariableFont_opsz,wght.ttf') format('truetype');
+	font-weight: 100 900;
+	font-style: normal;
+	font-display: swap;
+	font-optical-sizing: auto;
+  }
+  
+  @font-face {
+	font-family: 'InterVar';
+	src: url('../font/Inter-Italic-VariableFont_opsz,wght') format('truetype');
+	font-weight: 100 900;
+	font-style: italic;
+	font-display: swap;
+	font-optical-sizing: auto;
+  }
+  
+
 
 
 body, p, span, h1, h2, h3, h4, h5, h6, ul, ol, li, dl, dt, dd, table, th, td, form, fieldset, legend, input, textarea, button, select, label{

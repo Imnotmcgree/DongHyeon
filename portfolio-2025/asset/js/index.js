@@ -8,7 +8,7 @@ $(document).ready(function() {
     setRealVH(); // 페이지 로드 시 즉시 실행
 
     // ✅ 인트로 애니메이션 사용 여부 스위치 (true: 사용 / false: 사용 안 함)
-    const useIntroAnimation = true;
+    const useIntroAnimation = false;
     let pulseTimeline; // ✅ pulseTimeline을 더 넓은 범위에서 선언
     let ellipsisInterval = null;
     let textInterval = null;
@@ -223,7 +223,43 @@ $(document).ready(function() {
                                     // 3. 0.5초 후 카드 뒤집기
                                     setTimeout(() => {
                                         const cardSection = '.card-section';
-                                        const tl = gsap.timeline({ onComplete: () => console.log("Animation Complete!") });
+                                        const tl = gsap.timeline({
+                                            onComplete: () => {
+                                                $('.card-front').hide();
+
+                                                const swiper = new Swiper('.swiper', {
+                                                    direction: 'vertical',
+                                                    speed: 1000,
+                                                    mousewheel: true,
+                                                    keyboard: true,
+                                                    pagination: {
+                                                        el: '.swiper-pagination', // For internal state tracking
+                                                    },
+                                                    hashNavigation: true,
+                                                    on: {
+                                                        init: function (swiper) {
+                                                            setupCustomPagination(swiper, true); // Pass true for initial setup
+                                                        },
+                                                        slideChange: function (swiper) {
+                                                            updateActiveSlider(swiper, false); // Pass false for subsequent changes
+                                                        }
+                                                    }
+                                                });
+                                                
+                                                const mainNavList = document.querySelector('.main-nav-list');
+                                                gsap.to(mainNavList, {
+                                                    duration: 0.5,
+                                                    opacity: 1,
+                                                    scale: 1,
+                                                    y: 0,
+                                                    ease: 'back.out(1.7)',
+                                                    delay: 0.5,
+                                                    onStart: () => {
+                                                        mainNavList.classList.remove('init');
+                                                    }
+                                                });
+                                            }
+                                        });
                                         tl.to(cardSection, {
                                             duration: 1.5,
                                             rotationY: 180,
@@ -236,6 +272,54 @@ $(document).ready(function() {
                                             borderWidth: 0,
                                             ease: "power4.inOut"
                                         }, "-=1.0");
+
+                                        function setupCustomPagination(swiper, isInitial) {
+                                            const navItems = document.querySelectorAll('.main-nav .nav-item');
+                                            const slideIndexMapping = [0, 2, 3]; // About -> slide 0, Works -> slide 2, Contact -> slide 3
+
+                                            navItems.forEach((item, navIndex) => {
+                                                item.addEventListener('click', () => {
+                                                    swiper.slideTo(slideIndexMapping[navIndex]);
+                                                });
+                                            });
+
+                                            updateActiveSlider(swiper, isInitial);
+                                        }
+
+                                        // --- Debounce for resize event ---
+                                        let resizeTimer;
+                                        window.addEventListener('resize', () => {
+                                            clearTimeout(resizeTimer);
+                                            resizeTimer = setTimeout(() => {
+                                                if (swiper && !swiper.destroyed) {
+                                                    updateActiveSlider(swiper, true); // Use initial mode for resize to avoid animation
+                                                }
+                                            }, 100);
+                                        });
+
+                                        function updateActiveSlider(swiper, isInitial) {
+                                            const navItems = document.querySelectorAll('.main-nav .nav-item');
+                                            const slider = document.querySelector('.main-nav .active-background');
+                                            
+                                            const slideToNavIndexMapping = [0, 0, 1, 2]; // slide 0,1 -> nav 0 (About); slide 2 -> nav 1 (Works); slide 3 -> nav 2 (Contact)
+                                            const activeNavIndex = slideToNavIndexMapping[swiper.activeIndex];
+                                            const activeNavItem = navItems[activeNavIndex];
+
+                                            if (activeNavItem && slider) {
+                                                // Update active class for text color
+                                                navItems.forEach(item => item.classList.remove('active'));
+                                                activeNavItem.classList.add('active');
+
+                                                // Animate slider background
+                                                gsap.killTweensOf(slider);
+                                                gsap.to(slider, {
+                                                    duration: isInitial ? 0 : 0.4,
+                                                    x: activeNavItem.offsetLeft,
+                                                    width: activeNavItem.offsetWidth,
+                                                    ease: 'power3.inOut'
+                                                });
+                                            }
+                                        }
                                     }, 500); // 0.5초 딜레이
                                 }
                             });
@@ -249,12 +333,9 @@ $(document).ready(function() {
     // --- Dynamic Text Animation ---
     const dynamicTexts = [
         '새로운 인연과',
-        '일상의 순간과',
-        '색다른 관점과',
         '멋진 동료들과',
-        '가벼운 유머와',
-        '솔직한 소통과',
-        '의외의 발견과'];
+        '새로운 경험과',
+        '다가올 기회와'];
     let textIndex = 0;
     const ellipsisSpan = $('.ellipsis');
     let ellipsisCount = 0;
