@@ -233,7 +233,6 @@ $(document).ready(function() {
                                                     pagination: {
                                                         el: '.swiper-pagination', // For internal state tracking
                                                     },
-                                                    hashNavigation: true,
                                                     on: {
                                                         init: function (swiper) {
                                                             // Force Swiper to start at the very first slide, ignoring any URL hash
