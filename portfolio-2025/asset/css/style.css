@@ -1380,6 +1380,11 @@ caption, .text-hide {
   text-align: right;
   perspective: 400px;
 }
+@media (max-width: 576px) {
+  .card-section-wrap .card-section .character-area .connect .connect-text .dynamic-text {
+    width: 118px;
+  }
+}
 .card-section-wrap .card-section .character-area .connect .connect-text .dynamic-text span {
   display: inline-block;
 }
