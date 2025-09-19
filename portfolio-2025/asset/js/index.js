@@ -8,7 +8,7 @@ $(document).ready(function() {
     setRealVH(); // 페이지 로드 시 즉시 실행
 
     // ✅ 인트로 애니메이션 사용 여부 스위치 (true: 사용 / false: 사용 안 함)
-    const useIntroAnimation = false;
+    const useIntroAnimation = true;
     let pulseTimeline; // ✅ pulseTimeline을 더 넓은 범위에서 선언
     let ellipsisInterval = null;
     let textInterval = null;
@@ -113,9 +113,7 @@ $(document).ready(function() {
                 });
             }
         })
-        .type("안녕하세요,", { speed: 1500 })
-        .pause(500)
-        .type(" 김동현입니다.", { speed: 1000 })
+        .type("반갑습니다.", { speed: 500 })
         .go();
     } else {
         gsap.set('.card-section-wrap', { opacity: 1, scale: 1 });
@@ -238,6 +236,8 @@ $(document).ready(function() {
                                                     hashNavigation: true,
                                                     on: {
                                                         init: function (swiper) {
+                                                            // Force Swiper to start at the very first slide, ignoring any URL hash
+                                                            swiper.slideTo(0, 0); // Move to slide index 0 with 0 animation speed
                                                             setupCustomPagination(swiper, true); // Pass true for initial setup
                                                         },
                                                         slideChange: function (swiper) {
@@ -253,7 +253,7 @@ $(document).ready(function() {
                                                     scale: 1,
                                                     y: 0,
                                                     ease: 'back.out(1.7)',
-                                                    delay: 0.5,
+                                                    delay: 0.3,
                                                     onStart: () => {
                                                         mainNavList.classList.remove('init');
                                                     }
