@@ -1550,6 +1550,11 @@ caption, .text-hide {
   max-width: 990px;
   z-index: 10;
 }
+@media (max-width: 576px) {
+  .swiper .main-nav {
+    top: 20px;
+  }
+}
 .swiper .main-nav .main-nav-list {
   position: relative;
   height: 50px;

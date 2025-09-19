@@ -403,7 +403,9 @@
     width: 90%;
     max-width: 990px;
     z-index: 10;
-    
+    @include media-breakpoint-down(sm) {
+        top: 20px;
+    }
     .main-nav-list {
         position: relative;
         height: 50px;
