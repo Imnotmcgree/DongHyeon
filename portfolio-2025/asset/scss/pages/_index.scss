@@ -203,10 +203,6 @@
         .card-back {
             transform: rotateY(180deg);
             background-color: #FAFAFA;
-            h1 {
-                font-size: 4rem;
-                margin-bottom: 20px;
-            }
         }
 
         .character-area{
@@ -386,79 +382,223 @@
 }
 // intro end
 
-/* Swiper Fullpage Styles */
+/* Swiper Fullpage */
 .swiper {
   width: 100%;
   height: 100%;
 
-  .swiper-slide.section {
+}
+
+/* 네비 */
+.main-nav {
+  position: fixed;
+  top: 30px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 90%;
+  max-width: 990px;
+  z-index: 10;
+  @include media-breakpoint-down(sm) {
+      top: 20px;
+  }
+  .main-nav-list {
+      position: relative;
+      height: 50px;
+      border-radius: 100px;
+      background-color: #F4F4F4;
+      @include responsive-font(32);
+      display: flex;
+      @extend %box-shadow-1;
+
+      &.init {
+          opacity: 0;
+          transform: translateY(20px) scale(0.95);
+          pointer-events: none;
+      }
+  }
+
+  .active-background {
+      position: absolute;
+      top: 0;
+      left: 0;
+      height: 100%;
+      border-radius: 100px;
+      background-color: #2563EB;
+      box-shadow: inset 0 5px 4px 0 rgba(255, 255, 255, 0.25), 0 4px 4px 0 rgba(0, 0, 0, 0.25);
+      z-index: 1;
+  }
+  
+  .nav-item {
+      flex: 1;
+      position: relative;
+      z-index: 2;
+      height: 50px;
+      background-color: transparent;
+      color: #3d3d3d;
+      line-height: 50px;
+      border-radius: 100px;
+      text-align: center;
+      cursor: pointer;
+      font-weight: bold;
+      transition: color 0.4s ease;
+
+      &.active {
+          color: #fff;
+      }
+  }
+}
+
+.swiper-pagination {
+    display: none;
+}
+
+// 공통 슬라이드 섹션
+.slide-wrap {
+    width: 100%;
+    max-width: 1520px;    // 1920px
+    margin-left: auto;
+    margin-right: auto;
+    padding-left: 24px;
+    padding-right: 24px;
+}
+.arrow-down{
     display: flex;
+    flex-direction: column;
+    gap: 10px;
     justify-content: center;
-    align-items: center;
-    font-size: 2rem;
-  }
+    position: absolute;
+    bottom: 40px;
+    right: 65px;
 
-  .main-nav {
-    position: fixed;
-    top: 50px;
-    left: 50%;
-    transform: translateX(-50%);
-    width: 90%;
-    max-width: 990px;
-    z-index: 10;
-    @include media-breakpoint-down(sm) {
-        top: 20px;
-    }
-    .main-nav-list {
+    .arrow-item {
         position: relative;
-        height: 50px;
-        border-radius: 100px;
-        background-color: #F4F4F4;
-        @include responsive-font(32);
-        display: flex;
-        @extend %box-shadow-1;
+        width: 70px;
+        height: 24px;
 
-        &.init {
+        img {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            object-fit: contain;
+        }
+
+        .active {
             opacity: 0;
-            transform: translateY(20px) scale(0.95);
-            pointer-events: none;
+            animation: fadeInOut 1.2s infinite;
+        }
+
+        &:nth-child(2) .active {
+            animation-delay: 0.2s;
+        }
+        &:nth-child(3) .active {
+            animation-delay: 0.4s;
         }
     }
+}
 
-    .active-background {
-        position: absolute;
-        top: 0;
-        left: 0;
-        height: 100%;
-        border-radius: 100px;
-        background-color: #2563EB;
-        box-shadow: inset 0 5px 4px 0 rgba(255, 255, 255, 0.25), 0 4px 4px 0 rgba(0, 0, 0, 0.25);
-        z-index: 1;
+@keyframes fadeInOut {
+    0%, 100% {
+        opacity: 0;
     }
-    
-    .nav-item {
-        flex: 1;
-        position: relative;
-        z-index: 2;
-        height: 50px;
-        background-color: transparent;
-        color: #3d3d3d;
-        line-height: 50px;
-        border-radius: 100px;
-        text-align: center;
-        cursor: pointer;
-        font-weight: bold;
-        transition: color 0.4s ease;
+    50% {
+        opacity: 1;
+    }
+}
 
-        &.active {
-            color: #fff;
+// about1-1 start
+.about-content{
+    display: flex;
+    justify-content: space-between;
+    padding-top: 150px;
+    flex-wrap: wrap;
+    @include media-breakpoint-down(md) {
+        display: block;
+    }
+    .right{
+        article {
+            header{
+                .name{
+                    @include responsive-font(64);
+                    font-weight: 600;
+                    &::after{
+                        content: '';
+                        display: block;
+                        width: 800px;
+                        height: 3px;
+                        background: #96B7FF;
+                        margin: 10px 0px;
+                    }
+                }
+                .job-title{
+                    @include responsive-font(48);
+                    font-weight: 600;
+                }
+            }
+            .tagline{
+                @include responsive-font(36);
+                font-weight: 500;
+                margin-top: 30px;
+                margin-bottom: 50px;
+            }
+            .description {
+                @include responsive-font(22);
+                font-weight: 500;
+            }
+            .tag-list{
+                margin-top: 55px;
+                display: flex;
+                gap: 70px;
+               li{
+                display: flex;
+                flex-direction: column;
+                gap: 12px;
+                font-size: 2rem;
+                font-weight: 600;
+                align-items: center;
+                justify-content: center;
+                width: 220px;
+                height: 177px;
+                border-radius: 40px;
+                @extend %box-shadow-1;
+                img{
+                    object-fit: contain;
+                    height: 90px;
+                }
+               }
+            }
         }
     }
-  }
-
-  // Hide Swiper's default pagination
-  .swiper-pagination {
-      display: none;
-  }
-   
+    .left{
+        align-self: end;
+        .skills{
+            h3{
+                @include responsive-font(24);
+                font-weight: 600;
+                margin-bottom: 10px;
+                &:not(:first-child){
+                    margin-top: 25px;
+                }
+            }
+            ul{
+                display: flex;
+                gap: 20px;  
+                li{
+                    width: 120px;
+                    height: 120px;
+                    border-radius: 20px;
+                    background: #F9F9F9;
+                    @extend %box-shadow-1;
+                    display: flex;
+                    font-size: 16px;
+                    gap: 6px;
+                    color:#515151;
+                    flex-direction: column;
+                    align-items: center;
+                    justify-content: center;
+                }
+            }
+        }
+    }
 }
