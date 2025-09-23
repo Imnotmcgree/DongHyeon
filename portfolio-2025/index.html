@@ -17,7 +17,7 @@
 </head>
 <body>
     <div class="wrap">
-        <!-- <div id="particles-js"></div> -->
+        <div id="particles-js"></div>
         <div class="container">
             <div class="intro-txt"></div>
             <div class="card-section-wrap">
@@ -90,11 +90,11 @@
                             </div>
                         </div>
 
-                        <div class="swiper">
+                        <div class="swiper main-swiper">
                             <div class="swiper-wrapper">
                                 <section class="swiper-slide section" data-hash="about">
                                     <div class="slide-wrap about-content">
-                                        <div class="right">
+                                        <div class="left">
                                             <article>
                                                 <header>
                                                     <h1 class="name">
@@ -127,67 +127,115 @@
                                                 </ul>
                                             </article>
                                         </div>
-                                        <div class="left">
+                                        <div class="right">
                                             <div class="skills">
-                                                <h3>Frontend Basics</h3>
-                                                <ul class="front-ends">
-                                                    <li>
-                                                        <img height="60" src="./asset/img/html-icon.png" alt="">
-                                                        <span>HTML</span>
-                                                    </li>
-                                                    <li>
-                                                        <img height="60" src="./asset/img/css-icon.png" alt="">
-                                                        <span>CSS</span>
-                                                    </li>
-                                                    <li>
-                                                        <img height="60" src="./asset/img/js-icon.png" alt="">
-                                                        <span>JavaScript</span>
-                                                    </li>
-                                                    <li>
-                                                        <img height="60" src="./asset/img/jquery-icon.png" alt="">
-                                                        <span>jQuery</span>
-                                                    </li>
-                                                </ul>
-
-                                                <h3>Design Tools</h3>
-                                                <ul class="design-tools">
-                                                    <li>
-                                                        <img height="60" src="./asset/img/photoshop-icon.png" alt="">
-                                                        <span>Photoshop</span>
-                                                    </li>
-                                                    <li>
-                                                        <img height="60" src="./asset/img/illustrator-icon.png" alt="">
-                                                        <span>Illustrator</span>
-                                                    </li>
-                                                    <li>
-                                                        <img height="60" src="./asset/img/xd-icon.png" alt="">
-                                                        <span>XD</span>
-                                                    </li>
-                                                    <li>
-                                                        <img height="60" src="./asset/img/figma-icon.png" alt="">
-                                                        <span>Figma</span>
-                                                    </li>
-                                                </ul>
-
-                                                <h3>Collaboration Tools</h3>
-                                                <ul class="collaboration-tools">
-                                                    <li>
-                                                        <img height="60" src="./asset/img/github-icon.png" alt="">
-                                                        <span>GitHub</span>
-                                                    </li>
-                                                    <li>
-                                                        <img height="60" src="./asset/img/sourcetree-icon.png" alt="">
-                                                        <span>SourceTree</span>
-                                                    </li>
-                                                </ul>
+                                                <div class="skill-category">
+                                                    <h3>Frontend Basics</h3>
+                                                    <ul class="front-ends">
+                                                        <li>
+                                                            <img height="60" src="./asset/img/html-icon.png" alt="">
+                                                            <span>HTML</span>
+                                                        </li>
+                                                        <li>
+                                                            <img height="60" src="./asset/img/css-icon.png" alt="">
+                                                            <span>CSS</span>
+                                                        </li>
+                                                        <li>
+                                                            <img height="60" src="./asset/img/js-icon.png" alt="">
+                                                            <span>JavaScript</span>
+                                                        </li>
+                                                        <li>
+                                                            <img height="60" src="./asset/img/jquery-icon.png" alt="">
+                                                            <span>jQuery</span>
+                                                        </li>
+                                                    </ul>
+                                                </div>
+                                                <div class="skill-category">
+                                                    <h3>Design Tools</h3>
+                                                    <ul class="design-tools">
+                                                        <li>
+                                                            <img height="60" src="./asset/img/photoshop-icon.png" alt="">
+                                                            <span>Photoshop</span>
+                                                        </li>
+                                                        <li>
+                                                            <img height="60" src="./asset/img/illustrator-icon.png" alt="">
+                                                            <span>Illustrator</span>
+                                                        </li>
+                                                        <li>
+                                                            <img height="60" src="./asset/img/xd-icon.png" alt="">
+                                                            <span>XD</span>
+                                                        </li>
+                                                        <li>
+                                                            <img height="60" src="./asset/img/figma-icon.png" alt="">
+                                                            <span>Figma</span>
+                                                        </li>
+                                                    </ul>
+                                                </div>
+                                                <div class="skill-category">
+                                                    <h3>Collaboration Tools</h3>
+                                                    <ul class="collaboration-tools">
+                                                        <li>
+                                                            <img height="60" src="./asset/img/github-icon.png" alt="">
+                                                            <span>GitHub</span>
+                                                        </li>
+                                                        <li>
+                                                            <img height="60" src="./asset/img/sourcetree-icon.png" alt="">
+                                                            <span>SourceTree</span>
+                                                        </li>
+                                                    </ul>
+                                                </div>
                                             </div>
                                         </div>
                                     </div>
                                    
                                 </section>
                                 <section class="swiper-slide section" data-hash="about">
-                                    <h2>depth1-2</h2>
-                                </section>
+                                    <div class="slide-wrap about-slide">
+                                        <div class="section-title">
+                                            <h2>My values</h2>
+                                            <span>나의 가치관</span>
+                                        </div>
+                                        <div class="about-swiper swiper">
+                                            <div class="swiper-wrapper">
+                                                <div class="swiper-slide">
+                                                    <div class="about-slide-content">
+                                                        <div class="about-slide-content-img">
+                                                            <img src="./asset/img/value-1.png" alt="">
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="swiper-slide">
+                                                    <div class="about-slide-content">
+                                                        <div class="about-slide-content-img">
+                                                            <img src="./asset/img/value-2.png" alt="">
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="swiper-slide">
+                                                    <div class="about-slide-content">
+                                                        <div class="about-slide-content-img">
+                                                            <img src="./asset/img/value-3.png" alt="">
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="swiper-slide">
+                                                    <div class="about-slide-content">
+                                                        <div class="about-slide-content-img">
+                                                            <img src="./asset/img/value-4.png" alt="">
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="swiper-button-prev"></div>
+                                            <div class="swiper-button-next"></div>
+                                        </div>
+                                        
+                                        <div class="about-text-content">
+                                            <h3></h3>
+                                            <p></p>
+                                        </div>
+                                    </div>
+                                    </section>
                                 <section class="swiper-slide section" data-hash="portfolio">
                                     <h2>depth2</h2>
                                 </section>

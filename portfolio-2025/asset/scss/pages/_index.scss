@@ -455,20 +455,72 @@
 // 공통 슬라이드 섹션
 .slide-wrap {
     width: 100%;
-    max-width: 1520px;    // 1920px
-    margin-left: auto;
-    margin-right: auto;
-    padding-left: 24px;
-    padding-right: 24px;
+     /* 1520 보이도록 + 양쪽 24px 패딩을 더해 그릇을 키움 */
+    max-width: calc(1520px + 48px);
+    margin: 0 auto;
+    padding-inline: 24px; /* 안전 여백 */
+    @include media-breakpoint-down(lg) {
+        padding-inline: 0;
+    }
+}
+
+body.mobile-scroll-view {
+    .wrap {
+        // 모바일에서는 스크롤이 생기므로 overflow:hidden을 해제해야 함
+        overflow: auto;
+    }
+    .card-section-wrap {
+        // 높이를 내용에 맞게 변경
+        height: auto;
+        // perspective 효과가 스크롤바와 충돌할 수 있으므로 필요시 조정
+        perspective: none; 
+        padding-block: 5rem; // 상하 여백 추가
+    }
+    .card-section {
+        width: 100%;
+        height: auto;
+        border-radius: 0; // 일반 페이지이므로 radius 제거
+        // 뒷면이 보이도록 고정
+        transform: rotateY(180deg); 
+    }
+    .card-back {
+        position: relative; // absolute 해제
+        transform: none; // rotateY 해제
+        height: auto;
+    }
+    .main-swiper {
+        height: auto;
+        overflow: visible;
+    }
+    .main-swiper > .swiper-wrapper {
+        // Swiper의 flex/grid 레이아웃을 일반 블록 레이아웃으로 변경
+        display: block;
+        // Swiper가 적용한 transform 스타일을 제거하여 세로 스크롤이 가능하게 함
+        transform: none !important;
+    }
+    .main-swiper > .swiper-wrapper > .swiper-slide {
+        height: auto;
+        // 섹션 간 구분을 위해 여백 추가
+        &:not(:last-child) {
+            margin-bottom: 10rem;
+        }
+    }
+
+    // 모바일에서는 네비게이션과 아래 화살표 숨김
+    .main-nav, .arrow-down {
+        display: none;
+    }
 }
 .arrow-down{
     display: flex;
     flex-direction: column;
     gap: 10px;
     justify-content: center;
+    align-items: center;
     position: absolute;
     bottom: 40px;
     right: 65px;
+  
 
     .arrow-item {
         position: relative;
@@ -513,10 +565,15 @@
     justify-content: space-between;
     padding-top: 150px;
     flex-wrap: wrap;
-    @include media-breakpoint-down(md) {
+    @include media-breakpoint-down(lg) {
         display: block;
     }
-    .right{
+
+    .left{
+        width: 52.631%;
+        @include media-breakpoint-down(xl) {
+            width: 100%;
+        }
         article {
             header{
                 .name{
@@ -524,8 +581,8 @@
                     font-weight: 600;
                     &::after{
                         content: '';
+                        width: 100%;
                         display: block;
-                        width: 800px;
                         height: 3px;
                         background: #96B7FF;
                         margin: 10px 0px;
@@ -549,12 +606,13 @@
             .tag-list{
                 margin-top: 55px;
                 display: flex;
-                gap: 70px;
+                gap: 15px;
+                justify-content: space-between;
                li{
                 display: flex;
                 flex-direction: column;
                 gap: 12px;
-                font-size: 2rem;
+                @include responsive-font(20);
                 font-weight: 600;
                 align-items: center;
                 justify-content: center;
@@ -562,24 +620,38 @@
                 height: 177px;
                 border-radius: 40px;
                 @extend %box-shadow-1;
+                @include media-breakpoint-down(md) {
+                    width: 150px;
+                    height: 150px;
+                }
+                @include media-breakpoint-down(sm) {
+                    width: 120px;
+                    height: 100px;
+                    border-radius: 25px;
+                }
                 img{
                     object-fit: contain;
                     height: 90px;
+                    @include media-breakpoint-down(md) {
+                        height: 50px;
+                    }
                 }
                }
             }
         }
     }
-    .left{
+    .right{
         align-self: end;
         .skills{
+            .skill-category {
+                &:not(:first-child){
+                    margin-top: 25px;
+                }
+            }
             h3{
                 @include responsive-font(24);
                 font-weight: 600;
                 margin-bottom: 10px;
-                &:not(:first-child){
-                    margin-top: 25px;
-                }
             }
             ul{
                 display: flex;
@@ -599,6 +671,128 @@
                     justify-content: center;
                 }
             }
+        }
+    }
+}
+
+// about1-1 end
+
+// about1-2 start
+.about-slide{
+    padding-top: 150px;
+    .section-title {
+        text-align: center;
+        margin-bottom: 5rem;
+        h2 {
+            @include responsive-font(48);
+            font-weight: bold;
+            color: #111;
+            position: relative;
+            display: inline-block;
+            padding-bottom: 1rem;
+            &::after {
+                content: '';
+                position: absolute;
+                bottom: 0;
+                left: 50%;
+                transform: translateX(-50%);
+                width: 80px;
+                height: 2px;
+                background-color: #2563EB;
+            }
+        }
+        span {
+            display: block;
+            margin-top: 1rem;
+            @include responsive-font(24);
+            color: #666;
+        }
+    }
+    
+    
+    .about-swiper {
+        position: relative;
+
+        .swiper-slide {
+            transition: transform 0.2s ease-in-out;
+            transform: scale(0.5);
+            @include media-breakpoint-down(md) {
+                transform: scale(1);
+            }
+
+            &.swiper-slide-active {
+                transform: scale(1);
+
+                .about-slide-content-img {
+                    background-color: #2563EB;
+                }
+            }
+        }
+
+        .about-slide-content {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding-bottom: 3rem; // for spacing
+        }
+    
+        .about-slide-content-img {
+            width: 400px;
+            height: 400px;
+            border-radius: 50%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background-color: #f0f0f0;
+            transition: background-color 0.2s ease,
+
+            img {
+                width: 150px;
+                height: 150px;
+                object-fit: contain;
+            }
+
+            @include media-breakpoint-down(md) {
+                width: 200px;
+                height: 200px;
+                img {
+                    height: 120px;
+                }
+            }
+        }
+        
+        .swiper-button-prev,
+        .swiper-button-next {
+            color: #2563EB;
+            top: 40%; // vertically center on the images
+            @include media-breakpoint-down(md) {
+                display: none; // hide on mobile to not clutter
+            }
+        }
+    }
+}
+
+.about-text-content {
+    text-align: center;
+    margin-top: 2.5rem;
+    h3 {
+        @include responsive-font(28);
+        font-weight: bold;
+        margin-bottom: 10px;
+        color: #111;
+    }
+    p {
+        @include responsive-font(16);
+        color: #555;
+        line-height: 1.6;
+    }
+}
+
+.about-slide {
+    @include media-breakpoint-down(lg) {
+        width: 100%;
+        .about-swiper {
+            padding: 0 40px;
         }
     }
 }

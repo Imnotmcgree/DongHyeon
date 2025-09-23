@@ -196,7 +196,7 @@ caption, .text-hide {
   text-indent: -9999em;
 }
 
-.about-content .left .skills ul li, .about-content .right article .tag-list li, .main-nav .main-nav-list {
+.about-content .right .skills ul li, .about-content .left article .tag-list li, .main-nav .main-nav-list {
   box-shadow: 0 4px 4px 0 rgba(0, 0, 0, 0.25);
 }
 
@@ -1532,11 +1532,52 @@ caption, .text-hide {
 
 .slide-wrap {
   width: 100%;
-  max-width: 1520px;
-  margin-left: auto;
-  margin-right: auto;
-  padding-left: 24px;
-  padding-right: 24px;
+  /* 1520 보이도록 + 양쪽 24px 패딩을 더해 그릇을 키움 */
+  max-width: 1568px;
+  margin: 0 auto;
+  padding-inline: 24px; /* 안전 여백 */
+}
+@media (max-width: 992px) {
+  .slide-wrap {
+    padding-inline: 0;
+  }
+}
+
+body.mobile-scroll-view .wrap {
+  overflow: auto;
+}
+body.mobile-scroll-view .card-section-wrap {
+  height: auto;
+  perspective: none;
+  padding-block: 5rem;
+}
+body.mobile-scroll-view .card-section {
+  width: 100%;
+  height: auto;
+  border-radius: 0;
+  transform: rotateY(180deg);
+}
+body.mobile-scroll-view .card-back {
+  position: relative;
+  transform: none;
+  height: auto;
+}
+body.mobile-scroll-view .main-swiper {
+  height: auto;
+  overflow: visible;
+}
+body.mobile-scroll-view .main-swiper > .swiper-wrapper {
+  display: block;
+  transform: none !important;
+}
+body.mobile-scroll-view .main-swiper > .swiper-wrapper > .swiper-slide {
+  height: auto;
+}
+body.mobile-scroll-view .main-swiper > .swiper-wrapper > .swiper-slide:not(:last-child) {
+  margin-bottom: 10rem;
+}
+body.mobile-scroll-view .main-nav, body.mobile-scroll-view .arrow-down {
+  display: none;
 }
 
 .arrow-down {
@@ -1544,6 +1585,7 @@ caption, .text-hide {
   flex-direction: column;
   gap: 10px;
   justify-content: center;
+  align-items: center;
   position: absolute;
   bottom: 40px;
   right: 65px;
@@ -1586,63 +1628,72 @@ caption, .text-hide {
   padding-top: 150px;
   flex-wrap: wrap;
 }
-@media (max-width: 768px) {
+@media (max-width: 992px) {
   .about-content {
     display: block;
   }
 }
-.about-content .right article header .name {
+.about-content .left {
+  width: 52.631%;
+}
+@media (max-width: 1200px) {
+  .about-content .left {
+    width: 100%;
+  }
+}
+.about-content .left article header .name {
   font-size: 6.4rem;
   font-weight: 600;
 }
 @media (max-width: 576px) {
-  .about-content .right article header .name {
+  .about-content .left article header .name {
     font-size: 4.48rem;
   }
 }
-.about-content .right article header .name::after {
+.about-content .left article header .name::after {
   content: "";
+  width: 100%;
   display: block;
-  width: 800px;
   height: 3px;
   background: #96B7FF;
   margin: 10px 0px;
 }
-.about-content .right article header .job-title {
+.about-content .left article header .job-title {
   font-size: 4.8rem;
   font-weight: 600;
 }
 @media (max-width: 576px) {
-  .about-content .right article header .job-title {
+  .about-content .left article header .job-title {
     font-size: 3.36rem;
   }
 }
-.about-content .right article .tagline {
+.about-content .left article .tagline {
   font-size: 3.6rem;
   font-weight: 500;
   margin-top: 30px;
   margin-bottom: 50px;
 }
 @media (max-width: 576px) {
-  .about-content .right article .tagline {
+  .about-content .left article .tagline {
     font-size: 2.52rem;
   }
 }
-.about-content .right article .description {
+.about-content .left article .description {
   font-size: 2.2rem;
   font-weight: 500;
 }
 @media (max-width: 576px) {
-  .about-content .right article .description {
+  .about-content .left article .description {
     font-size: 1.54rem;
   }
 }
-.about-content .right article .tag-list {
+.about-content .left article .tag-list {
   margin-top: 55px;
   display: flex;
-  gap: 70px;
+  gap: 15px;
+  justify-content: space-between;
 }
-.about-content .right article .tag-list li {
+.about-content .left article .tag-list li {
   display: flex;
   flex-direction: column;
   gap: 12px;
@@ -1654,31 +1705,54 @@ caption, .text-hide {
   height: 177px;
   border-radius: 40px;
 }
-.about-content .right article .tag-list li img {
+@media (max-width: 576px) {
+  .about-content .left article .tag-list li {
+    font-size: 1.4rem;
+  }
+}
+@media (max-width: 768px) {
+  .about-content .left article .tag-list li {
+    width: 150px;
+    height: 150px;
+  }
+}
+@media (max-width: 576px) {
+  .about-content .left article .tag-list li {
+    width: 120px;
+    height: 100px;
+    border-radius: 25px;
+  }
+}
+.about-content .left article .tag-list li img {
   object-fit: contain;
   height: 90px;
 }
-.about-content .left {
+@media (max-width: 768px) {
+  .about-content .left article .tag-list li img {
+    height: 50px;
+  }
+}
+.about-content .right {
   align-self: end;
 }
-.about-content .left .skills h3 {
+.about-content .right .skills .skill-category:not(:first-child) {
+  margin-top: 25px;
+}
+.about-content .right .skills h3 {
   font-size: 2.4rem;
   font-weight: 600;
   margin-bottom: 10px;
 }
 @media (max-width: 576px) {
-  .about-content .left .skills h3 {
+  .about-content .right .skills h3 {
     font-size: 1.68rem;
   }
 }
-.about-content .left .skills h3:not(:first-child) {
-  margin-top: 25px;
-}
-.about-content .left .skills ul {
+.about-content .right .skills ul {
   display: flex;
   gap: 20px;
 }
-.about-content .left .skills ul li {
+.about-content .right .skills ul li {
   width: 120px;
   height: 120px;
   border-radius: 20px;
@@ -1690,4 +1764,138 @@ caption, .text-hide {
   flex-direction: column;
   align-items: center;
   justify-content: center;
+}
+
+.about-slide {
+  padding-top: 150px;
+}
+.about-slide .section-title {
+  text-align: center;
+  margin-bottom: 5rem;
+}
+.about-slide .section-title h2 {
+  font-size: 4.8rem;
+  font-weight: bold;
+  color: #111;
+  position: relative;
+  display: inline-block;
+  padding-bottom: 1rem;
+}
+@media (max-width: 576px) {
+  .about-slide .section-title h2 {
+    font-size: 3.36rem;
+  }
+}
+.about-slide .section-title h2::after {
+  content: "";
+  position: absolute;
+  bottom: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 80px;
+  height: 2px;
+  background-color: #2563EB;
+}
+.about-slide .section-title span {
+  display: block;
+  margin-top: 1rem;
+  font-size: 2.4rem;
+  color: #666;
+}
+@media (max-width: 576px) {
+  .about-slide .section-title span {
+    font-size: 1.68rem;
+  }
+}
+.about-slide .about-swiper {
+  position: relative;
+}
+.about-slide .about-swiper .swiper-slide {
+  transition: transform 0.2s ease-in-out;
+  transform: scale(0.5);
+}
+@media (max-width: 768px) {
+  .about-slide .about-swiper .swiper-slide {
+    transform: scale(1);
+  }
+}
+.about-slide .about-swiper .swiper-slide.swiper-slide-active {
+  transform: scale(1);
+}
+.about-slide .about-swiper .swiper-slide.swiper-slide-active .about-slide-content-img {
+  background-color: #2563EB;
+}
+.about-slide .about-swiper .about-slide-content {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding-bottom: 3rem;
+}
+.about-slide .about-swiper .about-slide-content-img {
+  width: 400px;
+  height: 400px;
+  border-radius: 50%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: #f0f0f0;
+  transition: background-color 0.2s ease, img;
+  transition-width: 150px;
+  transition-height: 150px;
+  transition-object-fit: contain;
+}
+@media (max-width: 768px) {
+  .about-slide .about-swiper .about-slide-content-img {
+    width: 200px;
+    height: 200px;
+  }
+  .about-slide .about-swiper .about-slide-content-img img {
+    height: 120px;
+  }
+}
+.about-slide .about-swiper .swiper-button-prev,
+.about-slide .about-swiper .swiper-button-next {
+  color: #2563EB;
+  top: 40%;
+}
+@media (max-width: 768px) {
+  .about-slide .about-swiper .swiper-button-prev,
+  .about-slide .about-swiper .swiper-button-next {
+    display: none;
+  }
+}
+
+.about-text-content {
+  text-align: center;
+  margin-top: 2.5rem;
+}
+.about-text-content h3 {
+  font-size: 2.8rem;
+  font-weight: bold;
+  margin-bottom: 10px;
+  color: #111;
+}
+@media (max-width: 576px) {
+  .about-text-content h3 {
+    font-size: 1.96rem;
+  }
+}
+.about-text-content p {
+  font-size: 1.6rem;
+  color: #555;
+  line-height: 1.6;
+}
+@media (max-width: 576px) {
+  .about-text-content p {
+    font-size: 1.12rem;
+  }
+}
+
+@media (max-width: 992px) {
+  .about-slide {
+    width: 100%;
+  }
+  .about-slide .about-swiper {
+    padding: 0 40px;
+  }
 }

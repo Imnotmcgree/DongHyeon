@@ -1,131 +1,318 @@
 $(document).ready(function() {
     // --- Mobile 100vh fix ---
     const setRealVH = () => {
-        // window.innerHeight를 사용하여 실제 뷰포트 높이를 계산하고 CSS 변수 --vh에 저장합니다.
         document.documentElement.style.setProperty('--vh', `${window.innerHeight * 0.01}px`);
     };
+    setRealVH();
     window.addEventListener('resize', setRealVH);
-    setRealVH(); // 페이지 로드 시 즉시 실행
 
-    const devSkipIntro = false; // ✅ 개발 모드 스위치. true로 바꾸면 인트로를 생략합니다.
+    const devSkipIntro = true; // ✅ 개발 모드 스위치
+    let swiper = null;
+    let aboutSwiper = null;
+    let isSwiperActive = false;
+    let afterIntro = false; // A flag to ensure layout management runs only after the intro animation.
 
+    // --- Core Functions for Layout Management ---
+    function updateActiveSlider(swiper, isInitial) {
+        if (!swiper || swiper.destroyed) return;
+        const navItems = document.querySelectorAll('.main-nav .nav-item');
+        const slider = document.querySelector('.main-nav .active-background');
+        const slideToNavIndexMapping = [0, 0, 1, 2];
+        const activeNavIndex = slideToNavIndexMapping[swiper.activeIndex];
+        const activeNavItem = navItems[activeNavIndex];
+        if (activeNavItem && slider) {
+            navItems.forEach(item => item.classList.remove('active'));
+            activeNavItem.classList.add('active');
+            gsap.to(slider, {
+                duration: isInitial ? 0 : 0.4,
+                x: activeNavItem.offsetLeft,
+                width: activeNavItem.offsetWidth,
+                ease: 'power3.inOut'
+            });
+        }
+    }
+
+    function setupCustomPagination(swiper, isInitial) {
+        const navItems = document.querySelectorAll('.main-nav .nav-item');
+        const slideIndexMapping = [0, 2, 3];
+        navItems.forEach((item, navIndex) => {
+            item.addEventListener('click', () => {
+                if (swiper && !swiper.destroyed) {
+                    swiper.slideTo(slideIndexMapping[navIndex]);
+                }
+            });
+        });
+        updateActiveSlider(swiper, isInitial);
+    }
+
+    function initSwiper() {
+        if (isSwiperActive) return;
+        swiper = new Swiper('.main-swiper', {
+            direction: 'vertical',
+            speed: 1000,
+            mousewheel: true,
+            keyboard: true,
+            allowTouchMove: false,
+            pagination: { el: '.swiper-pagination' },
+            on: {
+                init: (s) => { s.slideTo(0, 0); setupCustomPagination(s, true); },
+                slideChange: (s) => {
+                    updateActiveSlider(s, false);
+                }
+            }
+        });
+        isSwiperActive = true;
+    }
+
+    function destroySwiper() {
+        if (!isSwiperActive) return;
+        swiper.destroy(true, true);
+        swiper = null;
+        isSwiperActive = false;
+    }
+
+    function manageLayout() {
+        if (!afterIntro) return; // Only run after the intro sequence is complete.
+        const isMobileView = window.innerWidth <= 1200;
+        if (isMobileView) {
+            destroySwiper();
+            document.body.classList.add('mobile-scroll-view');
+        } else {
+            initSwiper();
+            document.body.classList.remove('mobile-scroll-view');
+        }
+    }
+
+    function initAboutSwiperObserver() {
+        const aboutSection = document.querySelector('[data-hash="about"] .about-swiper');
+        if (!aboutSection) return;
+
+        const observer = new IntersectionObserver((entries, observer) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting && !aboutSwiper) {
+                    initAboutSwiper();
+                    observer.unobserve(entry.target);
+                }
+            });
+        }, { threshold: 0.1 });
+
+        observer.observe(aboutSection);
+    }
+
+    function initAboutSwiper() {
+        if (aboutSwiper) return;
+
+        const textContents = [
+            {
+                title: "신뢰",
+                description: "기본을 지키고, 맡은 일에 책임을 다하여 <br> 신뢰받는 사람이 되고 싶습니다."
+            },
+            {
+                title: "긍정",
+                description: "긍정적인 마음으로 즐겁게 일하는 과정 속에서 <br> 가장 좋은 결과물이 나온다고 믿습니다."
+            },
+            {
+                title: "성장",
+                description: "작은 배움들이 모여 결국 <br> 큰 성장을 이룬다고 믿습니다."
+            },
+            {
+                title: "소통",
+                description: "동료들과 유연하게 소통하며 <br> 함께 최고의 결과를 만들고 싶습니다."
+            }
+        ];
+    
+        const textContainer = document.querySelector('.about-text-content');
+        const titleEl = textContainer.querySelector('h3');
+        const descEl = textContainer.querySelector('p');
+    
+        const updateTextContent = (swiper) => {
+            const content = textContents[swiper.realIndex];
+            if (content) {
+                gsap.to(textContainer, {
+                    duration: 0.2,
+                    opacity: 0,
+                    onComplete: () => {
+                        titleEl.innerHTML = content.title;
+                        descEl.innerHTML = content.description;
+                        gsap.to(textContainer, { duration: 0.3, opacity: 1 });
+                    }
+                });
+            }
+        };
+
+        const animateActiveImage = (swiper) => {
+            // Deactivate animations on all images first
+            swiper.slides.forEach(slide => {
+                const img = slide.querySelector('.about-slide-content-img img');
+                if (img) {
+                    gsap.set(img, { clearProps: "all" }); // Reset any inline styles from previous animations
+                }
+            });
+
+            // Animate just the active one
+            const activeSlide = swiper.slides[swiper.activeIndex];
+            const activeImage = activeSlide.querySelector('.about-slide-content-img img');
+            if (activeImage) {
+                gsap.fromTo(activeImage, 
+                    { scale: 0.5, opacity: 0 }, 
+                    {
+                        duration: 1.2,
+                        scale: 1,
+                        opacity: 1,
+                        ease: 'elastic.out(1, 0.75)'
+                    }
+                );
+            }
+        };
+    
+        aboutSwiper = new Swiper(".about-swiper", {
+            loop: true,
+            centeredSlides: true,
+            initialSlide: 0,
+            navigation: {
+                nextEl: ".about-swiper .swiper-button-next",
+                prevEl: ".about-swiper .swiper-button-prev",
+            },
+            breakpoints: {
+                320: {
+                    slidesPerView: 1.5,
+                    spaceBetween: 15
+                },
+                768: {
+                    slidesPerView: 2,
+                    spaceBetween: 30
+                },
+                1200: {
+                    slidesPerView: 3,
+                    spaceBetween: 30
+                }
+            },
+            on: {
+                init: function(swiper) {
+                    setTimeout(() => {
+                        animateActiveImage(swiper);
+                        updateTextContent(swiper);
+                    }, 300);
+                },
+                slideChangeTransitionStart: function (swiper) {
+                    animateActiveImage(swiper);
+                    updateTextContent(swiper);
+                }
+            }
+        });
+    }
+
+    // --- Unified Resize Handler ---
+    let resizeTimer;
+    window.addEventListener('resize', () => {
+        clearTimeout(resizeTimer);
+        resizeTimer = setTimeout(() => {
+            manageLayout();
+            if (isSwiperActive) {
+                updateActiveSlider(swiper, true);
+            }
+        }, 150);
+    });
+
+    // --- Intro / Dev Mode Logic ---
     if (!devSkipIntro) {
-        // ✅ 인트로 애니메이션 사용 여부 스위치 (true: 사용 / false: 사용 안 함)
-        const useIntroAnimation = true;
-        let pulseTimeline; // ✅ pulseTimeline을 더 넓은 범위에서 선언
+        let pulseTimeline;
         let ellipsisInterval = null;
         let textInterval = null;
 
-        if (useIntroAnimation) {
-            // --- Intro Animation Logic ---
-            AOS.init();
-            const introText = '.intro-txt';
-            const cardWrap = '.card-section-wrap';
-            const characterArea = '.character-area';
-            const profile = '.profile';
-            const moreButton = '.more';
-            const connectBox = '.connect';
+        AOS.init();
+        const introText = '.intro-txt';
+        const cardWrap = '.card-section-wrap';
+        const characterArea = '.character-area';
+        const profile = '.profile';
+        const $moreButton = $('.more');
+        const connectBox = '.connect';
 
-            // 1. 초기 상태 설정
-            gsap.set(cardWrap, { opacity: 0, scale: 0.8 });
-            gsap.set([characterArea, profile, moreButton, connectBox], { opacity: 0, y: 30 }); 
-            gsap.set(introText, { opacity: 1 });
+        gsap.set(cardWrap, { opacity: 0, scale: 0.8 });
+        gsap.set([characterArea, profile, $moreButton, connectBox], { opacity: 0, y: 30 });
+        gsap.set(introText, { opacity: 1 });
 
-            new TypeIt(introText, {
-                speed: 200,
-                startDelay: 900,
-                afterComplete: function (instance) {
-                    instance.destroy();
-                    gsap.to(introText, {
-                        duration: 0.2,
-                        opacity: 0,
-                        ease: "power2.in",
-                        delay: 1,
-                        onComplete: () => {
-                            // 2. GSAP 타임라인
-                            const tl = gsap.timeline();
-                            
-                            tl.to(cardWrap, {
-                                duration: 0.8,
-                                opacity: 1,
-                                scale: 1,
-                                ease: "elastic.out(1, 0.5)",
-                            })
-                            .to(characterArea, {
-                                duration: 0.5,
-                                opacity: 1,
-                                y: 0,
-                                ease: "power2.out",
-                                onComplete: () => {
-                                    // iOS 비디오 첫 프레임 강제 표시
-                                    const video = document.querySelector('.character video');
-                                    if (video) {
-                                        // playsinline 속성이 있는 muted 비디오는 대부분의 모던 브라우저에서 자동 재생이 가능합니다.
-                                        // play()는 프로미스를 반환하므로 이를 활용합니다.
-                                        const playPromise = video.play();
-                                        if (playPromise !== undefined) {
-                                            playPromise.then(() => {
-                                                // 재생이 시작되면 즉시 일시정지하고 맨 처음으로 되돌립니다.
-                                                video.pause();
-                                                video.currentTime = 0;
-                                            }).catch(error => {
-                                                // 자동 재생이 차단된 경우(예: 일부 데스크톱 브라우저 정책)
-                                                // 비디오를 로드하고 첫 프레임으로 이동시키는 것으로 충분합니다.
-                                                video.load();
-                                                video.currentTime = 0;
-                                                console.log("Autoplay was prevented, but we are showing the first frame.");
-                                            });
-                                        }
-                                    }
-                                }
-                            }, "-=0.4")
-                            .to(profile, { // ✅ 프로필만 먼저 나타나도록 수정
-                                duration: 0.5,
-                                opacity: 1,
-                                y: 0,
-                                ease: "power2.out",
-                            }, "-=0.3")
-                            .to(connectBox, {
-                                duration: 0.5,
-                                opacity: 1,
-                                y: 0,
-                                ease: "power2.out"
-                            }, "-=0.2")
-                            .to(moreButton, { // ✅ moreButton을 1초 뒤에 별도로 애니메이션
-                                duration: 0.5,
-                                opacity: 1,
-                                y: 0,
-                                ease: "power2.out",
-                            }, "+=1"); // 앞선 애니메이션 흐름이 끝나고 1초 뒤
-                            
-                            // More 버튼 애니메이션 타임라인 생성 및 할당
-                            pulseTimeline = gsap.timeline({
-                                delay: 1.5, // moreButton 등장(1초) + 기존 delay(0.5초)
-                                repeat: -1,
-                                repeatDelay: 2,
-                                onStart: () => {
-                                    // 파티클 배경 나타나게 하기
-                                    document.getElementById('particles-js').style.opacity = '1';
-                                }
-                            })
-                            .to(moreButton, { duration: 0.2, scale: 1.05, ease: "power1.inOut" })
-                            .to(moreButton, { duration: 0.2, scale: 1, ease: "power1.inOut" })
-                            .to(moreButton, { duration: 0.2, scale: 1.05, ease: "power1.inOut" }, "-=0.1")
-                            .to(moreButton, { duration: 0.2, scale: 1, ease: "power1.inOut" });
-                        }
-                    });
-                }
-            })
-            .type("반갑습니다.", { speed: 500 })
-            .go();
-        } else {
-            gsap.set('.card-section-wrap', { opacity: 1, scale: 1 });
+        new TypeIt(introText, {
+            speed: 200,
+            startDelay: 900,
+            afterComplete: function (instance) {
+                instance.destroy();
+                gsap.to(introText, {
+                    duration: 0.2, opacity: 0, ease: "power2.in", delay: 1,
+                    onComplete: () => {
+                        const tl = gsap.timeline();
+                        tl.to(cardWrap, { duration: 0.8, opacity: 1, scale: 1, ease: "elastic.out(1, 0.5)" })
+                          .to(characterArea, { duration: 0.5, opacity: 1, y: 0, ease: "power2.out" }, "-=0.4")
+                          .to(profile, { duration: 0.5, opacity: 1, y: 0, ease: "power2.out" }, "-=0.3")
+                          .to(connectBox, { duration: 0.5, opacity: 1, y: 0, ease: "power2.out" }, "-=0.2")
+                          .to($moreButton, { duration: 0.5, opacity: 1, y: 0, ease: "power2.out" }, "+=1");
+
+                        pulseTimeline = gsap.timeline({ 
+                            delay: 1.5, 
+                            repeat: -1, 
+                            repeatDelay: 2,
+                            onStart: () => {
+                                // 파티클 배경 나타나게 하기
+                                document.getElementById('particles-js').style.opacity = '1';
+                            }
+                        })
+                            .to($moreButton, { duration: 0.2, scale: 1.05, ease: "power1.inOut" })
+                            .to($moreButton, { duration: 0.2, scale: 1, ease: "power1.inOut" })
+                            .to($moreButton, { duration: 0.2, scale: 1.05, ease: "power1.inOut" }, "-=0.1")
+                            .to($moreButton, { duration: 0.2, scale: 1, ease: "power1.inOut" });
+                    }
+                });
+            }
+        }).type("반갑습니다.", { speed: 500 }).go();
+
+        function splitText(element) {
+            const text = element.text();
+            element.empty();
+            for (let i = 0; i < text.length; i++) {
+                const char = (text[i] === ' ') ? '&nbsp;' : text[i];
+                element.append(`<span>${char}</span>`);
+            }
         }
+
+        const dynamicTextSpan = $('.dynamic-text');
+        splitText(dynamicTextSpan);
+
+        const dynamicTexts = ['새로운 인연과', '멋진 동료들과', '새로운 경험과', '다가올 기회와'];
+        let textIndex = 0;
+        const ellipsisSpan = $('.ellipsis');
+        let ellipsisCount = 0;
+        
+        function startTextAnimation() {
+            if (ellipsisInterval) clearInterval(ellipsisInterval);
+            if (textInterval) clearInterval(textInterval);
+
+            ellipsisInterval = setInterval(() => {
+                ellipsisCount = (ellipsisCount + 1) % 4;
+                ellipsisSpan.text('.'.repeat(ellipsisCount || 1).padEnd(3, '\u00A0'));
+            }, 2000);
+
+            textInterval = setInterval(() => {
+                textIndex = (textIndex + 1) % dynamicTexts.length;
+                const newText = dynamicTexts[textIndex];
+                const oldChars = dynamicTextSpan.find('span');
+                const tl = gsap.timeline();
+                tl.to(oldChars, {
+                    duration: 0.3, opacity: 0, rotationX: -90, stagger: 0.05,
+                    onComplete: () => {
+                        dynamicTextSpan.text(newText);
+                        splitText(dynamicTextSpan);
+                        const newChars = dynamicTextSpan.find('span');
+                        gsap.set(newChars, { opacity: 0, rotationX: 90 });
+                        gsap.to(newChars, { duration: 0.3, opacity: 1, rotationX: 0, stagger: 0.05 });
+                    }
+                });
+            }, 5000);
+        }
+        startTextAnimation();
 
         // --- Video Hover Logic ---
         const $video = $('.character video');
         const video = $video[0];
-        const $moreButton = $('.more');
         let animationFrameId;
         let lastTime;
         video.playbackRate = 2.0;
@@ -138,6 +325,7 @@ $(document).ready(function() {
         };
 
         const reverseStep = (timestamp) => {
+            if (!lastTime) lastTime = timestamp;
             const elapsed = (timestamp - lastTime) / 1000;
             lastTime = timestamp;
             video.currentTime -= video.playbackRate * elapsed;
@@ -160,262 +348,6 @@ $(document).ready(function() {
             animationFrameId = requestAnimationFrame(reverseStep);
         };
 
-        // iOS 비디오 초기 프레임 표시 문제 해결을 위한 함수
-        // const setInitialFrame = () => {
-        //     video.currentTime = 0;
-        //     video.pause();
-        // };
-
-        // 비디오 메타데이터가 이미 로드되었는지 확인하고, 그렇지 않다면 이벤트 리스너를 추가합니다.
-        // readyState 1 (HAVE_METADATA)는 비디오의 메타데이터(크기, 길이 등)가 로드되었음을 의미합니다.
-        // if (video.readyState >= 1) {
-        //     setInitialFrame();
-        // } else {
-        //     video.addEventListener('loadedmetadata', setInitialFrame);
-        // }
-
-        // --- Click Logic ---
-        $moreButton.on('click', function(e) {
-            e.preventDefault();
-
-            // 파티클 효과를 즉시 실행
-            // .connect-img 요소의 위치를 기반으로 파티클 시작점 계산
-            const connectImg = document.querySelector('.connect-img');
-            if (connectImg) {
-                const rect = connectImg.getBoundingClientRect();
-                // 요소의 정중앙 좌표 계산
-                const x = rect.left + rect.width / 2;
-                const y = rect.top + rect.height / 2;
-                // Y 좌표를 15px 위로 보정
-                const adjustedY = y + 40;
-
-                // 뷰포트 기준 상대 좌표(0 to 1)로 변환
-                const originX = x / window.innerWidth;
-                const originY = adjustedY / window.innerHeight;
-
-                // confetti 실행
-                confetti({
-                    particleCount: 150,
-                    spread: 430,
-                    origin: { x: originX, y: originY },
-                    colors: ['#00BA00', '#33C733', '#90EE90', '#FFFFFF']
-                });
-            }
-
-            $moreButton.off('mouseenter mouseleave');
-            if (pulseTimeline) {
-                pulseTimeline.kill(); // 반복 애니메이션 완전 제거
-            }
-            // 클릭 시 호버 효과가 남아있지 않도록 원래 스타일로 즉시 복구
-            gsap.set($moreButton, { scale: 1, backgroundColor: '#000000' });
-
-            // 진행중인 텍스트 애니메이션 정지
-            if (textInterval) clearInterval(textInterval);
-            if (ellipsisInterval) clearInterval(ellipsisInterval);
-
-            // 스피너 막대 즉시 숨기기
-            gsap.set('.spinner span', {
-                display: 'none'
-            });
-
-            // 1. 체크 이미지 애니메이션
-            gsap.to('.connect-img', {
-                duration: 0.8,
-                scale: 1,
-                opacity: 1,
-                ease: "elastic.out(1, 0.5)",
-                onComplete: () => {
-                    // 2. 0.5초 후 텍스트 변경
-                    setTimeout(() => {
-                        const connectTextElement = $('.connect-text');
-                        const oldSpans = connectTextElement.children();
-
-                        gsap.to(oldSpans, {
-                            duration: 0.3,
-                            opacity: 0,
-                            rotationX: -90,
-                            stagger: 0.1,
-                            onComplete: () => {
-                                connectTextElement.text('연결 성공 !');
-                                splitText(connectTextElement);
-                                const newChars = connectTextElement.find('span');
-                                gsap.set(newChars, { opacity: 0, rotationX: 90 });
-                                gsap.to(newChars, {
-                                    duration: 0.3,
-                                    opacity: 1,
-                                    rotationX: 0,
-                                    stagger: 0.05,
-                                    onComplete: () => {
-                                        // 3. 0.5초 후 카드 뒤집기
-                                        setTimeout(() => {
-                                            const cardSection = '.card-section';
-                                            const tl = gsap.timeline({
-                                                onComplete: () => {
-                                                    $('.card-front').hide();
-
-                                                    const swiper = new Swiper('.swiper', {
-                                                        direction: 'vertical',
-                                                        speed: 1000,
-                                                        mousewheel: true,
-                                                        keyboard: true,
-                                                        allowTouchMove: false, // ✅ 마우스 드래그 슬라이드 비활성화
-                                                        pagination: {
-                                                            el: '.swiper-pagination', // For internal state tracking
-                                                        },
-                                                        on: {
-                                                            init: function (swiper) {
-                                                                // Force Swiper to start at the very first slide, ignoring any URL hash
-                                                                swiper.slideTo(0, 0); // Move to slide index 0 with 0 animation speed
-                                                                setupCustomPagination(swiper, true); // Pass true for initial setup
-                                                            },
-                                                            slideChange: function (swiper) {
-                                                                updateActiveSlider(swiper, false); // Pass false for subsequent changes
-                                                            }
-                                                        }
-                                                    });
-                                                    
-                                                    const mainNavList = document.querySelector('.main-nav-list');
-                                                    gsap.to(mainNavList, {
-                                                        duration: 0.5,
-                                                        opacity: 1,
-                                                        scale: 1,
-                                                        y: 0,
-                                                        ease: 'back.out(1.7)',
-                                                        delay: 0.3,
-                                                        onStart: () => {
-                                                            mainNavList.classList.remove('init');
-                                                        }
-                                                    });
-                                                }
-                                            });
-                                            tl.to(cardSection, {
-                                                duration: 1.5,
-                                                rotationY: 180,
-                                                ease: "power4.inOut"
-                                            }).to(cardSection, {
-                                                duration: 1.2,
-                                                width: "100vw",
-                                                height: window.innerHeight,
-                                                borderRadius: 0,
-                                                borderWidth: 0,
-                                                ease: "power4.inOut"
-                                            }, "-=1.0");
-
-                                            function setupCustomPagination(swiper, isInitial) {
-                                                const navItems = document.querySelectorAll('.main-nav .nav-item');
-                                                const slideIndexMapping = [0, 2, 3]; // About -> slide 0, Works -> slide 2, Contact -> slide 3
-
-                                                navItems.forEach((item, navIndex) => {
-                                                    item.addEventListener('click', () => {
-                                                        swiper.slideTo(slideIndexMapping[navIndex]);
-                                                    });
-                                                });
-
-                                                updateActiveSlider(swiper, isInitial);
-                                            }
-
-                                            // --- Debounce for resize event ---
-                                            let resizeTimer;
-                                            window.addEventListener('resize', () => {
-                                                clearTimeout(resizeTimer);
-                                                resizeTimer = setTimeout(() => {
-                                                    if (swiper && !swiper.destroyed) {
-                                                        updateActiveSlider(swiper, true); // Use initial mode for resize to avoid animation
-                                                    }
-                                                }, 100);
-                                            });
-
-                                            function updateActiveSlider(swiper, isInitial) {
-                                                const navItems = document.querySelectorAll('.main-nav .nav-item');
-                                                const slider = document.querySelector('.main-nav .active-background');
-                                                
-                                                const slideToNavIndexMapping = [0, 0, 1, 2]; // slide 0,1 -> nav 0 (About); slide 2 -> nav 1 (Works); slide 3 -> nav 2 (Contact)
-                                                const activeNavIndex = slideToNavIndexMapping[swiper.activeIndex];
-                                                const activeNavItem = navItems[activeNavIndex];
-
-                                                if (activeNavItem && slider) {
-                                                    // Update active class for text color
-                                                    navItems.forEach(item => item.classList.remove('active'));
-                                                    activeNavItem.classList.add('active');
-
-                                                    // Animate slider background
-                                                    gsap.killTweensOf(slider);
-                                                    gsap.to(slider, {
-                                                        duration: isInitial ? 0 : 0.4,
-                                                        x: activeNavItem.offsetLeft,
-                                                        width: activeNavItem.offsetWidth,
-                                                        ease: 'power3.inOut'
-                                                    });
-                                                }
-                                            }
-                                        }, 500); // 0.5초 딜레이
-                                    }
-                                });
-                            }
-                        });
-                    }, 500); // 0.5초 딜레이
-                }
-            });
-        });
-
-        // --- Dynamic Text Animation ---
-        const dynamicTexts = [
-            '새로운 인연과',
-            '멋진 동료들과',
-            '새로운 경험과',
-            '다가올 기회와'];
-        let textIndex = 0;
-        const ellipsisSpan = $('.ellipsis');
-        let ellipsisCount = 0;
-        const dynamicTextSpan = $('.dynamic-text');
-
-
-        function startTextAnimation() {
-            if (ellipsisInterval) clearInterval(ellipsisInterval);
-            if (textInterval) clearInterval(textInterval);
-            ellipsisInterval = setInterval(() => {
-                ellipsisCount = (ellipsisCount + 1) % 4;
-                ellipsisSpan.text('.'.repeat(ellipsisCount || 1).padEnd(3, '\u00A0'));
-            }, 2000);
-            textInterval = setInterval(() => {
-                textIndex = (textIndex + 1) % dynamicTexts.length;
-                const newText = dynamicTexts[textIndex];
-                const oldChars = dynamicTextSpan.find('span');
-                const tl = gsap.timeline();
-                tl.to(oldChars, {
-                    duration: 0.3,
-                    opacity: 0,
-                    rotationX: -90,
-                    stagger: 0.05,
-                    onComplete: () => {
-                        dynamicTextSpan.text(newText);
-                        splitText(dynamicTextSpan);
-                        const newChars = dynamicTextSpan.find('span');
-                        gsap.set(newChars, { opacity: 0, rotationX: 90 });
-                        gsap.to(newChars, {
-                            duration: 0.3,
-                            opacity: 1,
-                            rotationX: 0,
-                            stagger: 0.05
-                        });
-                    }
-                });
-            }, 5000);
-        }
-
-        function splitText(element) {
-            const text = element.text();
-            element.empty();
-            for (let i = 0; i < text.length; i++) {
-                const char = (text[i] === ' ') ? '&nbsp;' : text[i];
-                element.append(`<span>${char}</span>`);
-            }
-        }
-
-        splitText(dynamicTextSpan);
-        startTextAnimation();
-
-        // --- Final Hover Handlers ---
         $moreButton.on('mouseenter', () => {
             playForward();
             if (pulseTimeline) {
@@ -423,8 +355,8 @@ $(document).ready(function() {
                 gsap.to($moreButton, {
                     duration: 0.3,
                     scale: 1.05,
-                    backgroundColor: '#1D64F1', // 호버 시 변경될 색상
-                    color: '#fff', // 호버 시 변경될 색상
+                    backgroundColor: '#1D64F1',
+                    color: '#fff',
                     boxShadow: '0 0 0 3px #fff, 0 0 30px rgba(29,100,241,0.6)',
                     ease: 'power2.out'
                 });
@@ -437,7 +369,7 @@ $(document).ready(function() {
                 gsap.to($moreButton, {
                     duration: 0.3,
                     scale: 1,
-                    backgroundColor: '#000000', // 원래 배경색
+                    backgroundColor: '#000000',
                     boxShadow: '0 0 0 3px #fff',
                     ease: 'power2.out',
                     onComplete: () => {
@@ -446,9 +378,71 @@ $(document).ready(function() {
                 });
             }
         });
-        
-    } else {
-        // 개발 모드: 인트로를 모두 스킵하고 카드 뒷면에서 시작합니다.
+
+        // --- Click Logic ---
+        $moreButton.on('click', function(e) {
+            e.preventDefault();
+            $moreButton.off('mouseenter mouseleave');
+            if (pulseTimeline) pulseTimeline.kill();
+            gsap.set($moreButton, { scale: 1, backgroundColor: '#000000' });
+
+            if (textInterval) clearInterval(textInterval);
+            if (ellipsisInterval) clearInterval(ellipsisInterval);
+            gsap.set('.spinner span', { display: 'none' });
+
+            // Particles
+            const connectImg = document.querySelector('.connect-img');
+            const rect = connectImg.getBoundingClientRect();
+            const originX = (rect.left + rect.width / 2) / window.innerWidth;
+            const originY = (rect.top + rect.height / 2 + 40) / window.innerHeight;
+            confetti({ particleCount: 150, spread: 430, origin: { x: originX, y: originY }, colors: ['#00BA00', '#33C733', '#90EE90', '#FFFFFF'] });
+
+            // Checkmark animation
+            gsap.to('.connect-img', { 
+                duration: 0.8, scale: 1, opacity: 1, ease: "elastic.out(1, 0.5)",
+                onComplete: () => {
+                    setTimeout(() => {
+                        const connectTextElement = $('.connect-text');
+                        const oldSpans = connectTextElement.children();
+                        gsap.to(oldSpans, {
+                            duration: 0.3, opacity: 0, rotationX: -90, stagger: 0.1,
+                            onComplete: () => {
+                                connectTextElement.text('연결 성공 !');
+                                splitText(connectTextElement);
+                                const newChars = connectTextElement.find('span');
+                                gsap.set(newChars, { opacity: 0, rotationX: 90 });
+                                gsap.to(newChars, {
+                                    duration: 0.3, opacity: 1, rotationX: 0, stagger: 0.05,
+                                    onComplete: () => {
+                                        setTimeout(() => {
+                                            const cardSection = '.card-section';
+                                            const targetHeight = window.innerHeight;
+                                            const tl = gsap.timeline({
+                                                onComplete: () => {
+                                                    $('.card-front').hide();
+                                                    afterIntro = true;
+                                                    manageLayout();
+                                                    initAboutSwiperObserver();
+                                                    const mainNavList = document.querySelector('.main-nav-list');
+                                                    gsap.to(mainNavList, {
+                                                        duration: 0.5, opacity: 1, scale: 1, y: 0, ease: 'back.out(1.7)', delay: 0.3,
+                                                        onStart: () => mainNavList.classList.remove('init')
+                                                    });
+                                                }
+                                            });
+                                            tl.to(cardSection, { duration: 1.5, rotationY: 180, ease: "expo.inOut" })
+                                              .to(cardSection, { duration: 1.2, width: "100vw", height: targetHeight, borderRadius: 0, borderWidth: 0, ease: "expo.inOut" }, "-=0.8");
+                                        }, 500);
+                                    }
+                                });
+                            }
+                        });
+                    }, 500);
+                }
+            });
+        });
+
+    } else { // --- Dev Mode ---
         gsap.set('.intro-txt, .card-front', { display: 'none' });
         gsap.set('.card-section-wrap', { opacity: 1, scale: 1 });
         gsap.set('.card-section', {
@@ -459,79 +453,14 @@ $(document).ready(function() {
             borderWidth: 0,
         });
 
-        // --- Swiper와 네비게이션을 즉시 설정합니다 ---
-        
-        function updateActiveSlider(swiper, isInitial) {
-            const navItems = document.querySelectorAll('.main-nav .nav-item');
-            const slider = document.querySelector('.main-nav .active-background');
-            
-            const slideToNavIndexMapping = [0, 0, 1, 2];
-            const activeNavIndex = slideToNavIndexMapping[swiper.activeIndex];
-            const activeNavItem = navItems[activeNavIndex];
+        afterIntro = true;
+        manageLayout();
+        initAboutSwiperObserver();
 
-            if (activeNavItem && slider) {
-                navItems.forEach(item => item.classList.remove('active'));
-                activeNavItem.classList.add('active');
-
-                gsap.killTweensOf(slider);
-                gsap.to(slider, {
-                    duration: isInitial ? 0 : 0.4,
-                    x: activeNavItem.offsetLeft,
-                    width: activeNavItem.offsetWidth,
-                    ease: 'power3.inOut'
-                });
-            }
-        }
-
-        function setupCustomPagination(swiper, isInitial) {
-            const navItems = document.querySelectorAll('.main-nav .nav-item');
-            const slideIndexMapping = [0, 2, 3]; 
-
-            navItems.forEach((item, navIndex) => {
-                item.addEventListener('click', () => {
-                    swiper.slideTo(slideIndexMapping[navIndex]);
-                });
-            });
-
-            updateActiveSlider(swiper, isInitial);
-        }
-
-        const swiper = new Swiper('.swiper', {
-            direction: 'vertical',
-            speed: 1000,
-            mousewheel: true,
-            keyboard: true,
-            allowTouchMove: false, 
-            pagination: {
-                el: '.swiper-pagination',
-            },
-            on: {
-                init: function (swiper) {
-                    swiper.slideTo(0, 0);
-                    setupCustomPagination(swiper, true);
-                },
-                slideChange: function (swiper) {
-                    updateActiveSlider(swiper, false);
-                }
-            }
-        });
-        
         const mainNavList = document.querySelector('.main-nav-list');
-        gsap.set(mainNavList, {
-            opacity: 1,
-            scale: 1,
-            y: 0,
-        });
+        gsap.set(mainNavList, { opacity: 1, scale: 1, y: 0 });
         mainNavList.classList.remove('init');
-
-        let resizeTimer;
-        window.addEventListener('resize', () => {
-            clearTimeout(resizeTimer);
-            resizeTimer = setTimeout(() => {
-                if (swiper && !swiper.destroyed) {
-                    updateActiveSlider(swiper, true);
-                }
-            }, 100);
-        });
     }
 });
+
+
