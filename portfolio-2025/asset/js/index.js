@@ -6,7 +6,7 @@ $(document).ready(function() {
     setRealVH();
     window.addEventListener('resize', setRealVH);
 
-    const devSkipIntro = true; // ✅ 개발 모드 스위치
+    const devSkipIntro = false// ✅ 개발 모드 스위치
     let swiper = null;
     let aboutSwiper = null;
     let isSwiperActive = false;
