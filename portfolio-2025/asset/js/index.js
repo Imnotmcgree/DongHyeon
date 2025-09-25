@@ -9,6 +9,7 @@ $(document).ready(function() {
     const devSkipIntro = false// ✅ 개발 모드 스위치
     let swiper = null;
     let aboutSwiper = null;
+    let worksSwiper = null;
     let isSwiperActive = false;
     let afterIntro = false; // A flag to ensure layout management runs only after the intro animation.
 
@@ -45,6 +46,88 @@ $(document).ready(function() {
         updateActiveSlider(swiper, isInitial);
     }
 
+    let readyToLeaveWorks = false;
+    let isWorkScrolling = false;
+    let worksSectionElement = null;
+    let worksWheelHandler = null;
+
+    function playBoundaryFeedbackAnimation(direction) {
+        const y_move = direction === 'down' ? -15 : 15;
+        // Prevent animation overlap
+        if (gsap.isTweening('.works-swiper')) return;
+        gsap.fromTo(".works-swiper", 
+            { y: 0 }, 
+            { y: y_move, duration: 0.15, yoyo: true, repeat: 1, ease: "power1.inOut" }
+        );
+    }
+
+    function initWorksSwiper() {
+        if (worksSwiper || window.innerWidth <= 1200) return;
+        
+        worksSwiper = new Swiper(".works-swiper", {
+            direction: 'vertical',
+            speed: 800,
+            allowTouchMove: false,
+        });
+
+        worksSwiper.on('slideChange', function() {
+            readyToLeaveWorks = false;
+        });
+
+        worksSectionElement = document.querySelector('[data-hash="works"]');
+        
+        worksWheelHandler = function (event) {
+            event.preventDefault();
+
+            if (isWorkScrolling) return;
+
+            const isScrollingDown = event.deltaY > 0;
+
+            if (worksSwiper.isEnd && isScrollingDown) {
+                if (readyToLeaveWorks) {
+                    swiper.mousewheel.enable();
+                    swiper.slideNext();
+                } else {
+                    playBoundaryFeedbackAnimation('down');
+                    readyToLeaveWorks = true;
+                }
+            } else if (worksSwiper.isBeginning && !isScrollingDown) {
+                if (readyToLeaveWorks) {
+                    swiper.mousewheel.enable();
+                    swiper.slidePrev();
+                } else {
+                    playBoundaryFeedbackAnimation('up');
+                    readyToLeaveWorks = true;
+                }
+            } else {
+                readyToLeaveWorks = false;
+                isWorkScrolling = true;
+                if (isScrollingDown) {
+                    worksSwiper.slideNext();
+                } else {
+                    worksSwiper.slidePrev();
+                }
+                setTimeout(() => {
+                    isWorkScrolling = false;
+                }, worksSwiper.params.speed + 50);
+            }
+        };
+        
+        worksSectionElement.addEventListener('wheel', worksWheelHandler, { passive: false });
+    }
+
+    function destroyWorksSwiper() {
+        if (worksSectionElement && worksWheelHandler) {
+            worksSectionElement.removeEventListener('wheel', worksWheelHandler);
+            worksSectionElement = null;
+            worksWheelHandler = null;
+        }
+        if (worksSwiper) {
+            worksSwiper.destroy(true, true);
+            worksSwiper = null;
+        }
+    }
+
     function initSwiper() {
         if (isSwiperActive) return;
         swiper = new Swiper('.main-swiper', {
@@ -58,6 +141,13 @@ $(document).ready(function() {
                 init: (s) => { s.slideTo(0, 0); setupCustomPagination(s, true); },
                 slideChange: (s) => {
                     updateActiveSlider(s, false);
+                    const worksSlideIndex = 2;
+
+                    if (s.activeIndex === worksSlideIndex) {
+                        swiper.mousewheel.disable();
+                    } else {
+                        swiper.mousewheel.enable();
+                    }
                 }
             }
         });
@@ -76,9 +166,11 @@ $(document).ready(function() {
         const isMobileView = window.innerWidth <= 1200;
         if (isMobileView) {
             destroySwiper();
+            destroyWorksSwiper();
             document.body.classList.add('mobile-scroll-view');
         } else {
             initSwiper();
+            initWorksSwiper();
             document.body.classList.remove('mobile-scroll-view');
         }
     }
@@ -122,19 +214,20 @@ $(document).ready(function() {
         ];
     
         const textContainer = document.querySelector('.about-text-content');
-        const titleEl = textContainer.querySelector('h3');
-        const descEl = textContainer.querySelector('p');
+        const textWrapper = textContainer.querySelector('.about-texts');
+        const titleEl = textWrapper.querySelector('h3');
+        const descEl = textWrapper.querySelector('p');
     
         const updateTextContent = (swiper) => {
             const content = textContents[swiper.realIndex];
             if (content) {
-                gsap.to(textContainer, {
+                gsap.to(textWrapper, {
                     duration: 0.2,
                     opacity: 0,
                     onComplete: () => {
                         titleEl.innerHTML = content.title;
                         descEl.innerHTML = content.description;
-                        gsap.to(textContainer, { duration: 0.3, opacity: 1 });
+                        gsap.to(textWrapper, { duration: 0.3, opacity: 1 });
                     }
                 });
             }
@@ -170,8 +263,8 @@ $(document).ready(function() {
             centeredSlides: true,
             initialSlide: 0,
             navigation: {
-                nextEl: ".about-swiper .swiper-button-next",
-                prevEl: ".about-swiper .swiper-button-prev",
+                nextEl: ".about-text-content .swiper-button-next",
+                prevEl: ".about-text-content .swiper-button-prev",
             },
             breakpoints: {
                 320: {
@@ -461,6 +554,133 @@ $(document).ready(function() {
         gsap.set(mainNavList, { opacity: 1, scale: 1, y: 0 });
         mainNavList.classList.remove('init');
     }
+
+    // --- Portfolio Modal Logic ---
+    const portfolioData = {
+        item1: {
+            type: 'iframe',
+            iframeSrc: 'https://web.idigrow.com/donga_ele_eng_minigame/ele/5th_grade/contents/lesson01/E50_01002P01/index.html',
+            tags: { 'HTML5': 'tag-html', 'CSS3': 'tag-css', 'JavaScript': 'tag-js' },
+            title: '달려! 달려! 스피드런',
+            description: `
+                <p>본 프로젝트는 어린이 대상의 인터랙션 콘텐츠 웹페이지입니다. 기획 및 디자인, 이미지 자료는 클라이언트 측에서 제공되었으며, HTML, CSS, JavaScript를 활용해 마크업 및 인터렉션 구현을 담당하였습니다.</p>
+                <p>주요 구현 내용은 다음과 같습니다:</p>
+                <ul>
+                    <li>캐릭터의 러닝 모션 애니메이션 처리</li>
+                    <li>정답/오답 로직에 따른 이벤트 동작 구현</li>
+                    <li>캐릭터 선택에 따라 cloneNode 메서드를 활용한 플레이어 및 NPC 동작 생성</li>
+                </ul>
+            `
+        },
+        item2: {
+            type: 'image',
+            imgSrc: 'https://via.placeholder.com/800x600/e9e9e9/BDBDBD?text=Cave+Explorer',
+            tags: { 'HTML5': 'tag-html', 'CSS3': 'tag-css', 'JavaScript': 'tag-js' },
+            title: '동굴 모험가',
+            description: `<p>동굴 모험가 프로젝트에 대한 상세 설명입니다.</p>`
+        },
+        item3: {
+            type: 'image',
+            imgSrc: 'https://via.placeholder.com/800x600/e9e9e9/BDBDBD?text=Mountain+Explorer',
+            tags: { 'HTML5': 'tag-html', 'CSS3': 'tag-css', 'JavaScript': 'tag-js' },
+            title: '설산모험가',
+            description: `<p>설산모험가 프로젝트에 대한 상세 설명입니다.</p>`
+        },
+        item4: {
+            type: 'image',
+            imgSrc: 'https://via.placeholder.com/800x600/e9e9e9/BDBDBD?text=Interaction+Page',
+            tags: { 'HTML5': 'tag-html', 'CSS3': 'tag-css', 'JavaScript': 'tag-js' },
+            title: '단원 도입 인터렉션 페이지',
+            description: `<p>단원 도입 인터렉션 페이지 프로젝트에 대한 상세 설명입니다.</p>`
+        },
+        item5: {
+            type: 'image',
+            imgSrc: 'https://via.placeholder.com/800x600/e9e9e9/BDBDBD?text=AIFD+Publishing',
+            tags: { 'HTML5': 'tag-html', 'CSS3': 'tag-css', 'Sass': 'tag-sass' },
+            title: 'AIFD 웹사이트 퍼블리싱',
+            description: `<p>AIFD 웹사이트 퍼블리싱 프로젝트에 대한 상세 설명입니다.</p>`
+        },
+        item6: {
+            type: 'image',
+            imgSrc: 'https://via.placeholder.com/800x600/e9e9e9/BDBDBD?text=Word+Quiz',
+            tags: { 'HTML5': 'tag-html', 'CSS3': 'tag-css', 'JavaScript': 'tag-js' },
+            title: '가로세로 낱말 퀴즈 인터렉션',
+            description: `<p>가로세로 낱말 퀴즈 인터렉션 프로젝트에 대한 상세 설명입니다.</p>`
+        },
+        item7: {
+            type: 'image',
+            imgSrc: 'https://via.placeholder.com/800x600/e9e9e9/BDBDBD?text=Humanmade',
+            tags: { 'HTML5': 'tag-html', 'CSS3': 'tag-css', 'JavaScript': 'tag-js' },
+            title: '휴먼메이드 퍼블리싱',
+            description: `<p>휴먼메이드 퍼블리싱 프로젝트에 대한 상세 설명입니다.</p>`
+        },
+        item8: {
+            type: 'image',
+            imgSrc: 'https://via.placeholder.com/800x600/e9e9e9/BDBDBD?text=Liverpool+FC',
+            tags: { 'React': 'tag-react', 'Sass': 'tag-sass' },
+            title: '리버풀 웹사이트 퍼블리싱',
+            description: `<p>리버풀 웹사이트 퍼블리싱 프로젝트에 대한 상세 설명입니다.</p>`
+        }
+    };
+
+    const portfolioModalEl = document.getElementById('portfolioModal');
+    const portfolioModal = new bootstrap.Modal(portfolioModalEl);
+    const workItems = document.querySelectorAll('.work-item');
+
+    workItems.forEach((item, index) => {
+        const button = item.querySelector('.work-item-btn');
+        const itemKey = `item${index + 1}`;
+        
+        button.addEventListener('click', () => {
+            const data = portfolioData[itemKey];
+            if (data) {
+                // Get modal elements
+                const mediaContainer = portfolioModalEl.querySelector('.modal-img-container');
+                const modalTags = portfolioModalEl.querySelector('#modal-tags');
+                const modalTitle = portfolioModalEl.querySelector('#portfolioModalLabel');
+                const modalDesc = portfolioModalEl.querySelector('#modal-desc');
+
+                // Always clear previous content
+                mediaContainer.innerHTML = '';
+                modalTags.innerHTML = '';
+
+                // Populate based on type
+                if (data.type === 'iframe') {
+                    const iframe = document.createElement('iframe');
+                    iframe.src = data.iframeSrc;
+                    iframe.setAttribute('frameborder', '0');
+                    mediaContainer.appendChild(iframe);
+                } else { // 'image' or default
+                    const img = document.createElement('img');
+                    img.src = data.imgSrc;
+                    img.alt = `${data.title} project image`;
+                    img.className = 'img-fluid';
+                    mediaContainer.appendChild(img);
+                }
+
+                // Populate common info
+                modalTitle.textContent = data.title;
+                modalDesc.innerHTML = data.description;
+                
+                for (const [text, className] of Object.entries(data.tags)) {
+                    const li = document.createElement('li');
+                    const span = document.createElement('span');
+                    span.className = className;
+                    span.textContent = text;
+                    li.appendChild(span);
+                    modalTags.appendChild(li);
+                }
+                
+                portfolioModal.show();
+            }
+        });
+    });
+
+    // Stop iframe content (videos, etc.) when modal is closed
+    portfolioModalEl.addEventListener('hidden.bs.modal', function () {
+        const mediaContainer = portfolioModalEl.querySelector('.modal-img-container');
+        mediaContainer.innerHTML = ''; // Clear the container to stop iframe
+    });
 });
 
 
