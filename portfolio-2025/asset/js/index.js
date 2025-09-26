@@ -6,7 +6,7 @@ $(document).ready(function() {
     setRealVH();
     window.addEventListener('resize', setRealVH);
 
-    const devSkipIntro = false// ✅ 개발 모드 스위치
+    const devSkipIntro = false;// ✅ 개발 모드 스위치
     let swiper = null;
     let aboutSwiper = null;
     let worksSwiper = null;
@@ -445,30 +445,14 @@ $(document).ready(function() {
             playForward();
             if (pulseTimeline) {
                 pulseTimeline.pause();
-                gsap.to($moreButton, {
-                    duration: 0.3,
-                    scale: 1.05,
-                    backgroundColor: '#1D64F1',
-                    color: '#fff',
-                    boxShadow: '0 0 0 3px #fff, 0 0 30px rgba(29,100,241,0.6)',
-                    ease: 'power2.out'
-                });
+                gsap.set($moreButton, { clearProps: "transform" });
             }
         });
 
         $moreButton.on('mouseleave', () => {
             playReverse();
             if (pulseTimeline) {
-                gsap.to($moreButton, {
-                    duration: 0.3,
-                    scale: 1,
-                    backgroundColor: '#000000',
-                    boxShadow: '0 0 0 3px #fff',
-                    ease: 'power2.out',
-                    onComplete: () => {
-                        pulseTimeline.resume();
-                    }
-                });
+                pulseTimeline.resume();
             }
         });
 
@@ -556,76 +540,14 @@ $(document).ready(function() {
     }
 
     // --- Portfolio Modal Logic ---
-    const portfolioData = {
-        item1: {
-            type: 'iframe',
-            iframeSrc: 'https://web.idigrow.com/donga_ele_eng_minigame/ele/5th_grade/contents/lesson01/E50_01002P01/index.html',
-            tags: { 'HTML5': 'tag-html', 'CSS3': 'tag-css', 'JavaScript': 'tag-js' },
-            title: '달려! 달려! 스피드런',
-            description: `
-                <p>본 프로젝트는 어린이 대상의 인터랙션 콘텐츠 웹페이지입니다. 기획 및 디자인, 이미지 자료는 클라이언트 측에서 제공되었으며, HTML, CSS, JavaScript를 활용해 마크업 및 인터렉션 구현을 담당하였습니다.</p>
-                <p>주요 구현 내용은 다음과 같습니다:</p>
-                <ul>
-                    <li>캐릭터의 러닝 모션 애니메이션 처리</li>
-                    <li>정답/오답 로직에 따른 이벤트 동작 구현</li>
-                    <li>캐릭터 선택에 따라 cloneNode 메서드를 활용한 플레이어 및 NPC 동작 생성</li>
-                </ul>
-            `
-        },
-        item2: {
-            type: 'image',
-            imgSrc: 'https://via.placeholder.com/800x600/e9e9e9/BDBDBD?text=Cave+Explorer',
-            tags: { 'HTML5': 'tag-html', 'CSS3': 'tag-css', 'JavaScript': 'tag-js' },
-            title: '동굴 모험가',
-            description: `<p>동굴 모험가 프로젝트에 대한 상세 설명입니다.</p>`
-        },
-        item3: {
-            type: 'image',
-            imgSrc: 'https://via.placeholder.com/800x600/e9e9e9/BDBDBD?text=Mountain+Explorer',
-            tags: { 'HTML5': 'tag-html', 'CSS3': 'tag-css', 'JavaScript': 'tag-js' },
-            title: '설산모험가',
-            description: `<p>설산모험가 프로젝트에 대한 상세 설명입니다.</p>`
-        },
-        item4: {
-            type: 'image',
-            imgSrc: 'https://via.placeholder.com/800x600/e9e9e9/BDBDBD?text=Interaction+Page',
-            tags: { 'HTML5': 'tag-html', 'CSS3': 'tag-css', 'JavaScript': 'tag-js' },
-            title: '단원 도입 인터렉션 페이지',
-            description: `<p>단원 도입 인터렉션 페이지 프로젝트에 대한 상세 설명입니다.</p>`
-        },
-        item5: {
-            type: 'image',
-            imgSrc: 'https://via.placeholder.com/800x600/e9e9e9/BDBDBD?text=AIFD+Publishing',
-            tags: { 'HTML5': 'tag-html', 'CSS3': 'tag-css', 'Sass': 'tag-sass' },
-            title: 'AIFD 웹사이트 퍼블리싱',
-            description: `<p>AIFD 웹사이트 퍼블리싱 프로젝트에 대한 상세 설명입니다.</p>`
-        },
-        item6: {
-            type: 'image',
-            imgSrc: 'https://via.placeholder.com/800x600/e9e9e9/BDBDBD?text=Word+Quiz',
-            tags: { 'HTML5': 'tag-html', 'CSS3': 'tag-css', 'JavaScript': 'tag-js' },
-            title: '가로세로 낱말 퀴즈 인터렉션',
-            description: `<p>가로세로 낱말 퀴즈 인터렉션 프로젝트에 대한 상세 설명입니다.</p>`
-        },
-        item7: {
-            type: 'image',
-            imgSrc: 'https://via.placeholder.com/800x600/e9e9e9/BDBDBD?text=Humanmade',
-            tags: { 'HTML5': 'tag-html', 'CSS3': 'tag-css', 'JavaScript': 'tag-js' },
-            title: '휴먼메이드 퍼블리싱',
-            description: `<p>휴먼메이드 퍼블리싱 프로젝트에 대한 상세 설명입니다.</p>`
-        },
-        item8: {
-            type: 'image',
-            imgSrc: 'https://via.placeholder.com/800x600/e9e9e9/BDBDBD?text=Liverpool+FC',
-            tags: { 'React': 'tag-react', 'Sass': 'tag-sass' },
-            title: '리버풀 웹사이트 퍼블리싱',
-            description: `<p>리버풀 웹사이트 퍼블리싱 프로젝트에 대한 상세 설명입니다.</p>`
-        }
-    };
-
     const portfolioModalEl = document.getElementById('portfolioModal');
     const portfolioModal = new bootstrap.Modal(portfolioModalEl);
     const workItems = document.querySelectorAll('.work-item');
+    const modalCloseBtn = document.getElementById('modal-close-btn');
+
+    modalCloseBtn.addEventListener('click', () => {
+        portfolioModal.hide();
+    });
 
     workItems.forEach((item, index) => {
         const button = item.querySelector('.work-item-btn');
