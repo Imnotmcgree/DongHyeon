@@ -356,7 +356,7 @@ $(document).ready(function() {
                     }
                 });
             }
-        }).type("반갑습니다.", { speed: 500 }).go();
+        }).type("깃액션 연동 테스트 중.", { speed: 500 }).go();
 
         function splitText(element) {
             const text = element.text();
