@@ -1383,7 +1383,8 @@ caption, .text-hide {
   left: 0;
   width: 100%;
   height: 100%;
-  object-fit: cover;
+  -o-object-fit: cover;
+     object-fit: cover;
 }
 .card-section-wrap .card-section .profile-area {
   display: flex;
@@ -1421,7 +1422,8 @@ caption, .text-hide {
   width: 100%;
   height: 100%;
   border-radius: 50%;
-  object-fit: cover;
+  -o-object-fit: cover;
+     object-fit: cover;
 }
 .card-section-wrap .card-section .profile-area .profile .profile-photo::after {
   content: "";
@@ -1612,7 +1614,8 @@ body.mobile-scroll-view .main-nav, body.mobile-scroll-view .arrow-down {
   left: 0;
   width: 100%;
   height: 100%;
-  object-fit: contain;
+  -o-object-fit: contain;
+     object-fit: contain;
 }
 .arrow-down .arrow-item .active {
   opacity: 0;
@@ -1773,7 +1776,8 @@ body.mobile-scroll-view .main-nav, body.mobile-scroll-view .arrow-down {
   }
 }
 .about-content .left article .tag-list li img {
-  object-fit: contain;
+  -o-object-fit: contain;
+     object-fit: contain;
   height: 90px;
 }
 @media (max-width: 768px) {
@@ -2085,7 +2089,8 @@ body.mobile-scroll-view .works-swiper .work-item .work-item-btn {
 .portfolio-modal .modal-body .modal-left .modal-img-container img, .portfolio-modal .modal-body .modal-left .modal-img-container iframe {
   width: 100%;
   height: 100%;
-  object-fit: cover;
+  -o-object-fit: cover;
+     object-fit: cover;
   border-radius: 20px;
   background-color: #f0f0f0;
   border: none;
@@ -2198,6 +2203,9 @@ body.mobile-scroll-view .works-swiper .work-item .work-item-btn {
   padding: 10px 0;
   font-size: 20px;
 }
+.contact-container .contact-form-wrap form .form-control::-moz-placeholder {
+  font-size: 20px;
+}
 .contact-container .contact-form-wrap form .form-control::placeholder {
   font-size: 20px;
 }
@@ -2209,6 +2217,9 @@ body.mobile-scroll-view .works-swiper .work-item .work-item-btn {
   border: 1px solid #ced4da;
   border-radius: 10px;
   padding: 10px;
+  font-size: 20px;
+}
+.contact-container .contact-form-wrap form textarea.form-control::-moz-placeholder {
   font-size: 20px;
 }
 .contact-container .contact-form-wrap form textarea.form-control::placeholder {
@@ -2248,7 +2259,8 @@ body.mobile-scroll-view .works-swiper .work-item .work-item-btn {
 .contact-container .contact-info-wrap .contact-info-card .profile-img img {
   width: 100%;
   height: 100%;
-  object-fit: cover;
+  -o-object-fit: cover;
+     object-fit: cover;
 }
 .contact-container .contact-info-wrap .contact-info-card .name {
   font-size: 2.8rem;
