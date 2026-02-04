@@ -6,7 +6,7 @@ $(document).ready(function() {
     setRealVH();
     window.addEventListener('resize', setRealVH);
 
-    const devSkipIntro = false;// ✅ 개발 모드 스위치
+    const devSkipIntro = true;// ✅ 개발 모드 스위치
     let swiper = null;
     let aboutSwiper = null;
     let worksSwiper = null;
@@ -138,7 +138,12 @@ $(document).ready(function() {
             allowTouchMove: false,
             pagination: { el: '.swiper-pagination' },
             on: {
-                init: (s) => { s.slideTo(0, 0); setupCustomPagination(s, true); },
+                init: (s) => {
+                    s.slideTo(0, 0);
+                    setupCustomPagination(s, true);
+                    const cardBack = document.querySelector('.card-back');
+                    if (cardBack) cardBack.classList.remove('card-back--values-bg');
+                },
                 slideChange: (s) => {
                     updateActiveSlider(s, false);
                     const worksSlideIndex = 2;
@@ -147,6 +152,11 @@ $(document).ready(function() {
                         swiper.mousewheel.disable();
                     } else {
                         swiper.mousewheel.enable();
+                    }
+
+                    const cardBack = document.querySelector('.card-back');
+                    if (cardBack) {
+                        cardBack.classList.toggle('card-back--values-bg', s.activeIndex === 1);
                     }
                 }
             }
@@ -168,6 +178,8 @@ $(document).ready(function() {
             destroySwiper();
             destroyWorksSwiper();
             document.body.classList.add('mobile-scroll-view');
+            const cardBack = document.querySelector('.card-back');
+            if (cardBack) cardBack.classList.remove('card-back--values-bg');
         } else {
             initSwiper();
             initWorksSwiper();
@@ -583,15 +595,30 @@ $(document).ready(function() {
                 // Populate common info
                 modalTitle.textContent = data.title;
                 modalDesc.innerHTML = data.description;
-                
-                for (const [text, className] of Object.entries(data.tags)) {
+
+                // tags: ['html', 'css', 'js'] → 자동으로 표시 텍스트 + 클래스 매핑
+                const TAG_MAP = {
+                    html: { text: 'HTML5', class: 'tag-html' },
+                    css: { text: 'CSS3', class: 'tag-css' },
+                    js: { text: 'JavaScript', class: 'tag-js' },
+                    jquery: { text: 'jQuery', class: 'tag-jquery' },
+                    scss: { text: 'Sass', class: 'tag-sass' },
+                    sass: { text: 'Sass', class: 'tag-sass' },
+                    react: { text: 'React', class: 'tag-react' },
+                    vue: { text: 'Vue', class: 'tag-vue' }
+                };
+                const tagList = Array.isArray(data.tags) ? data.tags : Object.keys(data.tags || {});
+                tagList.forEach((key) => {
+                    const mapped = TAG_MAP[key.toLowerCase()];
+                    const text = mapped ? mapped.text : key;
+                    const className = mapped ? mapped.class : 'tag-' + key.toLowerCase();
                     const li = document.createElement('li');
                     const span = document.createElement('span');
                     span.className = className;
                     span.textContent = text;
                     li.appendChild(span);
                     modalTags.appendChild(li);
-                }
+                });
                 
                 portfolioModal.show();
             }
@@ -603,6 +630,6 @@ $(document).ready(function() {
         const mediaContainer = portfolioModalEl.querySelector('.modal-img-container');
         mediaContainer.innerHTML = ''; // Clear the container to stop iframe
     });
+
+   
 });
-
-
