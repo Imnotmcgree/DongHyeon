@@ -584,6 +584,37 @@ $(document).ready(function() {
                     iframe.src = data.iframeSrc;
                     iframe.setAttribute('frameborder', '0');
                     mediaContainer.appendChild(iframe);
+                } else if (data.type === 'iframe-tabs' && data.iframeTabs && data.iframeTabs.length) {
+                    const wrap = document.createElement('div');
+                    wrap.className = 'modal-iframe-tabs';
+                    const view = document.createElement('div');
+                    view.className = 'modal-iframe-tabs-view';
+                    data.iframeTabs.forEach((tab, i) => {
+                        const iframe = document.createElement('iframe');
+                        iframe.src = tab.src;
+                        iframe.setAttribute('frameborder', '0');
+                        iframe.className = 'modal-iframe-tab-pane';
+                        if (i > 0) iframe.classList.add('is-hidden');
+                        view.appendChild(iframe);
+                    });
+                    const btns = document.createElement('div');
+                    btns.className = 'modal-iframe-tab-btns';
+                    data.iframeTabs.forEach((tab, i) => {
+                        const btn = document.createElement('button');
+                        btn.type = 'button';
+                        btn.className = 'modal-iframe-tab-btn' + (i === 0 ? ' is-active' : '');
+                        btn.textContent = tab.label;
+                        btn.addEventListener('click', () => {
+                            view.querySelectorAll('.modal-iframe-tab-pane').forEach((p, j) => {
+                                p.classList.toggle('is-hidden', j !== i);
+                            });
+                            btns.querySelectorAll('.modal-iframe-tab-btn').forEach((b, j) => b.classList.toggle('is-active', j === i));
+                        });
+                        btns.appendChild(btn);
+                    });
+                    wrap.appendChild(view);
+                    wrap.appendChild(btns);
+                    mediaContainer.appendChild(wrap);
                 } else { // 'image' or default
                     const img = document.createElement('img');
                     img.src = data.imgSrc;

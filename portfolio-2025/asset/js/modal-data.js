@@ -141,8 +141,11 @@ const portfolioData = {
         `
     },
     item4: {
-        type: 'image',
-        imgSrc: 'https://via.placeholder.com/800x600/e9e9e9/BDBDBD?text=Interaction+Page',
+        type: 'iframe-tabs',
+        iframeTabs: [
+            { label: '유형 1', src: 'https://webdonghyeon.dothome.co.kr/portfolio/intro/lesson01-2/frame.html' },
+            { label: '유형 2', src: 'https://webdonghyeon.dothome.co.kr/portfolio/intro/lesson08-2/frame.html' }
+        ],
         tags: ['html', 'css', 'js'],
         title: '단원 도입 인터렉션 페이지',
         description: `<p>단원 도입 인터렉션 페이지 프로젝트에 대한 상세 설명입니다.</p>`

@@ -1028,7 +1028,7 @@ body.mobile-scroll-view {
             height: 460px;
             .modal-img-container {
                 height: 100%;
-                
+
                 img, iframe {
                     width: 100%;
                     height: 100%;
@@ -1036,6 +1036,60 @@ body.mobile-scroll-view {
                     border-radius: 20px;
                     background-color: #f0f0f0;
                     border: none;
+                }
+
+                .modal-iframe-tabs {
+                    display: flex;
+                    flex-direction: column;
+                    height: 100%;
+                    gap: 8px;
+                }
+                .modal-iframe-tabs-view {
+                    position: relative;
+                    flex: 1;
+                    min-height: 0;
+                    border-radius: 20px;
+                    overflow: hidden;
+                    background-color: #f0f0f0;
+                }
+                .modal-iframe-tab-pane {
+                    position: absolute;
+                    top: 0;
+                    left: 0;
+                    width: 100%;
+                    height: 100%;
+                    border: none;
+                    border-radius: 20px;
+                    &.is-hidden {
+                        visibility: hidden;
+                        pointer-events: none;
+                    }
+                }
+                .modal-iframe-tab-btns {
+                    display: flex;
+                    justify-content: center;
+                    gap: 8px;
+                    flex-shrink: 0;
+                }
+                .modal-iframe-tab-btn {
+                    padding: 6px 14px;
+                    font-size: 12px;
+                    font-weight: 500;
+                    color: #555;
+                    background: #eee;
+                    border: 1px solid #ddd;
+                    border-radius: 10px;
+                    cursor: pointer;
+                    transition: background-color 0.2s, color 0.2s;
+                    &:hover {
+                        background: #e0e0e0;
+                        color: #333;
+                    }
+                    &.is-active {
+                        background: #2563EB;
+                        color: #fff;
+                        border-color: #2563EB;
+                    }
                 }
             }
         }

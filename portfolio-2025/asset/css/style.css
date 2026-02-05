@@ -2123,6 +2123,59 @@ body.mobile-scroll-view .works-swiper .work-item .work-item-btn {
   background-color: #f0f0f0;
   border: none;
 }
+.portfolio-modal .modal-body .modal-left .modal-img-container .modal-iframe-tabs {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  gap: 8px;
+}
+.portfolio-modal .modal-body .modal-left .modal-img-container .modal-iframe-tabs-view {
+  position: relative;
+  flex: 1;
+  min-height: 0;
+  border-radius: 20px;
+  overflow: hidden;
+  background-color: #f0f0f0;
+}
+.portfolio-modal .modal-body .modal-left .modal-img-container .modal-iframe-tab-pane {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  border: none;
+  border-radius: 20px;
+}
+.portfolio-modal .modal-body .modal-left .modal-img-container .modal-iframe-tab-pane.is-hidden {
+  visibility: hidden;
+  pointer-events: none;
+}
+.portfolio-modal .modal-body .modal-left .modal-img-container .modal-iframe-tab-btns {
+  display: flex;
+  justify-content: center;
+  gap: 8px;
+  flex-shrink: 0;
+}
+.portfolio-modal .modal-body .modal-left .modal-img-container .modal-iframe-tab-btn {
+  padding: 6px 14px;
+  font-size: 12px;
+  font-weight: 500;
+  color: #555;
+  background: #eee;
+  border: 1px solid #ddd;
+  border-radius: 10px;
+  cursor: pointer;
+  transition: background-color 0.2s, color 0.2s;
+}
+.portfolio-modal .modal-body .modal-left .modal-img-container .modal-iframe-tab-btn:hover {
+  background: #e0e0e0;
+  color: #333;
+}
+.portfolio-modal .modal-body .modal-left .modal-img-container .modal-iframe-tab-btn.is-active {
+  background: #2563EB;
+  color: #fff;
+  border-color: #2563EB;
+}
 .portfolio-modal .modal-body .modal-right {
   flex: 1;
 }
