@@ -1993,8 +1993,8 @@ body.mobile-scroll-view .main-nav, body.mobile-scroll-view .arrow-down {
   overflow: hidden;
 }
 .works-swiper .work-item .work-item-thumb video {
-  width: 102%;
-  height: 102%;
+  width: 105%;
+  height: 105%;
 }
 .works-swiper .work-item .work-item-info {
   display: flex;
@@ -2220,6 +2220,9 @@ body.mobile-scroll-view .works-swiper .work-item .work-item-btn {
 }
 .portfolio-modal .modal-tags li:has(span.tag-vue) {
   background-color: #4FC08D;
+}
+.portfolio-modal .modal-tags li:has(span.tag-lottie) {
+  background-color: #00DAB1;
 }
 .portfolio-modal .modal-title {
   font-size: 4rem;

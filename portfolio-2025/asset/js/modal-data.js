@@ -2,7 +2,7 @@ const portfolioData = {
     item1: {
         type: 'iframe',
         iframeSrc: 'https://web.idigrow.com/donga_ele_eng_minigame/ele/5th_grade/contents/lesson01/E50_01002P01/index.html',
-        tags: ['html', 'css', 'js', 'jquery'],
+        tags: ['html', 'css', 'js', 'jQuery'],
         title: '듣고! 달려! 스피드런',
         description: `
        <p>
@@ -59,7 +59,7 @@ const portfolioData = {
     item2: {
         type: 'iframe',
         iframeSrc: 'https://web.idigrow.com/donga_ele_eng_minigame/ele/5th_grade/contents/lesson01/E50_01002P04/index.html',
-        tags: ['html', 'css', 'js', 'jquery'],
+        tags: ['html', 'css', 'js', 'jQuery'],
         title: '읽기 모험가 : 동굴편',
         description: ` 
         <p>주요 구현 내용은 다음과 같습니다.</p>
@@ -105,7 +105,7 @@ const portfolioData = {
     item3: {
         type: 'iframe',
         iframeSrc: 'https://web.idigrow.com/donga_ele_eng_minigame/ele/5th_grade/contents/lesson10/E50_10002P04/index.html',
-        tags: ['html', 'css', 'js'],
+        tags: ['html', 'css', 'js','jQuery','Lottie'],
         title: '읽기모험가:설산편',
         description:  ` 
         <p>주요 구현 내용은 다음과 같습니다.</p>
@@ -146,13 +146,13 @@ const portfolioData = {
             { label: '유형 1', src: 'https://webdonghyeon.dothome.co.kr/portfolio/intro/lesson01-2/frame.html' },
             { label: '유형 2', src: 'https://webdonghyeon.dothome.co.kr/portfolio/intro/lesson08-2/frame.html' }
         ],
-        tags: ['html', 'css', 'js'],
+        tags: ['html', 'css', 'js','jQuery'],
         title: '단원 도입 인터렉션 페이지',
         description: `<p>단원 도입 인터렉션 페이지 프로젝트에 대한 상세 설명입니다.</p>`
     },
     item5: {
-        type: 'image',
-        imgSrc: 'https://via.placeholder.com/800x600/e9e9e9/BDBDBD?text=AIFD+Publishing',
+        type: 'iframe',
+        iframeSrc: 'https://webdonghyeon.dothome.co.kr/portfolio/markup/_markup.html',
         tags: ['html', 'css', 'scss'],
         title: 'AIFD 웹사이트 퍼블리싱',
         description: `<p>AIFD 웹사이트 퍼블리싱 프로젝트에 대한 상세 설명입니다.</p>`

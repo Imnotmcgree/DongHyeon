@@ -1,89 +1,96 @@
 $(document).ready(function() {
-    // --- Mobile 100vh fix ---
-    const setRealVH = () => {
-        document.documentElement.style.setProperty('--vh', `${window.innerHeight * 0.01}px`);
-    };
+    // ========== 1. 모바일 화면 높이 보정 (100vh) ==========
+    function setRealVH() {
+        const vh = window.innerHeight * 0.01;
+        $('html').css('--vh', vh + 'px');
+    }
     setRealVH();
-    window.addEventListener('resize', setRealVH);
+    $(window).on('resize', setRealVH);
 
-    const devSkipIntro = true;// ✅ 개발 모드 스위치
+    // ========== 공통 변수 ==========
+    const devSkipIntro = true;  // true: 인트로 건너뛰기(개발용), false: 인트로 재생
     let swiper = null;
     let aboutSwiper = null;
     let worksSwiper = null;
     let isSwiperActive = false;
-    let afterIntro = false; // A flag to ensure layout management runs only after the intro animation.
+    let afterIntro = false;  // 인트로가 끝난 뒤에만 레이아웃 전환 실행
 
-    // --- Core Functions for Layout Management ---
+    // ========== 2. 메인 네비게이션 (슬라이드 ↔ 메뉴 동기화) ==========
+    // 슬라이드 인덱스에 따라 어느 메뉴가 활성인지: [홈, 홈, 어바웃, 워크스]
+    const SLIDE_TO_NAV = [0, 0, 1, 2];
+    // 메뉴 클릭 시 이동할 슬라이드 인덱스: [홈, 어바웃, 워크스]
+    const NAV_TO_SLIDE = [0, 2, 3];
+
     function updateActiveSlider(swiper, isInitial) {
         if (!swiper || swiper.destroyed) return;
-        const navItems = document.querySelectorAll('.main-nav .nav-item');
-        const slider = document.querySelector('.main-nav .active-background');
-        const slideToNavIndexMapping = [0, 0, 1, 2];
-        const activeNavIndex = slideToNavIndexMapping[swiper.activeIndex];
-        const activeNavItem = navItems[activeNavIndex];
-        if (activeNavItem && slider) {
-            navItems.forEach(item => item.classList.remove('active'));
-            activeNavItem.classList.add('active');
-            gsap.to(slider, {
-                duration: isInitial ? 0 : 0.4,
-                x: activeNavItem.offsetLeft,
-                width: activeNavItem.offsetWidth,
-                ease: 'power3.inOut'
-            });
-        }
+
+        const $navItems = $('.main-nav .nav-item');
+        const $slider = $('.main-nav .active-background');
+        const navIndex = SLIDE_TO_NAV[swiper.activeIndex];
+        const $activeItem = $navItems.eq(navIndex);
+
+        if (!$activeItem.length || !$slider.length) return;
+
+        $navItems.removeClass('active');
+        $activeItem.addClass('active');
+
+        const duration = isInitial ? 0 : 0.4;
+        const el = $activeItem[0];
+        gsap.to($slider[0], {
+            duration: duration,
+            x: el.offsetLeft,
+            width: el.offsetWidth,
+            ease: 'power3.inOut'
+        });
     }
 
     function setupCustomPagination(swiper, isInitial) {
-        const navItems = document.querySelectorAll('.main-nav .nav-item');
-        const slideIndexMapping = [0, 2, 3];
-        navItems.forEach((item, navIndex) => {
-            item.addEventListener('click', () => {
+        $('.main-nav .nav-item').each(function (navIndex) {
+            $(this).on('click', function () {
                 if (swiper && !swiper.destroyed) {
-                    swiper.slideTo(slideIndexMapping[navIndex]);
+                    swiper.slideTo(NAV_TO_SLIDE[navIndex]);
                 }
             });
         });
         updateActiveSlider(swiper, isInitial);
     }
 
+    // ========== 3. Works 섹션 (세로 스와이퍼 + 휠) ==========
     let readyToLeaveWorks = false;
     let isWorkScrolling = false;
     let worksSectionElement = null;
     let worksWheelHandler = null;
 
+    // 워크스 맨 끝/맨 앞에서 한 번 더 휠 시 살짝 흔드는 효과
     function playBoundaryFeedbackAnimation(direction) {
-        const y_move = direction === 'down' ? -15 : 15;
-        // Prevent animation overlap
         if (gsap.isTweening('.works-swiper')) return;
-        gsap.fromTo(".works-swiper", 
-            { y: 0 }, 
-            { y: y_move, duration: 0.15, yoyo: true, repeat: 1, ease: "power1.inOut" }
-        );
+        const yMove = (direction === 'down') ? -15 : 15;
+        gsap.fromTo('.works-swiper', { y: 0 }, { y: yMove, duration: 0.15, yoyo: true, repeat: 1, ease: 'power1.inOut' });
     }
 
     function initWorksSwiper() {
         if (worksSwiper || window.innerWidth <= 1200) return;
-        
-        worksSwiper = new Swiper(".works-swiper", {
+
+        worksSwiper = new Swiper('.works-swiper', {
             direction: 'vertical',
             speed: 800,
-            allowTouchMove: false,
+            allowTouchMove: false
         });
 
-        worksSwiper.on('slideChange', function() {
+        worksSwiper.on('slideChange', function () {
             readyToLeaveWorks = false;
         });
 
-        worksSectionElement = document.querySelector('[data-hash="works"]');
-        
+        worksSectionElement = $('[data-hash="works"]')[0];
+
         worksWheelHandler = function (event) {
             event.preventDefault();
-
             if (isWorkScrolling) return;
 
-            const isScrollingDown = event.deltaY > 0;
+            const isDown = event.deltaY > 0;
 
-            if (worksSwiper.isEnd && isScrollingDown) {
+            // 맨 아래에서 아래로 휠 → 다음 메인 슬라이드로 나가거나, 아니면 흔들기
+            if (worksSwiper.isEnd && isDown) {
                 if (readyToLeaveWorks) {
                     swiper.mousewheel.enable();
                     swiper.slideNext();
@@ -91,7 +98,11 @@ $(document).ready(function() {
                     playBoundaryFeedbackAnimation('down');
                     readyToLeaveWorks = true;
                 }
-            } else if (worksSwiper.isBeginning && !isScrollingDown) {
+                return;
+            }
+
+            // 맨 위에서 위로 휠 → 이전 메인 슬라이드로 나가거나, 아니면 흔들기
+            if (worksSwiper.isBeginning && !isDown) {
                 if (readyToLeaveWorks) {
                     swiper.mousewheel.enable();
                     swiper.slidePrev();
@@ -99,20 +110,22 @@ $(document).ready(function() {
                     playBoundaryFeedbackAnimation('up');
                     readyToLeaveWorks = true;
                 }
-            } else {
-                readyToLeaveWorks = false;
-                isWorkScrolling = true;
-                if (isScrollingDown) {
-                    worksSwiper.slideNext();
-                } else {
-                    worksSwiper.slidePrev();
-                }
-                setTimeout(() => {
-                    isWorkScrolling = false;
-                }, worksSwiper.params.speed + 50);
+                return;
             }
+
+            // 그 외: 워크스 슬라이드만 이동
+            readyToLeaveWorks = false;
+            isWorkScrolling = true;
+            if (isDown) {
+                worksSwiper.slideNext();
+            } else {
+                worksSwiper.slidePrev();
+            }
+            setTimeout(function () {
+                isWorkScrolling = false;
+            }, worksSwiper.params.speed + 50);
         };
-        
+
         worksSectionElement.addEventListener('wheel', worksWheelHandler, { passive: false });
     }
 
@@ -128,8 +141,12 @@ $(document).ready(function() {
         }
     }
 
+    // ========== 4. 메인 세로 슬라이더 (홈 / 어바웃 / 워크스) ==========
+    const WORKS_SLIDE_INDEX = 2;  // 메인 슬라이드에서 워크스가 몇 번째인지
+
     function initSwiper() {
         if (isSwiperActive) return;
+
         swiper = new Swiper('.main-swiper', {
             direction: 'vertical',
             speed: 1000,
@@ -138,26 +155,22 @@ $(document).ready(function() {
             allowTouchMove: false,
             pagination: { el: '.swiper-pagination' },
             on: {
-                init: (s) => {
+                init: function (s) {
                     s.slideTo(0, 0);
                     setupCustomPagination(s, true);
-                    const cardBack = document.querySelector('.card-back');
-                    if (cardBack) cardBack.classList.remove('card-back--values-bg');
+                    $('.card-back').removeClass('card-back--values-bg');
                 },
-                slideChange: (s) => {
+                slideChange: function (s) {
                     updateActiveSlider(s, false);
-                    const worksSlideIndex = 2;
 
-                    if (s.activeIndex === worksSlideIndex) {
+                    if (s.activeIndex === WORKS_SLIDE_INDEX) {
                         swiper.mousewheel.disable();
                     } else {
                         swiper.mousewheel.enable();
                     }
 
-                    const cardBack = document.querySelector('.card-back');
-                    if (cardBack) {
-                        cardBack.classList.toggle('card-back--values-bg', s.activeIndex === 1);
-                    }
+                    const isValuesSlide = (s.activeIndex === 1);
+                    $('.card-back').toggleClass('card-back--values-bg', isValuesSlide);
                 }
             }
         });
@@ -171,106 +184,82 @@ $(document).ready(function() {
         isSwiperActive = false;
     }
 
+    // ========== 5. 화면 크기에 따른 레이아웃 (모바일 ↔ 데스크톱) ==========
     function manageLayout() {
-        if (!afterIntro) return; // Only run after the intro sequence is complete.
-        const isMobileView = window.innerWidth <= 1200;
-        if (isMobileView) {
+        if (!afterIntro) return;
+
+        const isMobile = (window.innerWidth <= 1200);
+
+        if (isMobile) {
             destroySwiper();
             destroyWorksSwiper();
-            document.body.classList.add('mobile-scroll-view');
-            const cardBack = document.querySelector('.card-back');
-            if (cardBack) cardBack.classList.remove('card-back--values-bg');
+            $('body').addClass('mobile-scroll-view');
+            $('.card-back').removeClass('card-back--values-bg');
         } else {
             initSwiper();
             initWorksSwiper();
-            document.body.classList.remove('mobile-scroll-view');
+            $('body').removeClass('mobile-scroll-view');
         }
     }
 
+    // ========== 6. About 섹션 (화면에 보일 때만 스와이퍼 생성) ==========
     function initAboutSwiperObserver() {
-        const aboutSection = document.querySelector('[data-hash="about"] .about-swiper');
-        if (!aboutSection) return;
+        const $aboutSection = $('[data-hash="about"] .about-swiper');
+        if (!$aboutSection.length) return;
 
-        const observer = new IntersectionObserver((entries, observer) => {
-            entries.forEach(entry => {
+        const observer = new IntersectionObserver(function (entries, obs) {
+            for (let i = 0; i < entries.length; i++) {
+                const entry = entries[i];
                 if (entry.isIntersecting && !aboutSwiper) {
                     initAboutSwiper();
-                    observer.unobserve(entry.target);
+                    obs.unobserve(entry.target);
+                    break;
                 }
-            });
+            }
         }, { threshold: 0.1 });
 
-        observer.observe(aboutSection);
+        observer.observe($aboutSection[0]);
     }
 
     function initAboutSwiper() {
         if (aboutSwiper) return;
 
-        const textContents = [
-            {
-                title: "신뢰",
-                description: "기본을 지키고, 맡은 일에 책임을 다하여 <br> 신뢰받는 사람이 되고 싶습니다."
-            },
-            {
-                title: "긍정",
-                description: "긍정적인 마음으로 즐겁게 일하는 과정 속에서 <br> 가장 좋은 결과물이 나온다고 믿습니다."
-            },
-            {
-                title: "성장",
-                description: "작은 배움들이 모여 결국 <br> 큰 성장을 이룬다고 믿습니다."
-            },
-            {
-                title: "소통",
-                description: "동료들과 유연하게 소통하며 <br> 함께 최고의 결과를 만들고 싶습니다."
-            }
+        // 슬라이드 순서: 신뢰, 긍정, 성장, 소통
+        const aboutTexts = [
+            { title: '신뢰', description: '기본을 지키고, 맡은 일에 책임을 다하여 <br> 신뢰받는 사람이 되고 싶습니다.' },
+            { title: '긍정', description: '긍정적인 마음으로 즐겁게 일하는 과정 속에서 <br> 가장 좋은 결과물이 나온다고 믿습니다.' },
+            { title: '성장', description: '작은 배움들이 모여 결국 <br> 큰 성장을 이룬다고 믿습니다.' },
+            { title: '소통', description: '동료들과 유연하게 소통하며 <br> 함께 최고의 결과를 만들고 싶습니다.' }
         ];
-    
-        const textContainer = document.querySelector('.about-text-content');
-        const textWrapper = textContainer.querySelector('.about-texts');
-        const titleEl = textWrapper.querySelector('h3');
-        const descEl = textWrapper.querySelector('p');
-    
-        const updateTextContent = (swiper) => {
-            const content = textContents[swiper.realIndex];
-            if (content) {
-                gsap.to(textWrapper, {
-                    duration: 0.2,
-                    opacity: 0,
-                    onComplete: () => {
-                        titleEl.innerHTML = content.title;
-                        descEl.innerHTML = content.description;
-                        gsap.to(textWrapper, { duration: 0.3, opacity: 1 });
-                    }
-                });
-            }
-        };
 
-        const animateActiveImage = (swiper) => {
-            // Deactivate animations on all images first
-            swiper.slides.forEach(slide => {
-                const img = slide.querySelector('.about-slide-content-img img');
-                if (img) {
-                    gsap.set(img, { clearProps: "all" }); // Reset any inline styles from previous animations
-                }
-            });
+        const $textWrapper = $('.about-text-content .about-texts');
+        const $titleEl = $textWrapper.find('h3');
+        const $descEl = $textWrapper.find('p');
 
-            // Animate just the active one
-            const activeSlide = swiper.slides[swiper.activeIndex];
-            const activeImage = activeSlide.querySelector('.about-slide-content-img img');
-            if (activeImage) {
-                gsap.fromTo(activeImage, 
-                    { scale: 0.5, opacity: 0 }, 
-                    {
-                        duration: 1.2,
-                        scale: 1,
-                        opacity: 1,
-                        ease: 'elastic.out(1, 0.75)'
-                    }
-                );
+        function updateTextContent(s) {
+            const content = aboutTexts[s.realIndex];
+            if (!content) return;
+            gsap.to($textWrapper[0], { duration: 0.2, opacity: 0, onComplete: function () {
+                $titleEl.html(content.title);
+                $descEl.html(content.description);
+                gsap.to($textWrapper[0], { duration: 0.3, opacity: 1 });
+            }});
+        }
+
+        function animateActiveImage(s) {
+            const slides = s.slides;
+            for (let i = 0; i < slides.length; i++) {
+                const img = slides[i].querySelector('.about-slide-content-img img');
+                if (img) gsap.set(img, { clearProps: 'all' });
             }
-        };
-    
-        aboutSwiper = new Swiper(".about-swiper", {
+            const activeSlide = slides[s.activeIndex];
+            const activeImg = activeSlide.querySelector('.about-slide-content-img img');
+            if (activeImg) {
+                gsap.fromTo(activeImg, { scale: 0.5, opacity: 0 }, { duration: 1.2, scale: 1, opacity: 1, ease: 'elastic.out(1, 0.75)' });
+            }
+        }
+
+        aboutSwiper = new Swiper('.about-swiper', {
             loop: true,
             centeredSlides: true,
             initialSlide: 0,
@@ -293,25 +282,25 @@ $(document).ready(function() {
                 }
             },
             on: {
-                init: function(swiper) {
-                    setTimeout(() => {
-                        animateActiveImage(swiper);
-                        updateTextContent(swiper);
+                init: function (s) {
+                    setTimeout(function () {
+                        animateActiveImage(s);
+                        updateTextContent(s);
                     }, 300);
                 },
-                slideChangeTransitionStart: function (swiper) {
-                    animateActiveImage(swiper);
-                    updateTextContent(swiper);
+                slideChangeTransitionStart: function (s) {
+                    animateActiveImage(s);
+                    updateTextContent(s);
                 }
             }
         });
     }
 
-    // --- Unified Resize Handler ---
+    // ========== 7. 리사이즈 시 레이아웃 다시 계산 ==========
     let resizeTimer;
-    window.addEventListener('resize', () => {
+    $(window).on('resize', function () {
         clearTimeout(resizeTimer);
-        resizeTimer = setTimeout(() => {
+        resizeTimer = setTimeout(function () {
             manageLayout();
             if (isSwiperActive) {
                 updateActiveSlider(swiper, true);
@@ -319,7 +308,7 @@ $(document).ready(function() {
         }, 150);
     });
 
-    // --- Intro / Dev Mode Logic ---
+    // ========== 8. 인트로 (타이핑 → 카드 등장 → 더보기 클릭 시 메인 전환) ==========
     if (!devSkipIntro) {
         let pulseTimeline;
         let ellipsisInterval = null;
@@ -342,94 +331,83 @@ $(document).ready(function() {
             startDelay: 900,
             afterComplete: function (instance) {
                 instance.destroy();
-                gsap.to(introText, {
-                    duration: 0.2, opacity: 0, ease: "power2.in", delay: 1,
-                    onComplete: () => {
-                        const tl = gsap.timeline();
-                        tl.to(cardWrap, { duration: 0.8, opacity: 1, scale: 1, ease: "elastic.out(1, 0.5)" })
-                          .to(characterArea, { duration: 0.5, opacity: 1, y: 0, ease: "power2.out" }, "-=0.4")
-                          .to(profile, { duration: 0.5, opacity: 1, y: 0, ease: "power2.out" }, "-=0.3")
-                          .to(connectBox, { duration: 0.5, opacity: 1, y: 0, ease: "power2.out" }, "-=0.2")
-                          .to($moreButton, { duration: 0.5, opacity: 1, y: 0, ease: "power2.out" }, "+=1");
+                gsap.to(introText, { duration: 0.2, opacity: 0, ease: 'power2.in', delay: 1, onComplete: function () {
+                    const tl = gsap.timeline();
+                    tl.to(cardWrap, { duration: 0.8, opacity: 1, scale: 1, ease: 'elastic.out(1, 0.5)' })
+                      .to(characterArea, { duration: 0.5, opacity: 1, y: 0, ease: 'power2.out' }, '-=0.4')
+                      .to(profile, { duration: 0.5, opacity: 1, y: 0, ease: 'power2.out' }, '-=0.3')
+                      .to(connectBox, { duration: 0.5, opacity: 1, y: 0, ease: 'power2.out' }, '-=0.2')
+                      .to($moreButton, { duration: 0.5, opacity: 1, y: 0, ease: 'power2.out' }, '+=1');
 
-                        pulseTimeline = gsap.timeline({ 
-                            delay: 1.5, 
-                            repeat: -1, 
-                            repeatDelay: 2,
-                            onStart: () => {
-                                // 파티클 배경 나타나게 하기
-                                document.getElementById('particles-js').style.opacity = '1';
-                            }
-                        })
-                            .to($moreButton, { duration: 0.2, scale: 1.05, ease: "power1.inOut" })
-                            .to($moreButton, { duration: 0.2, scale: 1, ease: "power1.inOut" })
-                            .to($moreButton, { duration: 0.2, scale: 1.05, ease: "power1.inOut" }, "-=0.1")
-                            .to($moreButton, { duration: 0.2, scale: 1, ease: "power1.inOut" });
-                    }
-                });
+                    pulseTimeline = gsap.timeline({ delay: 1.5, repeat: -1, repeatDelay: 2, onStart: function () {
+                        $('#particles-js').css('opacity', '1');
+                    }});
+                    pulseTimeline.to($moreButton, { duration: 0.2, scale: 1.05, ease: 'power1.inOut' })
+                        .to($moreButton, { duration: 0.2, scale: 1, ease: 'power1.inOut' })
+                        .to($moreButton, { duration: 0.2, scale: 1.05, ease: 'power1.inOut' }, '-=0.1')
+                        .to($moreButton, { duration: 0.2, scale: 1, ease: 'power1.inOut' });
+                }});
             }
-        }).type("깃액션 연동 테스트 중.", { speed: 500 }).go();
+        }).type('깃액션 연동 테스트 중.', { speed: 500 }).go();
 
-        function splitText(element) {
-            const text = element.text();
-            element.empty();
+        // 글자 단위로 span 감싸기 (애니메이션용)
+        function splitText($el) {
+            const text = $el.text();
+            $el.empty();
             for (let i = 0; i < text.length; i++) {
                 const char = (text[i] === ' ') ? '&nbsp;' : text[i];
-                element.append(`<span>${char}</span>`);
+                $el.append('<span>' + char + '</span>');
             }
         }
 
-        const dynamicTextSpan = $('.dynamic-text');
-        splitText(dynamicTextSpan);
+        const $dynamicText = $('.dynamic-text');
+        splitText($dynamicText);
 
         const dynamicTexts = ['새로운 인연과', '멋진 동료들과', '새로운 경험과', '다가올 기회와'];
         let textIndex = 0;
-        const ellipsisSpan = $('.ellipsis');
+        const $ellipsis = $('.ellipsis');
         let ellipsisCount = 0;
-        
+
         function startTextAnimation() {
             if (ellipsisInterval) clearInterval(ellipsisInterval);
             if (textInterval) clearInterval(textInterval);
 
-            ellipsisInterval = setInterval(() => {
+            ellipsisInterval = setInterval(function () {
                 ellipsisCount = (ellipsisCount + 1) % 4;
-                ellipsisSpan.text('.'.repeat(ellipsisCount || 1).padEnd(3, '\u00A0'));
+                const dotCount = ellipsisCount || 1;
+                const dots = '.'.repeat(dotCount);
+                $ellipsis.text(dots.padEnd(3, '\u00A0'));
             }, 2000);
 
-            textInterval = setInterval(() => {
+            textInterval = setInterval(function () {
                 textIndex = (textIndex + 1) % dynamicTexts.length;
                 const newText = dynamicTexts[textIndex];
-                const oldChars = dynamicTextSpan.find('span');
-                const tl = gsap.timeline();
-                tl.to(oldChars, {
-                    duration: 0.3, opacity: 0, rotationX: -90, stagger: 0.05,
-                    onComplete: () => {
-                        dynamicTextSpan.text(newText);
-                        splitText(dynamicTextSpan);
-                        const newChars = dynamicTextSpan.find('span');
-                        gsap.set(newChars, { opacity: 0, rotationX: 90 });
-                        gsap.to(newChars, { duration: 0.3, opacity: 1, rotationX: 0, stagger: 0.05 });
-                    }
-                });
+                const $oldChars = $dynamicText.find('span');
+                gsap.to($oldChars, { duration: 0.3, opacity: 0, rotationX: -90, stagger: 0.05, onComplete: function () {
+                    $dynamicText.text(newText);
+                    splitText($dynamicText);
+                    const $newChars = $dynamicText.find('span');
+                    gsap.set($newChars, { opacity: 0, rotationX: 90 });
+                    gsap.to($newChars, { duration: 0.3, opacity: 1, rotationX: 0, stagger: 0.05 });
+                }});
             }, 5000);
         }
         startTextAnimation();
 
-        // --- Video Hover Logic ---
-        const $video = $('.character video');
-        const video = $video[0];
+        // 마우스 오버 시 영상 재생, 나가면 역재생
+        const video = $('.character video')[0];
         let animationFrameId;
         let lastTime;
-        video.playbackRate = 2.0;
+        video.playbackRate = 2;
 
-        const playForward = () => {
+        function playForward() {
             if (!video.paused) return;
             cancelAnimationFrame(animationFrameId);
-            video.playbackRate = 2.0;
+            video.playbackRate = 2;
             video.play();
-        };
+        }
 
-        const reverseStep = (timestamp) => {
+        function reverseStep(timestamp) {
             if (!lastTime) lastTime = timestamp;
             const elapsed = (timestamp - lastTime) / 1000;
             lastTime = timestamp;
@@ -441,9 +419,9 @@ $(document).ready(function() {
                 return;
             }
             animationFrameId = requestAnimationFrame(reverseStep);
-        };
+        }
 
-        const playReverse = () => {
+        function playReverse() {
             cancelAnimationFrame(animationFrameId);
             video.pause();
             if (video.currentTime >= video.duration) {
@@ -451,25 +429,23 @@ $(document).ready(function() {
             }
             lastTime = performance.now();
             animationFrameId = requestAnimationFrame(reverseStep);
-        };
+        }
 
-        $moreButton.on('mouseenter', () => {
+        $moreButton.on('mouseenter', function () {
             playForward();
             if (pulseTimeline) {
                 pulseTimeline.pause();
-                gsap.set($moreButton, { clearProps: "transform" });
+                gsap.set($moreButton, { clearProps: 'transform' });
             }
         });
 
-        $moreButton.on('mouseleave', () => {
+        $moreButton.on('mouseleave', function () {
             playReverse();
-            if (pulseTimeline) {
-                pulseTimeline.resume();
-            }
+            if (pulseTimeline) pulseTimeline.resume();
         });
 
-        // --- Click Logic ---
-        $moreButton.on('click', function(e) {
+        // 더보기 클릭 → 연결 성공 연출 → 카드 뒤집고 메인 화면 표시
+        $moreButton.on('click', function (e) {
             e.preventDefault();
             $moreButton.off('mouseenter mouseleave');
             if (pulseTimeline) pulseTimeline.kill();
@@ -479,59 +455,54 @@ $(document).ready(function() {
             if (ellipsisInterval) clearInterval(ellipsisInterval);
             gsap.set('.spinner span', { display: 'none' });
 
-            // Particles
-            const connectImg = document.querySelector('.connect-img');
-            const rect = connectImg.getBoundingClientRect();
+            const $connectImg = $('.connect-img');
+            const rect = $connectImg[0].getBoundingClientRect();
             const originX = (rect.left + rect.width / 2) / window.innerWidth;
             const originY = (rect.top + rect.height / 2 + 40) / window.innerHeight;
             confetti({ particleCount: 150, spread: 430, origin: { x: originX, y: originY }, colors: ['#00BA00', '#33C733', '#90EE90', '#FFFFFF'] });
 
-            // Checkmark animation
-            gsap.to('.connect-img', { 
-                duration: 0.8, scale: 1, opacity: 1, ease: "elastic.out(1, 0.5)",
-                onComplete: () => {
-                    setTimeout(() => {
-                        const connectTextElement = $('.connect-text');
-                        const oldSpans = connectTextElement.children();
-                        gsap.to(oldSpans, {
-                            duration: 0.3, opacity: 0, rotationX: -90, stagger: 0.1,
-                            onComplete: () => {
-                                connectTextElement.text('연결 성공 !');
-                                splitText(connectTextElement);
-                                const newChars = connectTextElement.find('span');
-                                gsap.set(newChars, { opacity: 0, rotationX: 90 });
-                                gsap.to(newChars, {
-                                    duration: 0.3, opacity: 1, rotationX: 0, stagger: 0.05,
-                                    onComplete: () => {
-                                        setTimeout(() => {
-                                            const cardSection = '.card-section';
-                                            const targetHeight = window.innerHeight;
-                                            const tl = gsap.timeline({
-                                                onComplete: () => {
-                                                    $('.card-front').hide();
-                                                    afterIntro = true;
-                                                    manageLayout();
-                                                    initAboutSwiperObserver();
-                                                    const mainNavList = document.querySelector('.main-nav-list');
-                                                    gsap.to(mainNavList, {
-                                                        duration: 0.5, opacity: 1, scale: 1, y: 0, ease: 'back.out(1.7)', delay: 0.3,
-                                                        onStart: () => mainNavList.classList.remove('init')
-                                                    });
-                                                }
-                                            });
-                                            tl.to(cardSection, { duration: 1.5, rotationY: 180, ease: "expo.inOut" })
-                                              .to(cardSection, { duration: 1.2, width: "100vw", height: targetHeight, borderRadius: 0, borderWidth: 0, ease: "expo.inOut" }, "-=0.8");
-                                        }, 500);
-                                    }
-                                });
-                            }
-                        });
-                    }, 500);
-                }
-            });
+            gsap.to('.connect-img', { duration: 0.8, scale: 1, opacity: 1, ease: 'elastic.out(1, 0.5)', onComplete: function () {
+                setTimeout(function () {
+                    const $connectText = $('.connect-text');
+                    const $oldSpans = $connectText.children();
+                    gsap.to($oldSpans, { duration: 0.3, opacity: 0, rotationX: -90, stagger: 0.1, onComplete: function () {
+                        $connectText.text('연결 성공 !');
+                        splitText($connectText);
+                        const $newSpans = $connectText.find('span');
+                        gsap.set($newSpans, { opacity: 0, rotationX: 90 });
+                        gsap.to($newSpans, { duration: 0.3, opacity: 1, rotationX: 0, stagger: 0.05, onComplete: function () {
+                            setTimeout(function () {
+                                showMainAfterConnect();
+                            }, 500);
+                        }});
+                    }});
+                }, 500);
+            }});
         });
 
-    } else { // --- Dev Mode ---
+        // 연결 성공 후: 카드 뒤집기 + 전체 화면 + 메인 네비 표시
+        function showMainAfterConnect() {
+            const cardSection = '.card-section';
+            const targetHeight = window.innerHeight;
+            const tl = gsap.timeline({
+                onComplete: function () {
+                    $('.card-front').hide();
+                    afterIntro = true;
+                    manageLayout();
+                    initAboutSwiperObserver();
+                    const $mainNavList = $('.main-nav-list');
+                    gsap.to($mainNavList[0], {
+                        duration: 0.5, opacity: 1, scale: 1, y: 0, ease: 'back.out(1.7)', delay: 0.3,
+                        onStart: function () { $mainNavList.removeClass('init'); }
+                    });
+                }
+            });
+            tl.to(cardSection, { duration: 1.5, rotationY: 180, ease: 'expo.inOut' })
+              .to(cardSection, { duration: 1.2, width: '100vw', height: targetHeight, borderRadius: 0, borderWidth: 0, ease: 'expo.inOut' }, '-=0.8');
+        }
+
+    } else {
+        // ========== 개발 모드: 인트로 없이 바로 메인 ==========
         gsap.set('.intro-txt, .card-front', { display: 'none' });
         gsap.set('.card-section-wrap', { opacity: 1, scale: 1 });
         gsap.set('.card-section', {
@@ -546,121 +517,114 @@ $(document).ready(function() {
         manageLayout();
         initAboutSwiperObserver();
 
-        const mainNavList = document.querySelector('.main-nav-list');
-        gsap.set(mainNavList, { opacity: 1, scale: 1, y: 0 });
-        mainNavList.classList.remove('init');
+        const $mainNavList = $('.main-nav-list');
+        gsap.set($mainNavList[0], { opacity: 1, scale: 1, y: 0 });
+        $mainNavList.removeClass('init');
     }
 
-    // --- Portfolio Modal Logic ---
-    const portfolioModalEl = document.getElementById('portfolioModal');
-    const portfolioModal = new bootstrap.Modal(portfolioModalEl);
-    const workItems = document.querySelectorAll('.work-item');
-    const modalCloseBtn = document.getElementById('modal-close-btn');
+    // ========== 9. 포트폴리오 모달 (작업 클릭 시 상세 보기) ==========
+    const $portfolioModal = $('#portfolioModal');
+    const portfolioModal = new bootstrap.Modal($portfolioModal[0]);
+    const $workItems = $('.work-item');
+    const $modalCloseBtn = $('#modal-close-btn');
 
-    modalCloseBtn.addEventListener('click', () => {
+    $modalCloseBtn.on('click', function () {
         portfolioModal.hide();
     });
 
-    workItems.forEach((item, index) => {
-        const button = item.querySelector('.work-item-btn');
-        const itemKey = `item${index + 1}`;
-        
-        button.addEventListener('click', () => {
+    // 태그 키 → 화면 텍스트 + CSS 클래스 (modal-data.js 의 tags 와 연동)
+    const TAG_MAP = {
+        html: { text: 'HTML5', class: 'tag-html' },
+        css: { text: 'CSS3', class: 'tag-css' },
+        js: { text: 'JavaScript', class: 'tag-js' },
+        jquery: { text: 'jQuery', class: 'tag-jquery' },
+        scss: { text: 'Sass', class: 'tag-sass' },
+        sass: { text: 'Sass', class: 'tag-sass' },
+        react: { text: 'React', class: 'tag-react' },
+        vue: { text: 'Vue', class: 'tag-vue' },
+        lottie: { text: 'Lottie', class: 'tag-lottie' }
+    };
+
+    $workItems.each(function (index) {
+        const $item = $(this);
+        const $button = $item.find('.work-item-btn');
+        const itemKey = 'item' + (index + 1);
+
+        $button.on('click', function () {
             const data = portfolioData[itemKey];
-            if (data) {
-                // Get modal elements
-                const mediaContainer = portfolioModalEl.querySelector('.modal-img-container');
-                const modalTags = portfolioModalEl.querySelector('#modal-tags');
-                const modalTitle = portfolioModalEl.querySelector('#portfolioModalLabel');
-                const modalDesc = portfolioModalEl.querySelector('#modal-desc');
+            if (!data) return;
 
-                // Always clear previous content
-                mediaContainer.innerHTML = '';
-                modalTags.innerHTML = '';
+            const $mediaContainer = $portfolioModal.find('.modal-img-container');
+            const $modalTags = $portfolioModal.find('#modal-tags');
+            const $modalTitle = $portfolioModal.find('#portfolioModalLabel');
+            const $modalDesc = $portfolioModal.find('#modal-desc');
 
-                // Populate based on type
-                if (data.type === 'iframe') {
-                    const iframe = document.createElement('iframe');
-                    iframe.src = data.iframeSrc;
-                    iframe.setAttribute('frameborder', '0');
-                    mediaContainer.appendChild(iframe);
-                } else if (data.type === 'iframe-tabs' && data.iframeTabs && data.iframeTabs.length) {
-                    const wrap = document.createElement('div');
-                    wrap.className = 'modal-iframe-tabs';
-                    const view = document.createElement('div');
-                    view.className = 'modal-iframe-tabs-view';
-                    data.iframeTabs.forEach((tab, i) => {
-                        const iframe = document.createElement('iframe');
-                        iframe.src = tab.src;
-                        iframe.setAttribute('frameborder', '0');
-                        iframe.className = 'modal-iframe-tab-pane';
-                        if (i > 0) iframe.classList.add('is-hidden');
-                        view.appendChild(iframe);
-                    });
-                    const btns = document.createElement('div');
-                    btns.className = 'modal-iframe-tab-btns';
-                    data.iframeTabs.forEach((tab, i) => {
-                        const btn = document.createElement('button');
-                        btn.type = 'button';
-                        btn.className = 'modal-iframe-tab-btn' + (i === 0 ? ' is-active' : '');
-                        btn.textContent = tab.label;
-                        btn.addEventListener('click', () => {
-                            view.querySelectorAll('.modal-iframe-tab-pane').forEach((p, j) => {
-                                p.classList.toggle('is-hidden', j !== i);
-                            });
-                            btns.querySelectorAll('.modal-iframe-tab-btn').forEach((b, j) => b.classList.toggle('is-active', j === i));
-                        });
-                        btns.appendChild(btn);
-                    });
-                    wrap.appendChild(view);
-                    wrap.appendChild(btns);
-                    mediaContainer.appendChild(wrap);
-                } else { // 'image' or default
-                    const img = document.createElement('img');
-                    img.src = data.imgSrc;
-                    img.alt = `${data.title} project image`;
-                    img.className = 'img-fluid';
-                    mediaContainer.appendChild(img);
+            $mediaContainer.empty();
+            $modalTags.empty();
+
+            // 타입에 따라 미디어 넣기: iframe 한 개 / iframe 탭 여러 개 / 이미지
+            if (data.type === 'iframe') {
+                const $iframe = $('<iframe>').attr('src', data.iframeSrc).attr('frameborder', '0');
+                $mediaContainer.append($iframe);
+            } else if (data.type === 'iframe-tabs' && data.iframeTabs && data.iframeTabs.length > 0) {
+                const $wrap = $('<div>').addClass('modal-iframe-tabs');
+                const $view = $('<div>').addClass('modal-iframe-tabs-view');
+                const $btns = $('<div>').addClass('modal-iframe-tab-btns');
+
+                for (let i = 0; i < data.iframeTabs.length; i++) {
+                    const tab = data.iframeTabs[i];
+                    const $iframe = $('<iframe>').attr('src', tab.src).attr('frameborder', '0').addClass('modal-iframe-tab-pane');
+                    if (i > 0) $iframe.addClass('is-hidden');
+                    $view.append($iframe);
                 }
 
-                // Populate common info
-                modalTitle.textContent = data.title;
-                modalDesc.innerHTML = data.description;
+                for (let j = 0; j < data.iframeTabs.length; j++) {
+                    const tabLabel = data.iframeTabs[j].label;
+                    const $btn = $('<button>').attr('type', 'button').text(tabLabel).addClass('modal-iframe-tab-btn');
+                    if (j === 0) $btn.addClass('is-active');
 
-                // tags: ['html', 'css', 'js'] → 자동으로 표시 텍스트 + 클래스 매핑
-                const TAG_MAP = {
-                    html: { text: 'HTML5', class: 'tag-html' },
-                    css: { text: 'CSS3', class: 'tag-css' },
-                    js: { text: 'JavaScript', class: 'tag-js' },
-                    jquery: { text: 'jQuery', class: 'tag-jquery' },
-                    scss: { text: 'Sass', class: 'tag-sass' },
-                    sass: { text: 'Sass', class: 'tag-sass' },
-                    react: { text: 'React', class: 'tag-react' },
-                    vue: { text: 'Vue', class: 'tag-vue' }
-                };
-                const tagList = Array.isArray(data.tags) ? data.tags : Object.keys(data.tags || {});
-                tagList.forEach((key) => {
-                    const mapped = TAG_MAP[key.toLowerCase()];
-                    const text = mapped ? mapped.text : key;
-                    const className = mapped ? mapped.class : 'tag-' + key.toLowerCase();
-                    const li = document.createElement('li');
-                    const span = document.createElement('span');
-                    span.className = className;
-                    span.textContent = text;
-                    li.appendChild(span);
-                    modalTags.appendChild(li);
-                });
-                
-                portfolioModal.show();
+                    (function (clickedIndex) {
+                        $btn.on('click', function () {
+                            $view.find('.modal-iframe-tab-pane').each(function (k) {
+                                $(this).toggleClass('is-hidden', k !== clickedIndex);
+                            });
+                            $btns.find('.modal-iframe-tab-btn').each(function (k) {
+                                $(this).toggleClass('is-active', k === clickedIndex);
+                            });
+                        });
+                    })(j);
+                    $btns.append($btn);
+                }
+
+                $wrap.append($view).append($btns);
+                $mediaContainer.append($wrap);
+            } else {
+                const $img = $('<img>').attr('src', data.imgSrc).attr('alt', data.title + ' project image').addClass('img-fluid');
+                $mediaContainer.append($img);
             }
+
+            $modalTitle.text(data.title);
+            $modalDesc.html(data.description);
+
+            // 태그 목록 만들기 (data.tags 가 배열이면 그대로, 객체면 키 목록 사용)
+            const tagList = Array.isArray(data.tags) ? data.tags : Object.keys(data.tags || {});
+            for (let t = 0; t < tagList.length; t++) {
+                const key = tagList[t].toLowerCase();
+                const info = TAG_MAP[key];
+                const tagText = info ? info.text : tagList[t];
+                const tagClass = info ? info.class : 'tag-' + key;
+                const $li = $('<li>');
+                const $span = $('<span>').addClass(tagClass).text(tagText);
+                $li.append($span);
+                $modalTags.append($li);
+            }
+
+            portfolioModal.show();
         });
     });
 
-    // Stop iframe content (videos, etc.) when modal is closed
-    portfolioModalEl.addEventListener('hidden.bs.modal', function () {
-        const mediaContainer = portfolioModalEl.querySelector('.modal-img-container');
-        mediaContainer.innerHTML = ''; // Clear the container to stop iframe
+    // 모달 닫을 때 iframe 제거 (영상 등 중단)
+    $portfolioModal.on('hidden.bs.modal', function () {
+        $portfolioModal.find('.modal-img-container').empty();
     });
-
-   
 });
