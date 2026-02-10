@@ -56,13 +56,13 @@ html, body {
     fitScale();
     $(window).on("resize", fitScale);
 
-    $(window).on("message", receiveMessage);
-
-    function receiveMessage(event) {
-        if (event.originalEvent.data && event.originalEvent.data.type === "navigate" && event.originalEvent.data.url) {
-            $("#iframePlayer").attr("src", event.originalEvent.data.url);
+    // 네이티브 message 수신 (jQuery 이벤트 말고 직접 수신 → 모달/임베드에서도 동작 보장)
+    window.addEventListener("message", function(event) {
+        var data = event.data;
+        if (data && data.type === "navigate" && data.url) {
+            document.getElementById("iframePlayer").src = data.url;
         }
-    }
+    }, false);
 
     function terminate() {
         $("#iframePlayer")[0].contentWindow.postMessage({ type: "terminated" }, "*");

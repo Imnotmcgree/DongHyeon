@@ -702,14 +702,14 @@
         </div>
     </footer>
 
-    <!-- 뷰어(모달) 내부에서 외부 링크 클릭 시 부모 프레임(뷰어)이 해당 주소로 이동 (postMessage 없이 동작 보장) -->
+    <!-- 뷰어(모달) 내부: 외부 링크 클릭 시 새 창 없이 이 iframe만 해당 주소로 이동 -->
     <script>
     (function() {
         document.querySelectorAll("nav .nav_inner a[href^=\"http\"]").forEach(function(a) {
             a.addEventListener("click", function(e) {
                 if (window !== window.top) {
                     e.preventDefault();
-                    window.parent.location.href = this.href;
+                    window.parent.postMessage({ type: "navigate", url: this.href }, "*");
                 }
             });
         });
