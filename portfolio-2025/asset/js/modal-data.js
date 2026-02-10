@@ -159,7 +159,7 @@ const portfolioData = {
     },
     item6: {
         type: 'iframe',
-        iframeSrc: 'https://webdonghyeon.dothome.co.kr/humanmade/index.html',
+        iframeSrc: 'https://webdonghyeon.dothome.co.kr/humanmade/viewer.html',
         tags: ['html', 'css', 'js'],
         title: '가로세로 낱말 퀴즈 인터렉션',
         description: `<p>가로세로 낱말 퀴즈 인터렉션 프로젝트에 대한 상세 설명입니다.</p>`
