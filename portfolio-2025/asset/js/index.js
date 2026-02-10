@@ -570,27 +570,44 @@ $(document).ready(function() {
                 const $wrap = $('<div>').addClass('modal-iframe-tabs');
                 const $view = $('<div>').addClass('modal-iframe-tabs-view');
                 const $btns = $('<div>').addClass('modal-iframe-tab-btns');
+                const paneIndexByTabIndex = [];
+                let paneCount = 0;
 
                 for (let i = 0; i < data.iframeTabs.length; i++) {
                     const tab = data.iframeTabs[i];
-                    const $iframe = $('<iframe>').attr('src', tab.src).attr('frameborder', '0').addClass('modal-iframe-tab-pane');
-                    if (i > 0) $iframe.addClass('is-hidden');
-                    $view.append($iframe);
+                    if (tab && tab.src) {
+                        const $iframe = $('<iframe>').attr('src', tab.src).attr('frameborder', '0').addClass('modal-iframe-tab-pane');
+                        if (paneCount > 0) $iframe.addClass('is-hidden');
+                        $view.append($iframe);
+                        paneIndexByTabIndex[i] = paneCount;
+                        paneCount++;
+                    } else {
+                        paneIndexByTabIndex[i] = null;
+                    }
                 }
 
                 for (let j = 0; j < data.iframeTabs.length; j++) {
-                    const tabLabel = data.iframeTabs[j].label;
+                    const tab = data.iframeTabs[j];
+                    const tabLabel = tab.label;
                     const $btn = $('<button>').attr('type', 'button').text(tabLabel).addClass('modal-iframe-tab-btn');
-                    if (j === 0) $btn.addClass('is-active');
+                    if (paneIndexByTabIndex[j] === 0 && !tab.newTabUrl) $btn.addClass('is-active');
 
                     (function (clickedIndex) {
                         $btn.on('click', function () {
+                            const clickedTab = data.iframeTabs[clickedIndex];
+                            if (clickedTab && clickedTab.newTabUrl) {
+                                window.open(clickedTab.newTabUrl, '_blank', 'noopener,noreferrer');
+                                return;
+                            }
+
+                            const paneIndex = paneIndexByTabIndex[clickedIndex];
+                            if (paneIndex === null || paneIndex === undefined) return;
+
                             $view.find('.modal-iframe-tab-pane').each(function (k) {
-                                $(this).toggleClass('is-hidden', k !== clickedIndex);
+                                $(this).toggleClass('is-hidden', k !== paneIndex);
                             });
-                            $btns.find('.modal-iframe-tab-btn').each(function (k) {
-                                $(this).toggleClass('is-active', k === clickedIndex);
-                            });
+                            $btns.find('.modal-iframe-tab-btn').removeClass('is-active');
+                            $btn.addClass('is-active');
                         });
                     })(j);
                     $btns.append($btn);
@@ -601,6 +618,31 @@ $(document).ready(function() {
             } else {
                 const $img = $('<img>').attr('src', data.imgSrc).attr('alt', data.title + ' project image').addClass('img-fluid');
                 $mediaContainer.append($img);
+            }
+
+            // 웹사이트 타입(스크롤 안내)인 경우:
+            // - 처음엔 iframe 영역(뷰 영역)에만 딤드 + "스크롤 해보세요!" 안내
+            // - 사용자가 그 영역에서 스크롤/휠/터치 시 곧장 제거
+            if (data.scrollHint) {
+                // iframe 단일 타입 vs iframe-tabs 타입에 따라 딤드 위치 결정
+                let $hintContainer = $mediaContainer;
+                if (data.type === 'iframe-tabs') {
+                    const $tabsView = $mediaContainer.find('.modal-iframe-tabs-view');
+                    if ($tabsView.length) $hintContainer = $tabsView;
+                }
+
+                const $hint = $('<div>').addClass('modal-scroll-hint').text('스크롤 해보세요!');
+                $hintContainer.append($hint);
+
+                const hideHint = function () {
+                    $hint.addClass('is-hidden');
+                    $hint.off('.modalScrollHint');
+                };
+
+                // 딤드 자체가 휠/터치를 먼저 먹고 바로 사라지도록 처리
+                $hint.on('wheel.modalScrollHint scroll.modalScrollHint touchmove.modalScrollHint', function () {
+                    hideHint();
+                });
             }
 
             $modalTitle.text(data.title);

@@ -145,6 +145,22 @@ $(document).ready(function () {
     $('.store .swiper-pagination').eq(btn_n).show()
   })
 
+  // ABOUT 메뉴만 #C0191F로 부드럽게 지속 점멸(펄스)
+  ;(function () {
+    if ($('#aboutPulseStyle').length === 0) {
+      $('head').append([
+        '<style id="aboutPulseStyle">',
+        '@keyframes aboutPulse{0%,100%{color:#C0191F;opacity:1}50%{color:#C0191F;opacity:.25}}',
+        'nav .nav_inner a.about-pulse{animation:aboutPulse 1.1s ease-in-out infinite}',
+        '</style>'
+      ].join(''))
+    }
+
+    $('nav .nav_inner a').filter(function () {
+      return $.trim($(this).text()).toUpperCase() === 'ABOUT'
+    }).addClass('about-pulse')
+  })()
+
   
 
  

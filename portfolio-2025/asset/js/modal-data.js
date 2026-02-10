@@ -158,18 +158,32 @@ const portfolioData = {
         description: `<p>AIFD 웹사이트 퍼블리싱 프로젝트에 대한 상세 설명입니다.</p>`
     },
     item6: {
-        type: 'iframe',
-        iframeSrc: 'https://webdonghyeon.dothome.co.kr/portfolio/humanmade/viewer.html',
+        type: 'iframe-tabs',
+        iframeTabs: [
+            {
+                label: '새탭에서 보기',
+                src: 'https://webdonghyeon.dothome.co.kr/portfolio/humanmade/viewer.html',
+                newTabUrl: 'https://webdonghyeon.dothome.co.kr/portfolio/humanmade/index.html'
+            }
+        ],
+        scrollHint: true,
         tags: ['html', 'css', 'js'],
         title: '가로세로 낱말 퀴즈 인터렉션',
         description: `<p>가로세로 낱말 퀴즈 인터렉션 프로젝트에 대한 상세 설명입니다.</p>`
     },
     item7: {
-        type: 'image',
-        imgSrc: 'https://via.placeholder.com/800x600/e9e9e9/BDBDBD?text=Humanmade',
+        type: 'iframe-tabs',
+        iframeTabs: [
+            {
+                label: '새탭에서 보기',
+                src: 'https://webdonghyeon.dothome.co.kr/portfolio/liverpool/viewer.html',
+                newTabUrl: 'https://webdonghyeon.dothome.co.kr/portfolio/liverpool/index.html'
+            }
+        ],
+        scrollHint: true,
         tags: ['html', 'css', 'js'],
-        title: '휴먼메이드 퍼블리싱',
-        description: `<p>휴먼메이드 퍼블리싱 프로젝트에 대한 상세 설명입니다.</p>`
+        title: '리버풀 FC 웹사이트 퍼블리싱',
+        description: `<p>리버풀 FC 웹사이트 퍼블리싱 프로젝트에 대한 상세 설명입니다.</p>`
     },
     item8: {
         type: 'image',
