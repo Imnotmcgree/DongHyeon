@@ -627,4 +627,12 @@ $(document).ready(function() {
     $portfolioModal.on('hidden.bs.modal', function () {
         $portfolioModal.find('.modal-img-container').empty();
     });
+
+    // 모달 안 뷰어(휴먼메이드 등)에서 'navigate' 메시지 오면 모달 iframe 주소만 변경
+    window.addEventListener('message', function (e) {
+        var data = e.data;
+        if (!data || data.type !== 'navigate' || !data.url) return;
+        var $modalIframe = $portfolioModal.find('.modal-img-container iframe');
+        if ($modalIframe.length) $modalIframe.attr('src', data.url);
+    }, false);
 });
