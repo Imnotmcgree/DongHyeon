@@ -37,34 +37,35 @@ html, body {
 
 <div id="wrapper">
     <iframe id="iframePlayer" src="./index.html" frameborder="0" scrolling="auto"></iframe>
-
 </div>
 
+<script src="./js/jquery-3.7.1.min.js"></script>
 <script>
     var DESIGN_W = 1920, DESIGN_H = 980;
 
     function fitScale() {
-        var w = window.innerWidth, h = window.innerHeight;
+        var w = $(window).width(), h = $(window).height();
         var scale = Math.min(w / DESIGN_W, h / DESIGN_H);
-        var wrapper = document.getElementById("wrapper");
-        wrapper.style.transform = "scale(" + scale + ")";
-        wrapper.style.width = DESIGN_W + "px";
-        wrapper.style.height = DESIGN_H + "px";
+        $("#wrapper").css({
+            "transform": "scale(" + scale + ")",
+            "width": DESIGN_W + "px",
+            "height": DESIGN_H + "px"
+        });
     }
 
     fitScale();
-    window.addEventListener("resize", fitScale);
+    $(window).on("resize", fitScale);
 
-    window.addEventListener("message", receiveMessage, false);
+    $(window).on("message", receiveMessage);
 
     function receiveMessage(event) {
-
+        if (event.originalEvent.data && event.originalEvent.data.type === "navigate" && event.originalEvent.data.url) {
+            $("#iframePlayer").attr("src", event.originalEvent.data.url);
+        }
     }
 
-    function terminate(){
-        document.getElementById('iframePlayer').contentWindow.postMessage({
-            type: "terminated"
-        }, "*");
+    function terminate() {
+        $("#iframePlayer")[0].contentWindow.postMessage({ type: "terminated" }, "*");
     }
 </script>
 </body>
