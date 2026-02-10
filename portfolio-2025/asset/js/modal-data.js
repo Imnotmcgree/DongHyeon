@@ -158,8 +158,8 @@ const portfolioData = {
         description: `<p>AIFD 웹사이트 퍼블리싱 프로젝트에 대한 상세 설명입니다.</p>`
     },
     item6: {
-        type: 'image',
-        imgSrc: 'https://via.placeholder.com/800x600/e9e9e9/BDBDBD?text=Word+Quiz',
+        type: 'iframe',
+        iframeSrc: 'https://webdonghyeon.dothome.co.kr/humanmade/index.html',
         tags: ['html', 'css', 'js'],
         title: '가로세로 낱말 퀴즈 인터렉션',
         description: `<p>가로세로 낱말 퀴즈 인터렉션 프로젝트에 대한 상세 설명입니다.</p>`
