@@ -702,15 +702,23 @@
         </div>
     </footer>
 
-    <!-- 뷰어(모달) 내부: 외부 링크 클릭 시 새 창 없이 이 iframe만 해당 주소로 이동 -->
+    <!-- 뷰어(모달) 내부: 외부 링크 클릭 시 새 창 없이 이 iframe만 해당 주소로 이동.
+         같은 출처이므로 부모의 #iframePlayer를 직접 제어 (모달/임베드에서도 동작) -->
     <script>
     (function() {
         document.querySelectorAll("nav .nav_inner a[href^=\"http\"]").forEach(function(a) {
             a.addEventListener("click", function(e) {
-                if (window !== window.top) {
-                    e.preventDefault();
-                    window.parent.postMessage({ type: "navigate", url: this.href }, "*");
-                }
+                if (window === window.top) return;
+                e.preventDefault();
+                var url = this.href;
+                try {
+                    var iframePlayer = window.parent.document.getElementById("iframePlayer");
+                    if (iframePlayer) {
+                        iframePlayer.src = url;
+                        return;
+                    }
+                } catch (err) { /* 부모가 다른 출처면 접근 불가 */ }
+                window.parent.postMessage({ type: "navigate", url: url }, "*");
             });
         });
     })();
