@@ -160,7 +160,8 @@
 .wrap{
     position: relative;
     width: 100%;
-    // height: 100vh;
+    min-height: 100%;
+    min-height: calc(var(--vh, 1vh) * 100);
     display: flex;
     align-items: center;
     justify-content: center;
@@ -249,7 +250,7 @@
         .card-back {
             transform: rotateY(180deg);
             background-color: #FAFAFA;
-            position: relative;
+            // position: absolute 유지 (공통규칙) → card-front 화면 중앙 정렬
             transition: background-color 0.7s ease;
 
             &.card-back--values-bg {
@@ -493,12 +494,16 @@
 }
 
 body.mobile-scroll-view {
+    overflow: auto; // body 스크롤 → 브라우저 기본 스크롤바
     .wrap {
-        // 모바일에서는 스크롤이 생기므로 overflow:hidden을 해제해야 함
-        overflow: auto;
+        min-height: auto;
+        height: auto;
+        overflow: visible;
+        align-items: flex-start;
+        justify-content: flex-start;
     }
     .card-section-wrap {
-        // 높이를 내용에 맞게 변경
+        // 높이를 내용에 맞게 변경 (calc(var(--vh) * 100) 제거)
         height: auto;
         // perspective 효과가 스크롤바와 충돌할 수 있으므로 필요시 조정
         perspective: none; 

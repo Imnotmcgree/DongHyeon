@@ -3,6 +3,8 @@
 
 html {
     font-size: 62.5%;
+    min-height: 100%;
+    min-height: calc(var(--vh, 1vh) * 100); /* 모바일 주소바 대응 */
 }
 
 // rem 변환 함수 (기본 html font-size: 16px 기준)
@@ -74,6 +76,8 @@ body, p, span, h1, h2, h3, h4, h5, h6, ul, ol, li, dl, dt, dd, table, th, td, fo
 	outline: 0;
 }
 body{
+	min-height: 100%;
+	min-height: calc(var(--vh, 1vh) * 100);
 	overflow: hidden;
 	* {
 		box-sizing: border-box;

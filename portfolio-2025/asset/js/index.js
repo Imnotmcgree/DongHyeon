@@ -8,7 +8,7 @@ $(document).ready(function() {
     $(window).on('resize', setRealVH);
 
     // ========== 공통 변수 ==========
-    const devSkipIntro = true;  // true: 인트로 건너뛰기(개발용), false: 인트로 재생
+    const devSkipIntro = false;  // true: 인트로 건너뛰기(개발용), false: 인트로 재생
     let swiper = null;
     let aboutSwiper = null;
     let worksSwiper = null;
@@ -195,7 +195,15 @@ $(document).ready(function() {
             destroyWorksSwiper();
             $('body').addClass('mobile-scroll-view');
             $('.card-back').removeClass('card-back--values-bg');
+            // GSAP가 설정한 인라인 height 제거 → CSS height:auto로 스크롤 가능
+            $('.card-section').css('height', '');
+            $('.card-section-wrap').css('height', '');
         } else {
+            // 데스크톱: 풀페이지용 높이 복원 (모바일에서 제거했던 인라인 height)
+            $('.card-section').css('height', 'calc(var(--vh, 1vh) * 100)');
+            $('.card-section-wrap').css('height', '');
+            // 네비 표시 (init 클래스 제거)
+            $('.main-nav-list').removeClass('init');
             initSwiper();
             initWorksSwiper();
             $('body').removeClass('mobile-scroll-view');
@@ -483,6 +491,8 @@ $(document).ready(function() {
         // 연결 성공 후: 카드 뒤집기 + 전체 화면 + 메인 네비 표시
         function showMainAfterConnect() {
             const cardSection = '.card-section';
+            setRealVH(); // 모바일 주소바 변동 시 --vh 최신화
+            // 모바일도 펼쳐지는 효과를 위해 동일한 고정 높이로 애니메이션 (완료 후 manageLayout에서 auto로 전환)
             const targetHeight = window.innerHeight;
             const tl = gsap.timeline({
                 onComplete: function () {
@@ -503,12 +513,13 @@ $(document).ready(function() {
 
     } else {
         // ========== 개발 모드: 인트로 없이 바로 메인 ==========
+        const isMobile = (window.innerWidth <= 1200);
         gsap.set('.intro-txt, .card-front', { display: 'none' });
         gsap.set('.card-section-wrap', { opacity: 1, scale: 1 });
         gsap.set('.card-section', {
             rotationY: 180,
             width: "100vw",
-            height: 'calc(var(--vh, 1vh) * 100)',
+            height: isMobile ? 'auto' : 'calc(var(--vh, 1vh) * 100)',
             borderRadius: 0,
             borderWidth: 0,
         });
