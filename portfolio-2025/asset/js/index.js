@@ -7,8 +7,10 @@ $(document).ready(function() {
     setRealVH();
     $(window).on('resize', setRealVH);
 
-    // ========== 공통 변수 ==========
-    const devSkipIntro = false;  // true: 인트로 건너뛰기(개발용), false: 인트로 재생
+    // ========== 인트로 SKIP 여부 ==========
+    const devSkipIntro = true;  // true: 인트로 건너뛰기(개발용), false: 인트로 재생
+
+
     let swiper = null;
     let aboutSwiper = null;
     let worksSwiper = null;
@@ -142,7 +144,19 @@ $(document).ready(function() {
     }
 
     // ========== 4. 메인 세로 슬라이더 (홈 / 어바웃 / 워크스) ==========
-    const WORKS_SLIDE_INDEX = 2;  // 메인 슬라이드에서 워크스가 몇 번째인지
+    const WORKS_SLIDE_INDEX = 2;
+
+    // ---------- arrow-down (독립) ----------
+    let arrowDownTimer = null;
+    function scheduleArrowDown(idx, total) {
+        clearTimeout(arrowDownTimer);
+        $('.card-back .arrow-down').css('opacity', '0');
+        if (idx < total - 1) {
+            arrowDownTimer = setTimeout(function () { $('.card-back .arrow-down').css('opacity', '1'); }, 2000);
+        }
+    }
+
+    function clearArrowDown() { clearTimeout(arrowDownTimer); arrowDownTimer = null; }
 
     function initSwiper() {
         if (isSwiperActive) return;
@@ -159,9 +173,11 @@ $(document).ready(function() {
                     s.slideTo(0, 0);
                     setupCustomPagination(s, true);
                     $('.card-back').removeClass('card-back--values-bg');
+                    scheduleArrowDown(0, s.slides.length);
                 },
                 slideChange: function (s) {
                     updateActiveSlider(s, false);
+                    scheduleArrowDown(s.activeIndex, s.slides.length);
 
                     if (s.activeIndex === WORKS_SLIDE_INDEX) {
                         swiper.mousewheel.disable();
@@ -179,6 +195,7 @@ $(document).ready(function() {
 
     function destroySwiper() {
         if (!isSwiperActive) return;
+        clearArrowDown();
         swiper.destroy(true, true);
         swiper = null;
         isSwiperActive = false;
@@ -491,24 +508,81 @@ $(document).ready(function() {
         // 연결 성공 후: 카드 뒤집기 + 전체 화면 + 메인 네비 표시
         function showMainAfterConnect() {
             const cardSection = '.card-section';
-            setRealVH(); // 모바일 주소바 변동 시 --vh 최신화
-            // 모바일도 펼쳐지는 효과를 위해 동일한 고정 높이로 애니메이션 (완료 후 manageLayout에서 auto로 전환)
+            setRealVH();
             const targetHeight = window.innerHeight;
+            const isMobile = (window.innerWidth <= 1200);
+
+            // About 섹션(첫 슬라이드) 초기 숨김
+            const $aboutContent = $('.main-swiper .swiper-slide:first-child .about-content');
+            const $left = $aboutContent.find('.left');
+            const $right = $aboutContent.find('.right');
+            gsap.set($left.find('header h1, header p, .tagline, .description, .tag-list li'), { opacity: 0, y: 24 });
+            gsap.set($right.find('.skill-category'), { opacity: 0, y: 20 });
+            gsap.set($right.find('.skill-category li'), { opacity: 0, x: -16 });
+
             const tl = gsap.timeline({
                 onComplete: function () {
                     $('.card-front').hide();
                     afterIntro = true;
-                    manageLayout();
-                    initAboutSwiperObserver();
+                    if (!isMobile) {
+                        manageLayout();
+                        initAboutSwiperObserver();
+                    }
                     const $mainNavList = $('.main-nav-list');
-                    gsap.to($mainNavList[0], {
-                        duration: 0.5, opacity: 1, scale: 1, y: 0, ease: 'back.out(1.7)', delay: 0.3,
-                        onStart: function () { $mainNavList.removeClass('init'); }
-                    });
+                    gsap.fromTo($mainNavList[0],
+                        { opacity: 0, scale: 0.95, y: 20 },
+                        { duration: 0.5, opacity: 1, scale: 1, y: 0, ease: 'back.out(1.7)', delay: 0.3, onComplete: function () { $mainNavList.removeClass('init'); } }
+                    );
                 }
             });
+
+            // 뒤집기 → 펼쳐지기 → 0.5초 대기 → About 등장
             tl.to(cardSection, { duration: 1.5, rotationY: 180, ease: 'expo.inOut' })
-              .to(cardSection, { duration: 1.2, width: '100vw', height: targetHeight, borderRadius: 0, borderWidth: 0, ease: 'expo.inOut' }, '-=0.8');
+              .to(cardSection, {
+                  duration: 1.2,
+                  width: '100vw',
+                  height: targetHeight,
+                  borderRadius: 0,
+                  borderWidth: 0,
+                  ease: 'expo.inOut',
+                  onComplete: function () {
+                      if (isMobile) {
+                          // 모바일: 펼쳐지자마자 스크롤 레이아웃 전환 (About 애니 전에 → height 점프 방지)
+                          $('.card-front').hide();
+                          afterIntro = true;
+                          manageLayout();
+                          initAboutSwiperObserver();
+                      }
+                  }
+              }, '-=0.8')
+              .to({}, { duration: 0.5 })  // 0.5초 대기
+              // Left: 뿅뿅뿅
+              .to($left.find('header h1')[0], { duration: 0.35, opacity: 1, y: 0, ease: 'back.out(1.4)' })
+              .to($left.find('header p')[0], { duration: 0.35, opacity: 1, y: 0, ease: 'back.out(1.4)' }, '-=0.25')
+              .to($left.find('.tagline')[0], { duration: 0.35, opacity: 1, y: 0, ease: 'back.out(1.4)' }, '-=0.25')
+              .to($left.find('.description')[0], { duration: 0.4, opacity: 1, y: 0, ease: 'back.out(1.4)' }, '-=0.25')
+              .to($left.find('.tag-list li'), { duration: 0.3, opacity: 1, y: 0, stagger: 0.06, ease: 'back.out(1.2)' }, '-=0.15')
+              // Right: 촤르륵 → 촤르륵 → 촤르륵 (카테고리별, 각 카테고리 내 li도 촤르륵)
+              .to($right.find('.skill-category'), {
+                  duration: 0.45,
+                  opacity: 1,
+                  y: 0,
+                  stagger: 0.2,
+                  ease: 'power2.out',
+                  onStart: function () {
+                      $right.find('.skill-category').each(function (i) {
+                          const $lis = $(this).find('li');
+                          gsap.to($lis, {
+                              duration: 0.3,
+                              opacity: 1,
+                              x: 0,
+                              stagger: 0.04,
+                              ease: 'power2.out',
+                              delay: 0.1 + i * 0.2
+                          });
+                      });
+                  }
+              }, '-=0.2');
         }
 
     } else {
@@ -529,8 +603,10 @@ $(document).ready(function() {
         initAboutSwiperObserver();
 
         const $mainNavList = $('.main-nav-list');
-        gsap.set($mainNavList[0], { opacity: 1, scale: 1, y: 0 });
-        $mainNavList.removeClass('init');
+        gsap.fromTo($mainNavList[0],
+            { opacity: 0, scale: 0.95, y: 20 },
+            { duration: 0.4, opacity: 1, scale: 1, y: 0, ease: 'back.out(1.7)', onComplete: function () { $mainNavList.removeClass('init'); } }
+        );
     }
 
     // ========== 9. 포트폴리오 모달 (작업 클릭 시 상세 보기) ==========

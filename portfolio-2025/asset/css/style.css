@@ -1569,6 +1569,9 @@ caption, .text-hide {
 body.mobile-scroll-view {
   overflow: auto;
 }
+body.mobile-scroll-view #particles-js {
+  display: none;
+}
 body.mobile-scroll-view .wrap {
   min-height: auto;
   height: auto;
@@ -1619,6 +1622,8 @@ body.mobile-scroll-view .main-nav, body.mobile-scroll-view .arrow-down {
   position: absolute;
   bottom: 40px;
   right: 65px;
+  opacity: 0;
+  transition: opacity 0.3s;
 }
 .arrow-down .arrow-item {
   position: relative;
@@ -1708,7 +1713,7 @@ body.mobile-scroll-view .main-nav, body.mobile-scroll-view .arrow-down {
   justify-content: space-between;
   flex-wrap: wrap;
 }
-@media (max-width: 992px) {
+@media (max-width: 1200px) {
   .about-content {
     display: block;
   }
@@ -1816,6 +1821,15 @@ body.mobile-scroll-view .main-nav, body.mobile-scroll-view .arrow-down {
 .about-content .right {
   align-self: end;
 }
+@media (max-width: 768px) {
+  .about-content .right .skills {
+    align-items: center;
+    gap: 20px;
+  }
+}
+.about-content .right .skills .skill-category .collaboration-tools li:nth-child(3), .about-content .right .skills .skill-category .collaboration-tools li:nth-child(4) {
+  opacity: 0;
+}
 .about-content .right .skills .skill-category:not(:first-child) {
   margin-top: 25px;
 }
@@ -1833,6 +1847,11 @@ body.mobile-scroll-view .main-nav, body.mobile-scroll-view .arrow-down {
   display: flex;
   gap: 20px;
 }
+@media (max-width: 1200px) {
+  .about-content .right .skills ul {
+    justify-content: space-between;
+  }
+}
 .about-content .right .skills ul li {
   width: 120px;
   height: 120px;
@@ -1845,6 +1864,12 @@ body.mobile-scroll-view .main-nav, body.mobile-scroll-view .arrow-down {
   flex-direction: column;
   align-items: center;
   justify-content: center;
+}
+@media (max-width: 1200px) {
+  .about-content .right .skills ul li {
+    width: 200px;
+    height: 130px;
+  }
 }
 
 .about-slide {

@@ -495,6 +495,9 @@
 
 body.mobile-scroll-view {
     overflow: auto; // body 스크롤 → 브라우저 기본 스크롤바
+    #particles-js {
+        display: none; // 카드백 진입 시 인트로 파티클 숨김
+    }
     .wrap {
         min-height: auto;
         height: auto;
@@ -553,6 +556,8 @@ body.mobile-scroll-view {
     position: absolute;
     bottom: 40px;
     right: 65px;
+    opacity: 0;
+    transition: opacity 0.3s;
   
 
     .arrow-item {
@@ -638,7 +643,7 @@ body.mobile-scroll-view {
     display: flex;
     justify-content: space-between;
     flex-wrap: wrap;
-    @include media-breakpoint-down(lg) {
+    @include media-breakpoint-down(xl) {
         display: block;
     }
 
@@ -716,7 +721,16 @@ body.mobile-scroll-view {
     .right{
         align-self: end;
         .skills{
+            @include media-breakpoint-down(md) {
+                align-items: center;
+                gap: 20px;
+            }
             .skill-category {
+                .collaboration-tools{
+                    li:nth-child(3), li:nth-child(4){
+                        opacity: 0;
+                    }
+                }
                 &:not(:first-child){
                     margin-top: 25px;
                 }
@@ -729,6 +743,9 @@ body.mobile-scroll-view {
             ul{
                 display: flex;
                 gap: 20px;  
+                @include media-breakpoint-down(xl) {
+                    justify-content: space-between;
+                }
                 li{
                     width: 120px;
                     height: 120px;
@@ -742,6 +759,10 @@ body.mobile-scroll-view {
                     flex-direction: column;
                     align-items: center;
                     justify-content: center;
+                    @include media-breakpoint-down(xl) {
+                        width: 200px;
+                        height: 130px;
+                    }
                 }
             }
         }
