@@ -8,7 +8,7 @@ $(document).ready(function() {
     $(window).on('resize', setRealVH);
 
     // ========== 인트로 SKIP 여부 ==========
-    const devSkipIntro = true;  // true: 인트로 건너뛰기(개발용), false: 인트로 재생
+    const devSkipIntro = true  // true: 인트로 건너뛰기(개발용), false: 인트로 재생
 
 
     let swiper = null;
@@ -491,7 +491,7 @@ $(document).ready(function() {
                     const $connectText = $('.connect-text');
                     const $oldSpans = $connectText.children();
                     gsap.to($oldSpans, { duration: 0.3, opacity: 0, rotationX: -90, stagger: 0.1, onComplete: function () {
-                        $connectText.text('연결 성공 !');
+                        $connectText.text('연결 시작 !');
                         splitText($connectText);
                         const $newSpans = $connectText.find('span');
                         gsap.set($newSpans, { opacity: 0, rotationX: 90 });
