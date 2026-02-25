@@ -2383,6 +2383,17 @@ body.mobile-scroll-view .works-swiper .work-item .work-item-btn {
 .portfolio-modal .modal-tags li:has(span.tag-lottie) {
   background-color: #00DAB1;
 }
+.portfolio-modal .modal-tags li:has(span.tag-photoshop) {
+  background-color: #001e36;
+  color: #2ea1f5;
+}
+.portfolio-modal .modal-tags li:has(span.tag-xd) {
+  background-color: #440035;
+  color: #e250dd;
+}
+.portfolio-modal .modal-tags li:has(span.tag-figma) {
+  background: linear-gradient(150deg, #F24E1E, #A259FF, #1ABCFE, #0ACF83);
+}
 .portfolio-modal .modal-title {
   font-size: 4rem;
 }

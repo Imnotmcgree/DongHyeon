@@ -1224,6 +1224,9 @@ body.mobile-scroll-view {
         li:has(span.tag-sass) { background-color: #CD6799; }
         li:has(span.tag-vue) { background-color: #4FC08D; }
         li:has(span.tag-lottie) { background-color: #00DAB1; }
+        li:has(span.tag-photoshop) { background-color: #001e36; color:#2ea1f5; }
+        li:has(span.tag-xd) { background-color: #440035; color: #e250dd; }
+        li:has(span.tag-figma) { background: linear-gradient(150deg, #F24E1E, #A259FF, #1ABCFE, #0ACF83); }
     }
     
     .modal-title {

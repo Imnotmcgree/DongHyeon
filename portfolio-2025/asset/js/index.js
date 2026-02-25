@@ -629,7 +629,10 @@ $(document).ready(function() {
         sass: { text: 'Sass', class: 'tag-sass' },
         react: { text: 'React', class: 'tag-react' },
         vue: { text: 'Vue', class: 'tag-vue' },
-        lottie: { text: 'Lottie', class: 'tag-lottie' }
+        lottie: { text: 'Lottie', class: 'tag-lottie' },
+        xd: { text: 'XD', class: 'tag-xd' },
+        photoshop: { text: 'Photoshop', class: 'tag-photoshop' },
+        figma: { text: 'Figma', class: 'tag-figma' }
     };
 
     $workItems.each(function (index) {
@@ -695,6 +698,9 @@ $(document).ready(function() {
                             });
                             $btns.find('.modal-iframe-tab-btn').removeClass('is-active');
                             $btn.addClass('is-active');
+                            if (clickedTab && clickedTab.description) {
+                                $portfolioModal.find('#modal-desc').html(clickedTab.description);
+                            }
                         });
                     })(j);
                     $btns.append($btn);
@@ -733,7 +739,12 @@ $(document).ready(function() {
             }
 
             $modalTitle.text(data.title);
-            $modalDesc.html(data.description);
+            if (data.type === 'iframe-tabs' && data.iframeTabs && data.iframeTabs.length > 0) {
+                const firstWithDesc = data.iframeTabs.find(function (t) { return t && t.description; });
+                $modalDesc.html(firstWithDesc ? firstWithDesc.description : (data.description || ''));
+            } else {
+                $modalDesc.html(data.description || '');
+            }
 
             // 태그 목록 만들기 (data.tags 가 배열이면 그대로, 객체면 키 목록 사용)
             const tagList = Array.isArray(data.tags) ? data.tags : Object.keys(data.tags || {});

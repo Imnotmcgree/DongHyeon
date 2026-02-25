@@ -16,40 +16,31 @@ const portfolioData = {
         <p>주요 구현 내용은 다음과 같습니다.</p>
 
         <ul>
-        <li>
-            <strong class="d-block">캐릭터 DOM 재사용 구조</strong>
-            홈 화면에 존재하는 캐릭터 DOM을 기준으로 <code>clone()</code> 방식으로 복제하여
-            플레이어, NPC, 엔딩 화면에 동적으로 배치하였습니다.
-            하나의 캐릭터 구조를 단계별로 재활용해 마크업 중복을 줄이고 유지보수성을 확보하였습니다.
-        </li>
+            <li>
+                <strong class="d-block">캐릭터 DOM 재사용 구조</strong>
+                홈 화면에 존재하는 캐릭터 DOM을 기준으로 <code>clone()</code> 방식으로 복제하여
+                플레이어, NPC, 엔딩 화면에 동적으로 배치하였습니다.
+                하나의 캐릭터 구조를 단계별로 재활용해 마크업 중복을 줄이고 유지보수성을 확보하였습니다.
+            </li>
 
-        <li>
-            <strong class="d-block">문제 흐름 제어 및 오답 재출제 로직</strong>
-            문제 배열을 랜덤으로 섞어 진행하고, 오답 문제는 별도의 배열에 저장한 뒤
-            기존 문제가 모두 소진되면 다시 재출제되도록 구성하였습니다.
-            라운드·스텝·종료 상태를 분리 관리해 게임 흐름이 안정적으로 유지되도록 제어하였습니다.
-        </li>
+            <li>
+                <strong class="d-block">클래스 기반 애니메이션 트리거 구조</strong>
+                캐릭터의 달리기·땀 방울 등 연출은 모두 CSS <code>@keyframes</code>로 정의하고,
+                jQuery의 <code>addClass()</code>, <code>removeClass()</code>로
+                필요한 시점에만 클래스(<code>.show</code>, <code>.active</code>, <code>.playing</code> 등)를 부여해
+                애니메이션을 실행하도록 구성하였습니다.
+                스크립트는 “언제 재생할지”만 제어하고, 구체적인 동작과 지속 시간은 스타일에서 담당하도록
+                스크립트 로직과 스타일 로직을 분리해 구조를 단순화하였습니다.
+            </li>
 
-        <li>
-            <strong class="d-block">클래스 기반 애니메이션 트리거 구조</strong>
-            jQuery의 <code>addClass()</code>, <code>removeClass()</code>로
-            캐릭터 상태를 제어하고,
-            CSS animation이 클래스 변경에 따라 실행되도록 구성하였습니다.
-            스크립트 로직과 스타일 로직을 분리해 구조를 단순화하였습니다.
-        </li>
-
-        <li>
-            <strong class="d-block">키보드 접근성 및 포커스 제어</strong>
-            Enter·Space 키로 선택이 가능하도록 이벤트를 분기 처리하고,
-            동적 UI 변경 시 <code>tabindex</code>와 <code>aria</code> 속성을 함께 갱신해
-            키보드 및 스크린리더 환경에서도 흐름이 유지되도록 구성하였습니다.
-        </li>
+            <li>
+                <strong class="d-block">키보드 접근성 및 포커스 제어</strong>
+                Enter·Space 키로 선택이 가능하도록 이벤트를 분기 처리하고,
+                동적 UI 변경 시 <code>tabindex</code>와 <code>aria</code> 속성을 함께 갱신해
+                키보드 및 스크린리더 환경에서도 흐름이 유지되도록 구성하였습니다.
+            </li>
         </ul>
-
-        <p>
-        프로젝트 특성상 소스 코드는 공개하지 않으며,
-        모달 내 미니 플레이 화면을 통해 실제 동작 구조와 인터랙션 흐름을 확인할 수 있습니다.
-        </p>
+       
         `
 
 
@@ -67,7 +58,7 @@ const portfolioData = {
         <li>
             <strong class="d-block">정답 상태 시각화 처리</strong>
             정답 여부에 따라 대상 요소에 상태 클래스를 분기 적용해,
-            별도의 화면 전환 없이도 결과가 즉시 시각적으로 구분되도록 구성하였습니다.
+            결과가 즉시 시각적으로 구분되도록 구성하였습니다.
         </li>
 
         <li>
@@ -141,51 +132,65 @@ const portfolioData = {
     item4: {
         type: 'iframe-tabs',
         iframeTabs: [
-            { label: '유형 1', src: 'https://webdonghyeon.dothome.co.kr/portfolio/intro/lesson01-2/frame.html' },
-            { label: '유형 2', src: 'https://webdonghyeon.dothome.co.kr/portfolio/intro/lesson08-2/frame.html' }
+            {
+                label: '유형 1',
+                src: 'https://webdonghyeon.dothome.co.kr/portfolio/intro/lesson01-2/frame.html',
+                description: `
+                <p>
+                    그림 속 친구들과 어울리는 스티커를 붙여 완성하는 단원 도입 페이지입니다.
+                    모달 순서(<code>Modal1</code>~<code>Modal5</code>)에 따라 클릭 아이콘 위치가 전환됩니다.
+                </p>
+                <p>주요 구현 내용은 다음과 같습니다.</p>
+                <ul>
+                <li>
+                    <strong class="d-block">모달·클릭 아이콘 연동</strong>
+                    <code>modalOrder</code> 배열과 <code>clickIconPositions</code>로 단계별 모달 노출과 클릭 아이콘 좌표를 관리하고, 클릭 시 해당 순서의 모달을 띄우도록 구성하였습니다.
+                </li>
+                <li>
+                    <strong class="d-block">스티커 드롭·노출 제어</strong>
+                    정답 스티커(<code>.sticker-1</code>~<code>5</code>) 클릭 시 <code>data-target-pos</code>·<code>data-target-size</code>로 목표 위치·크기를 읽어 이동 애니메이션을 주고, <code>moved</code> 클래스로 완료 상태를 구분하였습니다.
+                </li>
+                <li>
+                    <strong class="d-block">접근성·포커스</strong>
+                    Bootstrap 모달 <code>shown</code>/<code>hidden</code> 시 <code>inert</code> 속성을 토글하여 모달 밖 스티커 포커스 접근을 제어하였습니다.
+                </li>
+                </ul>
+                `
+            },
+            {
+                label: '유형 2',
+                src: 'https://webdonghyeon.dothome.co.kr/portfolio/intro/lesson08-2/frame.html',
+                description: `
+                <p>
+                    겨울에 해 보고 싶은 활동을 찾는 단원 도입 페이지입니다.
+                    하나의 큰 배경 이미지 위에서 시점이 눈싸움·눈사람·눈썰매·낚시 영역 순으로 이동합니다.
+                </p>
+                <p>주요 구현 내용은 다음과 같습니다.</p>
+                <ul>
+                <li>
+                    <strong class="d-block">시점 이동 구조</strong>
+                    <code>#stage1</code>에 <code>step1</code>~<code>step5</code> 클래스를 부여하고, CSS <code>transform</code>(<code>scale</code>·<code>translate</code>)을 1.5초 <code>transition</code>으로 전환하여 큰 캔버스를 확대·이동하는 방식으로 시점을 옮기도록 구성하였습니다.
+                </li>
+                <li>
+                    <strong class="d-block">motion 영역 노출</strong>
+                    단계에 맞는 영역만 보이도록 <code>stage1-motion</code>, <code>stage2-motion</code>, <code>stage3-motion</code>을 클래스 토글로 제어하였습니다.
+                </li>
+                <li>
+                    <strong class="d-block">하단 UI·오디오 연동</strong>
+                    문장 완성·정답 선택·다음 버튼 흐름을 단계와 맞추고, 단계 진입·정답 시점에 오디오 재생을 트리거하도록 구성하였습니다.
+                </li>
+                </ul>
+                `
+            }
         ],
         tags: ['html', 'css', 'js', 'jQuery'],
         title: '단원 도입 인터렉션 페이지',
-        description: `
-        <p>
-            전자저작물 단원 도입용 인터렉션 페이지 2종입니다. <br>
-            유형 1·유형 2는 각각 다른 주제와 화면 흐름으로, 학습자가 단원에 자연스럽게 진입할 수 있도록 구성하였습니다.
-        </p>
-
-        <p>주요 구현 내용은 다음과 같습니다.</p>
-
-        <ul>
-        <li>
-            <strong class="d-block">유형별 페이지 구조 및 콘텐츠 구성</strong>
-            각 유형마다 단원 도입에 맞는 섹션을 나누어 마크업하였고, 이미지·텍스트·버튼 등 요소를 단계별로 배치하였습니다. 공통 레이아웃은 유지하면서 유형별로 다른 콘텐츠만 교체하기 쉽게 구성하여 재사용성을 높였습니다.
-        </li>
-        <li>
-            <strong class="d-block">상황별 오디오 트리거 설계</strong>
-            단원 도입 흐름에 맞춰 <strong>상황에 맞는 트리거에서만 오디오가 재생되도록</strong> 설계하였습니다. HTML5 <code>&lt;audio&gt;</code> 또는 <code>new Audio()</code>로 소스를 관리하고, 특정 단계 진입·클릭·다음 버튼 등 이벤트 시점에 <code>play()</code>·<code>pause()</code>를 호출해, 화면 전환과 나레이션·효과음이 맞물리도록 연동하였습니다.
-        </li>
-        <li>
-            <strong class="d-block">자연스러운 애니메이션 연출</strong>
-            <code>@keyframes</code>와 <code>transition</code>으로 요소 등장·전환·강조를 넣되, <code>ease-in-out</code>·<code>cubic-bezier</code>로 타이밍을 조정해 움직임이 부드럽게 보이도록 하였습니다. 단계가 바뀔 때는 duration을 맞추어 오디오·화면 전환과 어긋나지 않게 하였고, 필요한 구간에는 <code>animation-delay</code>로 순차 등장 효과를 주어 흐름에 맞는 자연스러운 연출을 적용하였습니다.
-        </li>
-        <li>
-            <strong class="d-block">인터랙션 및 시각 연출</strong>
-            단원 도입 흐름에 맞춰 사용자의 클릭·호버에 반응하도록 <code>click</code>, <code>mouseenter</code> / <code>mouseleave</code> 이벤트를 연결하였습니다. 위 애니메이션과 연동해 단계별로 요소가 반응하도록 하였습니다.
-        </li>
-        <li>
-            <strong class="d-block">반응형 대응</strong>
-            <code>@media</code> 쿼리로 브레이크포인트를 나누고, <code>flex</code>·<code>grid</code>를 활용해 뷰포트에 따라 레이아웃·요소 크기·간격이 달라지도록 하였습니다. 태블릿·모바일에서도 단원 도입 흐름이 깨지지 않도록 배치와 타이포를 조정하였습니다.
-        </li>
-        </ul>
-
-        <p>
-        모달 내에서 유형 1·2 각각의 화면과 인터랙션 흐름을 확인할 수 있습니다.
-        </p>
-        `
+        description: ''
     },
     item5: {
         type: 'iframe',
         iframeSrc: 'https://webdonghyeon.dothome.co.kr/portfolio/markup/_markup.html',
-        tags: ['html', 'css', 'scss'],
+        tags: ['html', 'css', 'scss', 'figma'],
         title: 'SCSS 스킨 프로젝트',
         description: `
         <p>
@@ -228,11 +233,11 @@ const portfolioData = {
             }
         ],
         scrollHint: true,
-        tags: ['html', 'css', 'js'],
+        tags: ['html', 'css', 'js','jquery', 'xd','photoshop'],
         title: '휴먼메이드 웹사이트 퍼블리싱',
         description: `
         <p>
-            HUMAN MADE 컨셉 웹사이트를 <strong>Adobe XD 디자인부터 퍼블리싱까지 직접 진행</strong>한 개인 프로젝트입니다. 미니멀한 디자인으로 구성하였습니다. 메인·서브(ABOUT) 구성이며, 모달 안에서는 ABOUT 링크 클릭 시 <code>postMessage</code>로 iframe 주소만 바꾸어 서브로 전환되도록 하였습니다.
+            HUMAN MADE 컨셉 웹사이트를 Adobe XD 디자인한 뒤 퍼블리싱한 개인 프로젝트입니다. 미니멀한 디자인으로 구성하였습니다. 메인·서브(ABOUT) 구성이며, 모달 안에서는 ABOUT 링크 클릭 시 <code>postMessage</code>로 iframe 주소만 바꾸어 서브로 전환되도록 하였습니다.
         </p>
 
         <p>주요 구현 내용은 다음과 같습니다.</p>
@@ -244,11 +249,15 @@ const portfolioData = {
         </li>
         <li>
             <strong class="d-block">마크업</strong>
-            문서의 상·하위 정보 구조를 기준으로 <code>&lt;header&gt;</code>, <code>&lt;main&gt;</code>, <code>&lt;section&gt;</code>, <code>&lt;nav&gt;</code>, <code>&lt;footer&gt;</code> 등의 시맨틱 요소를 배치하고, 메인·서브 페이지를 섹션 단위로 구분하여 설계하였습니다. 각 섹션은 실제 서비스의 정보 구조를 가정해 비주얼, 콘텐츠 소개, 컬렉션, 뉴스, 매장 정보 등 역할에 따라 구분하였으며, 제목 계층과 내비게이션 흐름이 자연스럽게 이어지도록 구성하였습니다. 또한 스크린리더와 검색엔진에서 영역의 의미와 관계가 명확히 드러나도록 마크업하였습니다.
+            문서의 상·하위 정보 구조를 기준으로 <code>&lt;header&gt;</code>, <code>&lt;main&gt;</code>, <code>&lt;section&gt;</code>, <code>&lt;nav&gt;</code>, <code>&lt;footer&gt;</code> 등의 시맨틱 요소를 배치하고, 메인·서브 페이지를 섹션 단위로 구분하여 설계하였습니다. 각 섹션은 실제 서비스의 정보 구조를 가정해 비주얼, 콘텐츠 소개, 컬렉션, 뉴스, 매장 정보 등 역할에 따라 구분하였으며, 제목 계층과 내비게이션 흐름이 자연스럽게 이어지도록 구성하였습니다.
         </li>
         <li>
             <strong class="d-block">JS·라이브러리</strong>
-            <code>AOS</code>로 스크롤 시 섹션 등장(<code>data-aos</code>, <code>data-aos-delay</code>). <code>Swiper</code>는 LOOKBOOK 1개, STORE는 지역 탭(JAPAN·KOREA 등)마다 별도 인스턴스 + jQuery로 탭 클릭 시 해당 슬라이더만 노출·pagination 전환. jQuery로 햄버거 클릭 시 네비 열고 닫기(<code>toggleClass</code>), ABOUT 메뉴 점멸은 동적 <code>@keyframes</code> 주입.
+            <code>AOS</code>의 속성들을 사용하여 스크롤 시 섹션 등장 효과를 구성하였으며,
+            <code>data-aos-delay</code>). <code>Swiper</code>는 LOOKBOOK 1개,
+            STORE는 지역 탭(JAPAN·KOREA 등)마다 별도 인스턴스 + jQuery로 탭 클릭 시
+            해당 슬라이더만 노출·pagination 전환하게 구성하였습니다.
+            (<code>toggleClass</code>), ABOUT 메뉴 점멸은 동적 <code>@keyframes</code>으로 주입하였습니다.
         </li>
         </ul>
         `
@@ -263,11 +272,11 @@ const portfolioData = {
             }
         ],
         scrollHint: true,
-        tags: ['html', 'css', 'js'],
-        title: '리버풀 FC 웹사이트 퍼블리싱',
+        tags: ['html', 'css', 'js', 'jquery', 'xd','photoshop'],
+        title: 'Liverpool FC 웹사이트 퍼블리싱',
         description: `
         <p>
-            리버풀 FC 공식 사이트를 참고해 <strong>Adobe XD로 디자인한 뒤 퍼블리싱까지 직접 진행</strong>한 개인 프로젝트입니다. 클럽의 정체성인 red 색상을 포인트컬러로 최대한 살리려고 하였습니다.
+            리버풀 FC 공식 사이트를 참고해 Adobe XD로 디자인한 뒤 퍼블리싱한 개인 프로젝트입니다. 클럽의 정체성인 red 색상을 포인트컬러로 최대한 살리려고 하였습니다.
         </p>
 
         <p>주요 구현 내용은 다음과 같습니다.</p>
@@ -283,16 +292,27 @@ const portfolioData = {
         </li>
         <li>
             <strong class="d-block">JS·라이브러리</strong>
-            <code>AOS</code>로 스크롤 시 섹션 등장(<code>data-aos</code>, <code>data-aos-delay</code>). <code>Swiper</code>는 비주얼(4장·pagination·autoplay), HEADLINES(4장·prev/next), WOMEN'S(4장·prev/next) 3개 인스턴스. jQuery로 햄버거 클릭 시 네비 열고 닫기(<code>toggleClass</code>).
+            <code>AOS</code>의 속성들을 사용하여 스크롤 시 섹션 등장 효과를 구성하였으며,
+            비주얼 섹션은 <code>Swiper</code>로 구성하였습니다.
         </li>
         </ul>
         `
     },
     item8: {
-        type: 'image',
-        imgSrc: 'https://via.placeholder.com/800x600/e9e9e9/BDBDBD?text=Liverpool+FC',
+        type: 'iframe',
+        iframeSrc: 'https://webdonghyeon.dothome.co.kr/portfolio/portfolio-2025/index.html',
         tags: ['react', 'scss'],
-        title: '미완성 프로젝트',
-        description: `<p></p>`
+        title: '포트폴리오 페이지 퍼블리싱',
+        description: `
+        <p>
+            해당 포트폴리오 사이트에 대한 설명입니다.
+        </p>
+        <p>주요 구현 내용은 다음과 같습니다.</p>
+        <ul>
+        <li>
+            <strong class="d-block">레이아웃</strong>
+        </li>
+        </ul>
+        `
     }
 };
