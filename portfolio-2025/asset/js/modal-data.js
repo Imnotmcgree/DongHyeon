@@ -5,12 +5,10 @@ const portfolioData = {
         tags: ['html', 'css', 'js', 'jQuery'],
         title: '듣고! 달려! 스피드런',
         description: `
-       <p>
+        <p>
             음성 또는 문장을 확인하고 알맞은 그림이나 정답을 선택하는 방식의 학습형 <br> 미니게임입니다. <br>
-            기획 및 디자인, 이미지 리소스는 클라이언트로부터 제공받은 자료를 사용하였으며,
-            HTML, CSS, JavaScript 기반으로 인터랙션 로직과 화면 제어를 구현하였습니다.
-            학습 이력 기록을 위한 xAPI 통신 구조는 기존 프로젝트 공통 프레임워크를 활용하고,
-            게임 흐름에 맞게 일부 로직을 연동·확장하는 방식으로 적용하였습니다.
+            전체 기획·비주얼 디자인과 주요 이미지 리소스는 클라이언트로부터 제공받은 산출물을 기반으로 하였으며,
+            퍼블리싱(HTML, CSS 마크업)과 JavaScript(jQuery) 기반 인터랙션 로직 구현을 담당하여 화면 제어와 게임 진행을 구성하였습니다.
             모달 내부에서는 iframe을 활용해 실제 플레이 화면을 직접 확인할 수 있도록 구성하였으며,
             <strong>해당 구조는 미니게임 3종 모두 동일하게 적용되었습니다.</strong>
         </p>
@@ -246,7 +244,7 @@ const portfolioData = {
         </li>
         <li>
             <strong class="d-block">마크업</strong>
-            <code>&lt;header&gt;</code>, <code>&lt;main&gt;</code>, <code>&lt;section&gt;</code>, <code>&lt;nav&gt;</code>, <code>&lt;footer&gt;</code>로 구역을 나누고, 메인(Visual·Collection·Brand Story·LOOKBOOK·NEWS·STORE·Banner)·서브(ABOUT·APPAREL·LIFESTYLE·JAPANES HERITAGE·CREATORS·Directors·HISTORY) 섹션을 시맨틱하게 구성하였습니다.
+            문서의 상·하위 정보 구조를 기준으로 <code>&lt;header&gt;</code>, <code>&lt;main&gt;</code>, <code>&lt;section&gt;</code>, <code>&lt;nav&gt;</code>, <code>&lt;footer&gt;</code> 등의 시맨틱 요소를 배치하고, 메인·서브 페이지를 섹션 단위로 구분하여 설계하였습니다. 각 섹션은 실제 서비스의 정보 구조를 가정해 비주얼, 콘텐츠 소개, 컬렉션, 뉴스, 매장 정보 등 역할에 따라 구분하였으며, 제목 계층과 내비게이션 흐름이 자연스럽게 이어지도록 구성하였습니다. 또한 스크린리더와 검색엔진에서 영역의 의미와 관계가 명확히 드러나도록 마크업하였습니다.
         </li>
         <li>
             <strong class="d-block">JS·라이브러리</strong>
@@ -269,7 +267,7 @@ const portfolioData = {
         title: '리버풀 FC 웹사이트 퍼블리싱',
         description: `
         <p>
-            리버풀 FC 공식 사이트를 참고해 <strong>Adobe XD로 디자인한 뒤 퍼블리싱까지 직접 진행</strong>한 개인 프로젝트입니다. 클럽의 정체성인 red 색상을 포인트컬러로 최대한 살리려고 하였습니다. Visual·Match·HEADLINES·TOP SCORERS·WOMEN'S·Champions wall·Footer로 구성하였습니다.
+            리버풀 FC 공식 사이트를 참고해 <strong>Adobe XD로 디자인한 뒤 퍼블리싱까지 직접 진행</strong>한 개인 프로젝트입니다. 클럽의 정체성인 red 색상을 포인트컬러로 최대한 살리려고 하였습니다.
         </p>
 
         <p>주요 구현 내용은 다음과 같습니다.</p>
@@ -281,7 +279,7 @@ const portfolioData = {
         </li>
         <li>
             <strong class="d-block">마크업</strong>
-            <code>&lt;header&gt;</code>, <code>&lt;main&gt;</code>, <code>&lt;section&gt;</code>, <code>&lt;footer&gt;</code>로 구역을 나누고, Visual·Match·Welcome·HEADLINES·Banner·TOP SCORERS·FIRST TEAM·WOMEN'S·Champions wall·Footer를 시맨틱하게 섹션별로 구성하였습니다.
+            경기 정보, 뉴스, 선수단, 우승 기록 등 주요 콘텐츠 블록을 기준으로 문서의 정보 구조를 설계하고, 이에 맞추어 <code>&lt;header&gt;</code>, <code>&lt;main&gt;</code>, <code>&lt;section&gt;</code>, <code>&lt;footer&gt;</code> 등의 시맨틱 요소를 배치하였습니다. 각 섹션은 클럽 소개, 경기 하이라이트, 최신 기사, 득점 순위, 선수 소개 등 역할별로 구분되며, 상·하위 제목 계층과 내비게이션 흐름이 자연스럽게 이어지도록 구성하였습니다.
         </li>
         <li>
             <strong class="d-block">JS·라이브러리</strong>
