@@ -535,6 +535,8 @@ $(document).ready(function() {
 
         gsap.set(cardWrap, { opacity: 0, scale: 0.8 });
         gsap.set([characterArea, profile, $moreButton, connectBox], { opacity: 0, y: 30 });
+        // 처음 인트로 구간에서는 버튼이 보이지 않을 때 클릭되지 않도록 막아둔다.
+        gsap.set($moreButton, { pointerEvents: 'none' });
         gsap.set(introText, { opacity: 1 });
 
         new TypeIt(introText, {
@@ -555,7 +557,16 @@ $(document).ready(function() {
                           .to(characterArea, { duration: 0.5, opacity: 1, y: 0, ease: 'power2.out' }, '-=0.4')
                           .to(profile, { duration: 0.5, opacity: 1, y: 0, ease: 'power2.out' }, '-=0.3')
                           .to(connectBox, { duration: 0.5, opacity: 1, y: 0, ease: 'power2.out' }, '-=0.2')
-                          .to($moreButton, { duration: 0.5, opacity: 1, y: 0, ease: 'power2.out' }, '+=1');
+                          .to($moreButton, {
+                              duration: 0.5,
+                              opacity: 1,
+                              y: 0,
+                              ease: 'power2.out',
+                              onStart: function () {
+                                  // 이제 버튼이 보이기 시작할 때부터 클릭 가능하게 전환
+                                  $moreButton.css('pointer-events', 'auto');
+                              }
+                          }, '+=1');
 
                         pulseTimeline = gsap.timeline({
                             delay: 1.5,
@@ -671,8 +682,8 @@ $(document).ready(function() {
             if (pulseTimeline) pulseTimeline.resume();
         });
 
-        // 더보기 클릭 → 연결 성공 연출 → 카드 뒤집고 메인 화면 표시
-        $moreButton.on('click', function (e) {
+        // 더보기 클릭 → 연결 성공 연출 → 카드 뒤집고 메인 화면 표시 (한 번만 실행)
+        $moreButton.one('click', function (e) {
             e.preventDefault();
             $moreButton.off('mouseenter mouseleave');
             if (pulseTimeline) pulseTimeline.kill();
@@ -686,7 +697,15 @@ $(document).ready(function() {
             const rect = $connectImg[0].getBoundingClientRect();
             const originX = (rect.left + rect.width / 2) / window.innerWidth;
             const originY = (rect.top + rect.height / 2 + 40) / window.innerHeight;
-            confetti({ particleCount: 150, spread: 430, origin: { x: originX, y: originY }, colors: ['#00BA00', '#33C733', '#90EE90', '#FFFFFF'] });
+
+            const baseConfetti = {
+                spread: 480,              // 퍼지는 각도(넓게 흩어지도록)
+                startVelocity: 45,        // 시작 속도
+                scalar: 1.1,              // 파티클 크기 배율
+                origin: { x: originX, y: originY }, // 폭발 위치 (연결 아이콘 기준)
+                colors: ['#00BA00', '#33C733', '#90EE90', '#FFFFFF', '#B3FFB3'] // 사용 색상
+            };
+            confetti({ ...baseConfetti, particleCount: 350 });
 
             gsap.to('.connect-img', { duration: 0.8, scale: 1, opacity: 1, ease: 'elastic.out(1, 0.5)', onComplete: function () {
                 setTimeout(function () {
@@ -721,6 +740,7 @@ $(document).ready(function() {
             gsap.set($left.find('header h1, header p, .tagline, .description, .tag-list li'), { opacity: 0, y: 24 });
             gsap.set($right.find('.skill-category'), { opacity: 0, y: 20 });
             gsap.set($right.find('.skill-category li'), { opacity: 0, x: -16 });
+            $aboutContent.css('pointer-events', 'none');
 
             const tl = gsap.timeline({
                 onComplete: function () {
@@ -735,6 +755,7 @@ $(document).ready(function() {
                         { opacity: 0, scale: 0.95, y: 20 },
                         { duration: 0.5, opacity: 1, scale: 1, y: 0, ease: 'back.out(1.7)', delay: 0.3, onComplete: function () { $mainNavList.removeClass('init'); } }
                     );
+                    $aboutContent.css('pointer-events', '');
                 }
             });
 
