@@ -2052,6 +2052,7 @@ body.mobile-scroll-view .section[data-hash=works] > .section-title {
   align-items: center;
   justify-content: center;
   padding-inline: 24px;
+  position: relative;
 }
 
 .works-swiper {
@@ -2164,6 +2165,51 @@ body.mobile-scroll-view .section[data-hash=works] > .section-title {
     max-width: 500px;
   }
 }
+.works-pagination {
+  position: absolute;
+  right: 40px;
+  top: 50%;
+  transform: translateY(-50%);
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 6px;
+}
+.works-pagination .works-pagination-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  text-align: right;
+}
+.works-pagination .works-pagination-item {
+  background: none;
+  border: none;
+  padding: 2px 0;
+  cursor: pointer;
+  font-size: 1.8rem;
+  color: #b0b0b0;
+  text-align: right;
+  transition: color 0.2s ease, transform 0.2s ease, font-size 0.2s ease;
+}
+.works-pagination .works-pagination-item.is-active {
+  color: #000000;
+  font-weight: 700;
+  font-size: 2rem;
+  transform: translateX(-4px);
+}
+@media (max-width: 1200px) {
+  .works-pagination {
+    right: 24px;
+  }
+}
+
+body.mobile-scroll-view .works-pagination {
+  display: none;
+}
+
 body.mobile-scroll-view .works-swiper {
   height: auto;
   overflow: visible;
@@ -2241,6 +2287,18 @@ body.mobile-scroll-view .works-swiper .work-item .work-item-btn {
 }
 .portfolio-modal .modal-body .btn-close:focus {
   box-shadow: none;
+}
+.portfolio-modal .modal-body .btn-close::after {
+  content: "";
+  display: block;
+  width: 20px;
+  height: 20px;
+  background: url(../img/close-icon.png) no-repeat center center;
+  background-size: contain;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
 }
 .portfolio-modal .modal-body .modal-left {
   width: 820px;
@@ -2381,6 +2439,9 @@ body.mobile-scroll-view .works-swiper .work-item .work-item-btn {
 .portfolio-modal .modal-tags li:has(span.tag-sass) {
   background-color: #CD6799;
 }
+.portfolio-modal .modal-tags li:has(span.tag-gsap) {
+  background: linear-gradient(150deg, #88CE02, #0AE448);
+}
 .portfolio-modal .modal-tags li:has(span.tag-vue) {
   background-color: #4FC08D;
 }
@@ -2397,6 +2458,9 @@ body.mobile-scroll-view .works-swiper .work-item .work-item-btn {
 }
 .portfolio-modal .modal-tags li:has(span.tag-figma) {
   background: linear-gradient(150deg, #F24E1E, #A259FF, #1ABCFE, #0ACF83);
+}
+.portfolio-modal .modal-tags li:has(span.tag-emailjs) {
+  background-color: #007DC6;
 }
 .portfolio-modal .modal-title {
   font-size: 4rem;
@@ -2430,23 +2494,13 @@ body.mobile-scroll-view .works-swiper .work-item .work-item-btn {
   margin-top: 10px;
 }
 
-body.mobile-scroll-view .portfolio-modal.show {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  padding: 1rem;
-}
-body.mobile-scroll-view .portfolio-modal.show .modal-dialog {
-  margin: auto;
-  width: 100%;
-  max-width: 90%;
-}
-body.mobile-scroll-view .portfolio-modal .modal-body .modal-left {
+.portfolio-modal--text-only .modal-body .modal-left {
   display: none;
 }
-body.mobile-scroll-view .portfolio-modal .modal-body .modal-right {
+.portfolio-modal--text-only .modal-body .modal-right {
   flex: 1 1 100%;
   max-width: 100%;
+  width: 100%;
 }
 
 .contact-container {

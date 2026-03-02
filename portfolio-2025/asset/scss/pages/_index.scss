@@ -907,6 +907,7 @@ body.mobile-scroll-view .section[data-hash="works"] > .section-title {
     align-items: center;
     justify-content: center;
     padding-inline: 24px;
+    position: relative;
 }
 
 .works-swiper {
@@ -1000,6 +1001,57 @@ body.mobile-scroll-view .section[data-hash="works"] > .section-title {
     }
 }
 
+// Works 섹션 우측 제목 페이지네이션 (풀페이지 전용)
+.works-pagination {
+    position: absolute;
+    right: 40px;
+    top: 50%;
+    transform: translateY(-50%);
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    gap: 6px;
+
+    .works-pagination-list {
+        list-style: none;
+        margin: 0;
+        padding: 0;
+        display: flex;
+        flex-direction: column;
+        gap: 4px;
+        text-align: right;
+    }
+
+    .works-pagination-item {
+        background: none;
+        border: none;
+        padding: 2px 0;
+        cursor: pointer;
+        font-size: 1.8rem;
+        color: #b0b0b0;
+        text-align: right;
+        transition: color 0.2s ease, transform 0.2s ease, font-size 0.2s ease;
+
+        &.is-active {
+            color: #000000;
+            font-weight: 700;
+            font-size: 2rem;
+            transform: translateX(-4px);
+        }
+    }
+
+    @include media-breakpoint-down(xl) {
+        right: 24px;
+    }
+}
+
+// 모바일 스크롤 뷰에서는 페이지네이션 숨김
+body.mobile-scroll-view {
+    .works-pagination {
+        display: none;
+    }
+}
+
 body.mobile-scroll-view {
     .works-swiper {
         height: auto;
@@ -1088,6 +1140,18 @@ body.mobile-scroll-view {
             
             &:focus {
                 box-shadow: none;
+            }
+            &::after{
+                content: '';
+                display: block;
+                width: 20px;
+                height: 20px;
+                background: url(../img/close-icon.png) no-repeat center center;
+                background-size: contain;
+                position: absolute;
+                top: 50%;
+                left: 50%;
+                transform: translate(-50%, -50%);
             }
         }
 
@@ -1220,11 +1284,13 @@ body.mobile-scroll-view {
         li:has(span.tag-jquery) { background-color: #0769AD; }
         li:has(span.tag-react) { background-color: #61DAFB;}
         li:has(span.tag-sass) { background-color: #CD6799; }
+        li:has(span.tag-gsap) {background: linear-gradient(150deg, #88CE02, #0AE448);}
         li:has(span.tag-vue) { background-color: #4FC08D; }
         li:has(span.tag-lottie) { background-color: #00DAB1; }
         li:has(span.tag-photoshop) { background-color: #001e36; color:#2ea1f5; }
         li:has(span.tag-xd) { background-color: #440035; color: #e250dd; }
         li:has(span.tag-figma) { background: linear-gradient(150deg, #F24E1E, #A259FF, #1ABCFE, #0ACF83); }
+        li:has(span.tag-emailjs) { background-color: #007DC6; }
     }
     
     .modal-title {
@@ -1250,27 +1316,15 @@ body.mobile-scroll-view {
     }
 }
 
-body.mobile-scroll-view {
-    // .show 일 때만 flex 적용 → 닫혀 있을 때 display:none이 덮이지 않아 상단에 안 남음
-    .portfolio-modal.show {
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        padding: 1rem;
-        .modal-dialog {
-            margin: auto;
-            width: 100%;
-            max-width: 90%;
-        }
+// 텍스트 전용 모달 레이아웃: 기본 크기는 그대로 두고, 왼쪽 미디어만 제거
+.portfolio-modal--text-only .modal-body {
+    .modal-left {
+        display: none;
     }
-    .portfolio-modal .modal-body {
-        .modal-left {
-            display: none;
-        }
-        .modal-right {
-            flex: 1 1 100%;
-            max-width: 100%;
-        }
+    .modal-right {
+        flex: 1 1 100%;
+        max-width: 100%;
+        width: 100%;
     }
 }
 // modal end

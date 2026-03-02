@@ -299,20 +299,50 @@ const portfolioData = {
         `
     },
     item8: {
-        type: 'iframe',
-        iframeSrc: 'https://webdonghyeon.dothome.co.kr/portfolio/portfolio-2025/index.html',
-        tags: ['react', 'scss'],
-        title: '포트폴리오 페이지 퍼블리싱',
+        type: 'text',
+        tags: ['html', 'css', 'js', 'jQuery','scss','GSAP','Figma','emailjs'],
+        title: '포트폴리오 페이지',
         description: `
         <p>
-            해당 포트폴리오 사이트에 대한 설명입니다.
+            이 포트폴리오는 하나의 싱글 페이지 안에서 인트로 카드, About, Values, Works, Contact까지
+            자연스럽게 이어지도록 구성한 프로젝트입니다. 전체 화면 전환 구조와 인터랙션 컨셉,
+            레이아웃·컴포넌트 디자인은 모두 Figma로 직접 기획·설계하였습니다.
+            <a href="https://www.figma.com/design/kUIrgRVxUq2pcDnGrtFKzU/%EC%A0%9C%EB%AA%A9-%EC%97%86%EC%9D%8C?node-id=0-1&t=LwueJp1Or7rQAyw8-1" target="_blank" rel="noopener noreferrer" style="color:#2563eb;text-decoration:underline;">
+                Figma 디자인 시안 바로가기
+            </a>
         </p>
+
         <p>주요 구현 내용은 다음과 같습니다.</p>
         <ul>
-        <li>
-            <strong class="d-block">레이아웃</strong>
-        </li>
+           <li>
+                <strong class="d-block">작업물 썸네일 및 인트로 영상 제작</strong>
+                Works 섹션에 사용된 미니게임·웹사이트 썸네일 영상은 Premiere Pro로 실제 화면을 캡처·편집하여
+                짧은 하이라이트 형태로 재가공하였으며, 인트로 영역 캐릭터 영상은 생성형 AI로 기본 동작을 생성한 뒤
+                필요한 구간만 추출·보정하여 사용하였습니다.
+            </li>
+            <li>
+                <strong class="d-block">GSAP 기반 풀페이지 인터랙션</strong>
+                카드 뒤집기, 섹션별 진입 애니메이션, 네비게이션 하이라이트 등은 GSAP 타임라인으로 제어하였으며,
+                모바일에서는 AOS 기반 스크롤 인터랙션으로 분리하여 환경별 경험을 다르게 구성하였습니다.
+            </li>
+            <li>
+                <strong class="d-block">Swiper · 모달 구조 설계</strong>
+                메인/서브 슬라이더와 Works 세로 슬라이더를 Swiper로 구성하고,
+                Bootstrap 모달과 연동하여 프로젝트별 상세 정보(iframe, 탭, 텍스트 전용)를
+                재사용 가능한 데이터 구조로 관리하였습니다.
+            </li>
+            <li>
+                <strong class="d-block">SCSS 설계 및 컴포넌트화</strong>
+                SCSS 변수와 믹스인으로 색상·타이포·그리드를 관리하고, 섹션·컴포넌트 단위로 스타일을 모듈화하여
+                유지보수성과 확장성을 고려한 스타일 구조를 설계하였습니다.
+            </li>
+            <li>
+                <strong class="d-block">폼 처리 및 이메일 전송</strong>
+                Contact 섹션은 유효성 검사와 함께 EmailJS를 활용하여 실제 메일 발송 흐름을 구성함으로써,
+                단순한 데모가 아닌 실사용 가능한 문의 폼을 구현하였습니다.
+            </li>
         </ul>
         `
     }
 };
+

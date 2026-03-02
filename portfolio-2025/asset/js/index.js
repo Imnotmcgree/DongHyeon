@@ -70,6 +70,15 @@ $(document).ready(function() {
         gsap.fromTo('.works-swiper', { y: 0 }, { y: yMove, duration: 0.15, yoyo: true, repeat: 1, ease: 'power1.inOut' });
     }
 
+    // Works 섹션 우측 제목 페이지네이션 업데이트
+    let $worksPaginationList = null;
+    function updateWorksPaginationActive(index) {
+        if (!$worksPaginationList) return;
+        const $items = $worksPaginationList.find('.works-pagination-item');
+        $items.removeClass('is-active');
+        $items.eq(index).addClass('is-active');
+    }
+
     function initWorksSwiper() {
         if (worksSwiper || window.innerWidth <= 1200) return;
 
@@ -81,9 +90,36 @@ $(document).ready(function() {
 
         worksSwiper.on('slideChange', function () {
             readyToLeaveWorks = false;
+            updateWorksPaginationActive(worksSwiper.activeIndex || 0);
         });
 
         worksSectionElement = $('[data-hash="works"]')[0];
+
+        // 풀페이지 모드에서만 우측 제목 페이지네이션 생성
+        const $worksSection = $('[data-hash="works"]');
+        const $paginationList = $worksSection.find('.works-pagination-list');
+        const $workItems = $worksSection.find('.work-item');
+        if ($paginationList.length && $workItems.length) {
+            $paginationList.empty();
+            $worksPaginationList = $paginationList;
+
+            $workItems.each(function (idx) {
+                const $titleEl = $(this).find('.work-item-title');
+                const titleText = $titleEl.text().replace(/\s+/g, ' ').trim();
+                const $btn = $('<button type="button" class="works-pagination-item"></button>').text(titleText);
+                $btn.on('click', function () {
+                    // 모바일 스크롤 뷰가 아닐 때만 동작
+                    if ($('body').hasClass('mobile-scroll-view')) return;
+                    if (worksSwiper) {
+                        worksSwiper.slideTo(idx);
+                    }
+                });
+                const $li = $('<li></li>').append($btn);
+                $paginationList.append($li);
+            });
+
+            updateWorksPaginationActive(worksSwiper.activeIndex || 0);
+        }
 
         worksWheelHandler = function (event) {
             event.preventDefault();
@@ -713,7 +749,6 @@ $(document).ready(function() {
                   ease: 'expo.inOut',
                   onComplete: function () {
                       if (isMobile) {
-                          // 모바일: 펼쳐지자마자 스크롤 레이아웃 전환 (About 애니 전에 → height 점프 방지)
                           $('.card-front').hide();
                           afterIntro = true;
                           manageLayout();
@@ -728,7 +763,6 @@ $(document).ready(function() {
               .to($left.find('.tagline')[0], { duration: 0.35, opacity: 1, y: 0, ease: 'back.out(1.4)' }, '-=0.25')
               .to($left.find('.description')[0], { duration: 0.4, opacity: 1, y: 0, ease: 'back.out(1.4)' }, '-=0.25')
               .to($left.find('.tag-list li'), { duration: 0.3, opacity: 1, y: 0, stagger: 0.06, ease: 'back.out(1.2)' }, '-=0.15')
-              // Right: 촤르륵 → 촤르륵 → 촤르륵 (카테고리별, 각 카테고리 내 li도 촤르륵)
               .to($right.find('.skill-category'), {
                   duration: 0.45,
                   opacity: 1,
@@ -798,7 +832,8 @@ $(document).ready(function() {
         lottie: { text: 'Lottie', class: 'tag-lottie' },
         xd: { text: 'XD', class: 'tag-xd' },
         photoshop: { text: 'Photoshop', class: 'tag-photoshop' },
-        figma: { text: 'Figma', class: 'tag-figma' }
+        figma: { text: 'Figma', class: 'tag-figma' },
+        emailjs: { text: 'EmailJS', class: 'tag-emailjs' }
     };
 
     $workItems.each(function (index) {
@@ -818,8 +853,15 @@ $(document).ready(function() {
             $mediaContainer.empty();
             $modalTags.empty();
 
-            // 타입에 따라 미디어 넣기: iframe 한 개 / iframe 탭 여러 개 / 이미지
-            if (data.type === 'iframe') {
+            // 이전 text-only 상태 초기화
+            $portfolioModal.removeClass('portfolio-modal--text-only');
+
+            // 타입에 따라 미디어 넣기: text / iframe 한 개 / iframe 탭 여러 개 / 이미지
+            if (data.type === 'text') {
+                // 왼쪽 미디어 영역 없이 텍스트만 사용하는 타입
+                $portfolioModal.addClass('portfolio-modal--text-only');
+                // media 영역에는 아무것도 넣지 않음
+            } else if (data.type === 'iframe') {
                 const $iframe = $('<iframe>').attr('src', data.iframeSrc).attr('frameborder', '0');
                 $mediaContainer.append($iframe);
             } else if (data.type === 'iframe-tabs' && data.iframeTabs && data.iframeTabs.length > 0) {
@@ -880,7 +922,6 @@ $(document).ready(function() {
             }
 
             // 웹사이트 타입(스크롤 안내)인 경우:
-            // - 처음엔 iframe 영역(뷰 영역)에만 딤드 + "스크롤 해보세요!" 안내
             // - 사용자가 그 영역에서 스크롤/휠/터치 시 곧장 제거
             if (data.scrollHint) {
                 // iframe 단일 타입 vs iframe-tabs 타입에 따라 딤드 위치 결정
@@ -932,6 +973,7 @@ $(document).ready(function() {
     // 모달 닫을 때 iframe 제거 (영상 등 중단)
     $portfolioModal.on('hidden.bs.modal', function () {
         $portfolioModal.find('.modal-img-container').empty();
+        $portfolioModal.removeClass('portfolio-modal--text-only');
     });
 
     // 모달 안 뷰어(휴먼메이드 등)에서 'navigate' 메시지 오면 모달 iframe 주소만 변경 (HTTPS 유지로 Mixed Content 방지)
