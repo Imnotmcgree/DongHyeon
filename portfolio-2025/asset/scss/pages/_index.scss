@@ -44,12 +44,7 @@
     }
 }
 
-// @use 'sass:map';
-
-/* ios-spinner.scss */
-
 .spinner {
-    // ===== Customizable variables =====
     $size: 44px; // 전체 크기
     $color: #ffffff; // 막대 색상
     $thickness: 4px; // 막대 두께
@@ -195,7 +190,7 @@
     align-items: center;
     perspective: 2000px;
     opacity: 0; // Initially hidden
-    transform: scale(0.8); // For the "pop" effect
+    transform: scale(0.8);
     pointer-events: none;
 
     .card-section{
@@ -484,17 +479,16 @@
 // 공통 슬라이드 섹션
 .slide-wrap {
     width: 100%;
-     /* 1520 보이도록 + 양쪽 24px 패딩을 더해 그릇을 키움 */
     max-width: calc(1520px + 48px);
     margin: 0 auto;
-    padding-inline: 24px; /* 안전 여백 */
+    padding-inline: 24px;
     @include media-breakpoint-down(lg) {
         padding-inline: 0;
     }
 }
 
 body.mobile-scroll-view {
-    overflow: auto; // body 스크롤 → 브라우저 기본 스크롤바
+    overflow: auto; 
     #particles-js {
         display: none; // 카드백 진입 시 인트로 파티클 숨김
     }
@@ -509,7 +503,7 @@ body.mobile-scroll-view {
         // 높이를 내용에 맞게 변경 (calc(var(--vh) * 100) 제거)
         height: auto;
         // perspective 효과가 스크롤바와 충돌할 수 있으므로 필요시 조정
-        perspective: none; 
+        perspective: none;
         padding-block: 5rem; // 상하 여백 추가
     }
     .card-section {
@@ -538,7 +532,7 @@ body.mobile-scroll-view {
         height: auto;
         // 섹션 간 구분을 위해 여백 추가
         &:not(:last-child) {
-            margin-bottom: 10rem;
+            margin-bottom: 20rem;
         }
     }
 
@@ -632,6 +626,9 @@ body.mobile-scroll-view {
         @include responsive-font(32);
         color: #252525;
     }
+    @include media-breakpoint-down(xl) {
+        margin-bottom: 50px;
+    }
 }
 
 // Works 섹션 타이틀은 풀스크린(데스크톱)에서는 숨기고,
@@ -669,6 +666,7 @@ body.mobile-scroll-view .section[data-hash="works"] > .section-title {
         width: 52.631%;
         @include media-breakpoint-down(xl) {
             width: 100%;
+            margin-bottom: 100px;
         }
         article {
             header{
@@ -1253,7 +1251,8 @@ body.mobile-scroll-view {
 }
 
 body.mobile-scroll-view {
-    .portfolio-modal {
+    // .show 일 때만 flex 적용 → 닫혀 있을 때 display:none이 덮이지 않아 상단에 안 남음
+    .portfolio-modal.show {
         display: flex;
         align-items: center;
         justify-content: center;
@@ -1281,7 +1280,9 @@ body.mobile-scroll-view {
     display: flex;
     justify-content: center;
     align-items: center;
-    
+    @include media-breakpoint-down(xl) {
+        padding-bottom: 50px;
+    }
     .contact-content {
         padding-top: 110px;
         display: flex;

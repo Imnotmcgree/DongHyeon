@@ -8,7 +8,7 @@ $(document).ready(function() {
     $(window).on('resize', setRealVH);
 
     // ========== 인트로 SKIP 여부 ==========
-    const devSkipIntro = true  // true: 인트로 건너뛰기(개발용), false: 인트로 재생
+    const devSkipIntro = false  // true: 인트로 건너뛰기(개발용), false: 인트로 재생
 
 
     let swiper = null;
@@ -158,6 +158,91 @@ $(document).ready(function() {
 
     function clearArrowDown() { clearTimeout(arrowDownTimer); arrowDownTimer = null; }
 
+    // Values(2번 섹션: My Values) 첫 진입 애니메이션용 플래그
+    let valuesSlideAnimated = false;
+
+    function animateValuesSlide() {
+        // 모바일 스크롤 모드에서는 풀페이지 진입 애니메이션 사용 안 함
+        if ($('body').hasClass('mobile-scroll-view')) return;
+        if (valuesSlideAnimated) return;
+        valuesSlideAnimated = true;
+
+        // 메인 스와이퍼의 두 번째 섹션 (index 1: My Values)
+        const $valuesSection = $('.main-swiper .section').eq(1);
+        if (!$valuesSection.length) return;
+
+        const $title = $valuesSection.find('.section-title');
+        const $swiperArea = $valuesSection.find('.about-swiper');
+        const $textArea = $valuesSection.find('.about-text-content');
+
+        const tl = gsap.timeline({ delay: 0.5 }); // 타이틀도 살짝 늦게 시작
+        tl.fromTo(
+            $title,
+            { opacity: 0, y: 30 },
+            { duration: 0.5, opacity: 1, y: 0, ease: 'power2.out' }
+        )
+        // 섹션 타이틀 먼저
+        .fromTo(
+            $swiperArea,
+            { opacity: 0, y: 40 },
+            { duration: 0.6, opacity: 1, y: 0, ease: 'power2.out' },
+            '+=0.1' // 타이틀 뜨고 약간 뒤에
+        )
+        // Values 이미지 슬라이더
+        .fromTo(
+            $textArea,
+            { opacity: 0, y: 40 },
+            { duration: 0.6, opacity: 1, y: 0, ease: 'power2.out' },
+            '+=0.1' // 슬라이더 뜨고 또 약간 뒤에
+        );
+    }
+
+    // Contact(4번 섹션) 첫 진입 애니메이션용 플래그
+    let contactSlideAnimated = false;
+
+    function animateContactSlide() {
+        // 모바일 스크롤 모드에서는 풀페이지 진입 애니메이션 사용 안 함
+        if ($('body').hasClass('mobile-scroll-view')) return;
+        if (contactSlideAnimated) return;
+        contactSlideAnimated = true;
+
+        const $contactSection = $('.main-swiper .section[data-hash="contact"]');
+        if (!$contactSection.length) return;
+
+        const $title = $contactSection.find('.section-title');
+        const $formGroups = $contactSection.find('.contact-form-wrap .form-group');
+        const $submitWrap = $contactSection.find('.contact-form-wrap .btn-wrap');
+        const $infoCard = $contactSection.find('.contact-info-card');
+
+        const tl = gsap.timeline({ delay: 0.3 });
+        tl.fromTo(
+            $title,
+            { opacity: 0, y: 30 },
+            { duration: 0.5, opacity: 1, y: 0, ease: 'power2.out' }
+        )
+        // 인풋 그룹들 하나씩 순차 등장
+        .fromTo(
+            $formGroups.toArray(),
+            { opacity: 0, y: 20 },
+            { duration: 0.4, opacity: 1, y: 0, ease: 'power2.out', stagger: 0.08 },
+            '+=0.05'
+        )
+        // 제출 버튼
+        .fromTo(
+            $submitWrap,
+            { opacity: 0, y: 25 },
+            { duration: 0.4, opacity: 1, y: 0, ease: 'power2.out' },
+            '+=0.05'
+        )
+        // 오른쪽 정보 카드
+        .fromTo(
+            $infoCard,
+            { opacity: 0, y: 30, scale: 0.96 },
+            { duration: 0.5, opacity: 1, y: 0, scale: 1, ease: 'power2.out' },
+            '-=0.2'
+        );
+    }
+
     function initSwiper() {
         if (isSwiperActive) return;
 
@@ -178,6 +263,16 @@ $(document).ready(function() {
                 slideChange: function (s) {
                     updateActiveSlider(s, false);
                     scheduleArrowDown(s.activeIndex, s.slides.length);
+
+                    // 2번 섹션(My Values) 첫 진입 시 한 번만 GSAP 애니메이션
+                    if (s.activeIndex === 1) {
+                        animateValuesSlide();
+                    }
+
+                    // 4번 섹션(Contact) 첫 진입 시 한 번만 GSAP 애니메이션
+                    if (s.activeIndex === 3) {
+                        animateContactSlide();
+                    }
 
                     if (s.activeIndex === WORKS_SLIDE_INDEX) {
                         swiper.mousewheel.disable();
@@ -202,6 +297,57 @@ $(document).ready(function() {
     }
 
     // ========== 5. 화면 크기에 따른 레이아웃 (모바일 ↔ 데스크톱) ==========
+    function setupAOSForMobile() {
+        if (!window.AOS) return;
+
+        // 2번 섹션(My Values)
+        const $valuesSection = $('.main-swiper .section').eq(1);
+        $valuesSection.find('.section-title')
+            .attr('data-aos', 'fade-up')
+            .attr('data-aos-duration', '600');
+        $valuesSection.find('.about-swiper')
+            .attr('data-aos', 'fade-up')
+            .attr('data-aos-delay', '100');
+        $valuesSection.find('.about-text-content')
+            .attr('data-aos', 'fade-up')
+            .attr('data-aos-delay', '200');
+
+        // 3번 섹션(Works)
+        const $worksSection = $('.main-swiper .section[data-hash="works"]');
+        $worksSection.find('.section-title')
+            .attr('data-aos', 'fade-up')
+            .attr('data-aos-duration', '600');
+        // 각 작업물 카드(article.work-item) 개별로 뿅뿅 뜨게
+        const $workItems = $worksSection.find('.work-item');
+        $workItems.each(function (idx) {
+            const delay = 100 + idx * 80; // 100ms + 항목마다 80ms씩 증가
+            $(this)
+                .attr('data-aos', 'fade-up')
+                .attr('data-aos-duration', '600')
+                .attr('data-aos-delay', String(delay));
+        });
+
+        // 4번 섹션(Contact)
+        const $contactSection = $('.main-swiper .section[data-hash="contact"]');
+        $contactSection.find('.section-title')
+            .attr('data-aos', 'fade-up')
+            .attr('data-aos-duration', '600');
+        $contactSection.find('.contact-content')
+            .attr('data-aos', 'fade-up')
+            .attr('data-aos-delay', '120');
+
+        AOS.init({ once: true });
+        AOS.refresh();
+    }
+
+    function clearAOSForDesktop() {
+        if (!window.AOS) return;
+
+        const $targets = $('.main-swiper .section .section-title, .about-swiper, .about-text-content, .works-container, .work-item, .contact-content');
+        $targets.removeAttr('data-aos data-aos-duration data-aos-delay')
+            .removeClass('aos-init aos-animate');
+    }
+
     function manageLayout() {
         if (!afterIntro) return;
 
@@ -215,6 +361,8 @@ $(document).ready(function() {
             // GSAP가 설정한 인라인 height 제거 → CSS height:auto로 스크롤 가능
             $('.card-section').css('height', '');
             $('.card-section-wrap').css('height', '');
+            // 스크롤 뷰에서는 AOS로 섹션 등장 애니메이션
+            setupAOSForMobile();
         } else {
             // 데스크톱: 풀페이지용 높이 복원 (모바일에서 제거했던 인라인 height)
             $('.card-section').css('height', 'calc(var(--vh, 1vh) * 100)');
@@ -224,6 +372,8 @@ $(document).ready(function() {
             initSwiper();
             initWorksSwiper();
             $('body').removeClass('mobile-scroll-view');
+            // 풀페이지에서는 AOS 흔적 제거 (GSAP 전용)
+            clearAOSForDesktop();
         }
     }
 
@@ -352,28 +502,44 @@ $(document).ready(function() {
         gsap.set(introText, { opacity: 1 });
 
         new TypeIt(introText, {
-            speed: 200,
-            startDelay: 900,
+            // 전체 타이핑 속도와 시작 지연
+            speed: 100,
+            startDelay: 3000,
+            // 타이핑이 전부 끝났을 때 카드 애니메이션 시작
             afterComplete: function (instance) {
                 instance.destroy();
-                gsap.to(introText, { duration: 0.2, opacity: 0, ease: 'power2.in', delay: 1, onComplete: function () {
-                    const tl = gsap.timeline();
-                    tl.to(cardWrap, { duration: 0.8, opacity: 1, scale: 1, ease: 'elastic.out(1, 0.5)' })
-                      .to(characterArea, { duration: 0.5, opacity: 1, y: 0, ease: 'power2.out' }, '-=0.4')
-                      .to(profile, { duration: 0.5, opacity: 1, y: 0, ease: 'power2.out' }, '-=0.3')
-                      .to(connectBox, { duration: 0.5, opacity: 1, y: 0, ease: 'power2.out' }, '-=0.2')
-                      .to($moreButton, { duration: 0.5, opacity: 1, y: 0, ease: 'power2.out' }, '+=1');
+                gsap.to(introText, {
+                    duration: 0.2,
+                    opacity: 0,
+                    ease: 'power2.in',
+                    delay: 2,
+                    onComplete: function () {
+                        const tl = gsap.timeline();
+                        tl.to(cardWrap, { duration: 0.8, opacity: 1, scale: 1, ease: 'elastic.out(1, 0.5)' })
+                          .to(characterArea, { duration: 0.5, opacity: 1, y: 0, ease: 'power2.out' }, '-=0.4')
+                          .to(profile, { duration: 0.5, opacity: 1, y: 0, ease: 'power2.out' }, '-=0.3')
+                          .to(connectBox, { duration: 0.5, opacity: 1, y: 0, ease: 'power2.out' }, '-=0.2')
+                          .to($moreButton, { duration: 0.5, opacity: 1, y: 0, ease: 'power2.out' }, '+=1');
 
-                    pulseTimeline = gsap.timeline({ delay: 1.5, repeat: -1, repeatDelay: 2, onStart: function () {
-                        $('#particles-js').css('opacity', '1');
-                    }});
-                    pulseTimeline.to($moreButton, { duration: 0.2, scale: 1.05, ease: 'power1.inOut' })
-                        .to($moreButton, { duration: 0.2, scale: 1, ease: 'power1.inOut' })
-                        .to($moreButton, { duration: 0.2, scale: 1.05, ease: 'power1.inOut' }, '-=0.1')
-                        .to($moreButton, { duration: 0.2, scale: 1, ease: 'power1.inOut' });
-                }});
+                        pulseTimeline = gsap.timeline({
+                            delay: 1.5,
+                            repeat: -1,
+                            repeatDelay: 2,
+                            onStart: function () {
+                                $('#particles-js').css('opacity', '1');
+                            }
+                        });
+                        pulseTimeline
+                            .to($moreButton, { duration: 0.2, scale: 1.05, ease: 'power1.inOut' })
+                            .to($moreButton, { duration: 0.2, scale: 1, ease: 'power1.inOut' })
+                            .to($moreButton, { duration: 0.2, scale: 1.05, ease: 'power1.inOut' }, '-=0.1')
+                            .to($moreButton, { duration: 0.2, scale: 1, ease: 'power1.inOut' });
+                    }
+                });
             }
-        }).type('깃액션 연동 테스트 중.', { speed: 500 }).go();
+        })
+        .type('안녕하세요! 반갑습니다.')
+        .go();
 
         // 글자 단위로 span 감싸기 (애니메이션용)
         function splitText($el) {
@@ -388,7 +554,7 @@ $(document).ready(function() {
         const $dynamicText = $('.dynamic-text');
         splitText($dynamicText);
 
-        const dynamicTexts = ['새로운 인연과', '멋진 동료들과', '새로운 경험과', '다가올 기회와'];
+        const dynamicTexts = ['새로운 인연과', '멋진 동료들과', '새로운 경험과', '함께할 미래와'];
         let textIndex = 0;
         const $ellipsis = $('.ellipsis');
         let ellipsisCount = 0;

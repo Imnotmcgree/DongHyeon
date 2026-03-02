@@ -1053,7 +1053,6 @@ caption, .text-hide {
   height: 20px;
 }
 
-/* ios-spinner.scss */
 .spinner {
   position: relative;
   width: 44px;
@@ -1565,10 +1564,9 @@ caption, .text-hide {
 
 .slide-wrap {
   width: 100%;
-  /* 1520 보이도록 + 양쪽 24px 패딩을 더해 그릇을 키움 */
   max-width: 1568px;
   margin: 0 auto;
-  padding-inline: 24px; /* 안전 여백 */
+  padding-inline: 24px;
 }
 @media (max-width: 992px) {
   .slide-wrap {
@@ -1617,7 +1615,7 @@ body.mobile-scroll-view .main-swiper > .swiper-wrapper > .swiper-slide {
   height: auto;
 }
 body.mobile-scroll-view .main-swiper > .swiper-wrapper > .swiper-slide:not(:last-child) {
-  margin-bottom: 10rem;
+  margin-bottom: 20rem;
 }
 body.mobile-scroll-view .main-swiper > .swiper-wrapper > .swiper-slide.section {
   padding-inline: 24px;
@@ -1715,6 +1713,11 @@ body.mobile-scroll-view .main-nav, body.mobile-scroll-view .arrow-down {
 .section-title span {
   color: #252525;
 }
+@media (max-width: 1200px) {
+  .section-title {
+    margin-bottom: 50px;
+  }
+}
 
 .section[data-hash=works] > .section-title {
   display: none;
@@ -1752,6 +1755,7 @@ body.mobile-scroll-view .section[data-hash=works] > .section-title {
 @media (max-width: 1200px) {
   .about-content .left {
     width: 100%;
+    margin-bottom: 100px;
   }
 }
 .about-content .left article header .name {
@@ -2426,13 +2430,13 @@ body.mobile-scroll-view .works-swiper .work-item .work-item-btn {
   margin-top: 10px;
 }
 
-body.mobile-scroll-view .portfolio-modal {
+body.mobile-scroll-view .portfolio-modal.show {
   display: flex;
   align-items: center;
   justify-content: center;
   padding: 1rem;
 }
-body.mobile-scroll-view .portfolio-modal .modal-dialog {
+body.mobile-scroll-view .portfolio-modal.show .modal-dialog {
   margin: auto;
   width: 100%;
   max-width: 90%;
@@ -2450,6 +2454,11 @@ body.mobile-scroll-view .portfolio-modal .modal-body .modal-right {
   display: flex;
   justify-content: center;
   align-items: center;
+}
+@media (max-width: 1200px) {
+  .contact-container {
+    padding-bottom: 50px;
+  }
 }
 .contact-container .contact-content {
   padding-top: 110px;
