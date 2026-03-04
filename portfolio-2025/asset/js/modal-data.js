@@ -341,6 +341,11 @@ const portfolioData = {
                 Contact 섹션은 유효성 검사와 함께 EmailJS를 활용하여 실제 메일 발송 흐름을 구성함으로써,
                 단순한 데모가 아닌 실사용 가능한 문의 폼을 구현하였습니다.
             </li>
+           <li>
+                <strong class="d-block">GitHub Actions 기반 자동 배포</strong>
+                작업물은 Git 저장소로 관리하였으며, Sourcetree를 통해 수정 사항을 푸시하면 GitHub Actions 워크플로가 자동으로 실행되도록 구성하였습니다. 
+                워크플로에서는 빌드 완료 후 FTP 서버로 파일을 업로드하도록 설정하여, 별도의 수동 작업 없이도 포트폴리오가 항상 최신 상태로 배포되도록 자동화하였습니다.
+            </li>
         </ul>
         `
     }
