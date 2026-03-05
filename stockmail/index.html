@@ -1,0 +1,536 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>StockMail – 일일 주식 리포트 자동 메일러</title>
+  <style>
+    :root {
+      --bg: #050816;
+      --bg-soft: #0b1020;
+      --accent: #22c55e;
+      --accent-soft: rgba(34, 197, 94, 0.08);
+      --accent-strong: rgba(34, 197, 94, 0.22);
+      --text: #f9fafb;
+      --text-soft: #9ca3af;
+      --border-subtle: rgba(148, 163, 184, 0.25);
+      --radius-xl: 18px;
+      --radius-full: 999px;
+      --shadow-soft: 0 18px 45px rgba(15, 23, 42, 0.9);
+      --shadow-glow: 0 0 40px rgba(34, 197, 94, 0.35);
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 40px 16px;
+      font-family: system-ui, -apple-system, BlinkMacSystemFont, "SF Pro Text",
+        "Segoe UI", sans-serif;
+      background: radial-gradient(circle at top left, #1d283a 0, #020617 55%, #000 100%);
+      color: var(--text);
+    }
+
+    .shell {
+      width: 100%;
+      max-width: 1080px;
+      background: radial-gradient(circle at top left, #020617, #020617) padding-box,
+        linear-gradient(135deg, rgba(148, 163, 184, 0.9), rgba(34, 197, 94, 0.6)) border-box;
+      border-radius: 26px;
+      border: 1px solid transparent;
+      box-shadow: var(--shadow-soft);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .shell::before {
+      content: "";
+      position: absolute;
+      inset: -40%;
+      background:
+        radial-gradient(circle at 0% 0%, rgba(34, 197, 94, 0.18), transparent 55%),
+        radial-gradient(circle at 85% 10%, rgba(56, 189, 248, 0.12), transparent 55%);
+      mix-blend-mode: screen;
+      opacity: 0.9;
+      pointer-events: none;
+    }
+
+    .inner {
+      position: relative;
+      z-index: 1;
+      padding: 28px 26px 26px;
+      backdrop-filter: blur(18px);
+      background: radial-gradient(circle at top left, rgba(15, 23, 42, 0.66), rgba(15, 23, 42, 0.96));
+      border-radius: 24px;
+    }
+
+    header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 18px;
+      margin-bottom: 28px;
+    }
+
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+    }
+
+    .logo {
+      width: 40px;
+      height: 40px;
+      border-radius: 14px;
+      background:
+        radial-gradient(circle at 0 0, rgba(34, 197, 94, 0.35), transparent 60%),
+        radial-gradient(circle at 100% 100%, rgba(56, 189, 248, 0.25), transparent 55%),
+        linear-gradient(135deg, #16a34a, #22c55e);
+      box-shadow: var(--shadow-glow);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .logo::after {
+      content: "";
+      width: 26px;
+      height: 26px;
+      border-radius: 999px;
+      border: 2px solid rgba(15, 23, 42, 0.2);
+      border-top-color: rgba(248, 250, 252, 0.9);
+      border-right-color: rgba(248, 250, 252, 0.75);
+      transform: rotate(-35deg);
+    }
+
+    .brand-text {
+      display: flex;
+      flex-direction: column;
+      gap: 2px;
+    }
+
+    .brand-name {
+      font-size: 18px;
+      font-weight: 600;
+      letter-spacing: 0.02em;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .brand-badge {
+      font-size: 10px;
+      padding: 3px 9px;
+      border-radius: 999px;
+      background: rgba(15, 23, 42, 0.9);
+      border: 1px solid rgba(51, 65, 85, 0.9);
+      color: var(--text-soft);
+      text-transform: uppercase;
+      letter-spacing: 0.12em;
+    }
+
+    .brand-sub {
+      font-size: 12px;
+      color: var(--text-soft);
+    }
+
+    .meta {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      font-size: 11px;
+      color: var(--text-soft);
+    }
+
+    .pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 6px 12px;
+      border-radius: var(--radius-full);
+      background: rgba(15, 23, 42, 0.9);
+      border: 1px solid var(--border-subtle);
+    }
+
+    .pill-dot {
+      width: 7px;
+      height: 7px;
+      border-radius: 999px;
+      background: var(--accent);
+      box-shadow: 0 0 14px rgba(34, 197, 94, 0.85);
+    }
+
+    .pill-label {
+      text-transform: uppercase;
+      letter-spacing: 0.16em;
+    }
+
+    .badge-soft {
+      padding: 5px 10px;
+      border-radius: 999px;
+      background: rgba(15, 23, 42, 0.9);
+      border: 1px dashed rgba(55, 65, 81, 0.9);
+    }
+
+    .layout {
+      display: grid;
+      grid-template-columns: minmax(0, 1.4fr) minmax(0, 1.1fr);
+      gap: 20px;
+    }
+
+    .panel {
+      background: radial-gradient(circle at top left, rgba(15, 23, 42, 0.95), rgba(15, 23, 42, 1));
+      border-radius: var(--radius-xl);
+      border: 1px solid rgba(51, 65, 85, 0.9);
+      padding: 18px 18px 16px;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .panel::before {
+      content: "";
+      position: absolute;
+      inset: -30%;
+      background: radial-gradient(circle at 0% 0%, rgba(34, 197, 94, 0.08), transparent 55%);
+      opacity: 0.9;
+      pointer-events: none;
+    }
+
+    .panel-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 10px;
+      margin-bottom: 14px;
+    }
+
+    .panel-title {
+      font-size: 15px;
+      font-weight: 600;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .chip {
+      font-size: 11px;
+      padding: 4px 9px;
+      border-radius: 999px;
+      background: rgba(15, 23, 42, 0.9);
+      border: 1px solid rgba(55, 65, 81, 0.9);
+      color: var(--text-soft);
+    }
+
+    .summary-title {
+      font-size: 22px;
+      margin-bottom: 6px;
+      font-weight: 600;
+    }
+
+    .summary-sub {
+      font-size: 13px;
+      color: var(--text-soft);
+      margin-bottom: 18px;
+      line-height: 1.6;
+    }
+
+    .list {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: 9px;
+      font-size: 13px;
+    }
+
+    .list li {
+      display: flex;
+      gap: 8px;
+      color: var(--text-soft);
+      line-height: 1.5;
+    }
+
+    .list li::before {
+      content: "•";
+      color: var(--accent);
+      margin-top: 1px;
+    }
+
+    .highlight {
+      color: #e5e7eb;
+      font-weight: 500;
+    }
+
+    .label {
+      font-size: 11px;
+      text-transform: uppercase;
+      letter-spacing: 0.18em;
+      color: var(--text-soft);
+      margin-bottom: 7px;
+    }
+
+    .code-preview {
+      font-family: "JetBrains Mono", ui-monospace, SFMono-Regular, Menlo, Monaco,
+        Consolas, "Liberation Mono", "Courier New", monospace;
+      font-size: 12px;
+      background: radial-gradient(circle at top left, #020617, #020617);
+      border-radius: 14px;
+      border: 1px solid rgba(51, 65, 85, 0.9);
+      padding: 10px 12px;
+      color: #e5e7eb;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .code-preview::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background: radial-gradient(circle at 0 0, rgba(34, 197, 94, 0.11), transparent 60%);
+      opacity: 0.9;
+      pointer-events: none;
+    }
+
+    .code-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 10px;
+      margin-bottom: 8px;
+      opacity: 0.85;
+    }
+
+    .code-dots {
+      display: flex;
+      gap: 5px;
+    }
+
+    .code-dot {
+      width: 7px;
+      height: 7px;
+      border-radius: 999px;
+      background: rgba(51, 65, 85, 0.9);
+    }
+
+    .code-dot:nth-child(1) {
+      background: #ef4444;
+    }
+
+    .code-dot:nth-child(2) {
+      background: #facc15;
+    }
+
+    .code-dot:nth-child(3) {
+      background: #22c55e;
+    }
+
+    .code-lang {
+      font-size: 11px;
+      color: var(--text-soft);
+    }
+
+    pre {
+      white-space: pre-wrap;
+      word-break: keep-all;
+      line-height: 1.6;
+    }
+
+    code {
+      background: transparent;
+    }
+
+    .tag-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 7px;
+      margin-top: 12px;
+    }
+
+    .tag {
+      font-size: 11px;
+      padding: 4px 9px;
+      border-radius: 999px;
+      background: rgba(15, 23, 42, 0.9);
+      border: 1px solid rgba(55, 65, 81, 0.9);
+      color: var(--text-soft);
+    }
+
+    .tag strong {
+      color: var(--accent);
+      font-weight: 500;
+    }
+
+    footer {
+      margin-top: 18px;
+      padding-top: 14px;
+      border-top: 1px solid rgba(31, 41, 55, 0.9);
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: space-between;
+      gap: 10px;
+      font-size: 11px;
+      color: var(--text-soft);
+    }
+
+    .footer-left span {
+      color: var(--accent);
+    }
+
+    .footer-right {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+    }
+
+    .footer-pill {
+      padding: 4px 9px;
+      border-radius: 999px;
+      background: rgba(15, 23, 42, 0.9);
+      border: 1px solid rgba(55, 65, 81, 0.9);
+    }
+
+    @media (max-width: 860px) {
+      body {
+        padding: 24px 14px;
+      }
+
+      .inner {
+        padding: 20px 18px 18px;
+      }
+
+      header {
+        flex-direction: column;
+        align-items: flex-start;
+      }
+
+      .layout {
+        grid-template-columns: minmax(0, 1fr);
+      }
+    }
+  </style>
+</head>
+<body>
+  <main class="shell">
+    <div class="inner">
+      <header>
+        <div class="brand">
+          <div class="logo" aria-hidden="true"></div>
+          <div class="brand-text">
+            <div class="brand-name">
+              StockMail
+              <span class="brand-badge">daily market brief</span>
+            </div>
+            <p class="brand-sub">
+              국내 코스피 · 코스닥 장 마감 후, AI가 정리해 매일 메일로 보내는 자동 리포트 시스템
+            </p>
+          </div>
+        </div>
+        <div class="meta">
+          <div class="pill">
+            <span class="pill-dot"></span>
+            <span class="pill-label">자동 실행</span>
+          </div>
+          <div class="badge-soft">
+            Python · pykrx · AI 요약 · SMTP 메일러
+          </div>
+        </div>
+      </header>
+
+      <section class="layout">
+        <article class="panel">
+          <div class="panel-header">
+            <h2 class="panel-title">
+              오늘 시장 한눈에 보기
+            </h2>
+            <span class="chip">일일 마감 브리핑</span>
+          </div>
+          <p class="label">설명</p>
+          <h3 class="summary-title">국내 주식 장 마감 후, 자동으로 정리되는 데일리 리포트</h3>
+          <p class="summary-sub">
+            장이 끝나는 시점에 코스피 · 코스닥 지수, 강세 · 약세 섹터와 대표 종목, 거래대금 상위 종목을 수집하고
+            이를 기반으로 AI가 간결한 한국어 리포트를 생성합니다. 만들어진 리포트는 보기 좋은 HTML 형식으로
+            정리되어, 설정된 수신자에게 매일 같은 시간에 자동 발송됩니다.
+          </p>
+          <ul class="list" aria-label="기능 요약">
+            <li>
+              <span class="highlight">시장 데이터 수집</span> – pykrx로 코스피/코스닥 지수, 상승·하락률 TOP 종목,
+              거래대금 상위 종목 등 핵심 데이터 자동 수집
+            </li>
+            <li>
+              <span class="highlight">AI 인사이트 생성</span> – 지표를 바탕으로 “오늘 시장 흐름 · 강/약세 섹터 ·
+              대표 종목 · 이후 전망”을 한국어로 요약
+            </li>
+            <li>
+              <span class="highlight">HTML 리포트 템플릿</span> – 메일 본문에 바로 넣을 수 있는 가독성 좋은
+              레이아웃으로 변환
+            </li>
+            <li>
+              <span class="highlight">자동 메일 발송</span> – 윈도우 작업 스케줄러와 연동해 매일 지정된 시각에
+              SMTP(예: Gmail)로 발송
+            </li>
+          </ul>
+        </article>
+
+        <aside class="panel">
+          <div class="panel-header">
+            <h2 class="panel-title">
+              개발자용 노트
+            </h2>
+            <span class="chip">/stockmail · backend</span>
+          </div>
+          <p class="label">구현 개요 (요약)</p>
+          <div class="code-preview" aria-label="구현 개요 코드 프리뷰">
+            <div class="code-header">
+              <div class="code-dots">
+                <span class="code-dot"></span>
+                <span class="code-dot"></span>
+                <span class="code-dot"></span>
+              </div>
+              <span class="code-lang">report_bot.py</span>
+            </div>
+            <pre><code># 1. 코스피/코스닥 데이터 수집 (pykrx)
+# 2. TOP 상승/하락 & 거래대금 상위 종목 추출
+# 3. 숫자 지표를 프롬프트로 묶어 AI에 전달
+# 4. 한국어 마켓 코멘터리 생성
+# 5. HTML 템플릿에 삽입 후 이메일 발송
+
+# 윈도우 작업 스케줄러에서
+# 매일 16:00에 report_bot.py 실행</code></pre>
+          </div>
+
+          <div class="tag-row">
+            <span class="tag">
+              <strong>입력</strong> · 코스피/코스닥 시세, 종목 데이터 (당일)
+            </span>
+            <span class="tag">
+              <strong>출력</strong> · 한국어 HTML 마감 리포트 + 메일 발송
+            </span>
+            <span class="tag">
+              <strong>자동화</strong> · 윈도우 작업 스케줄러 / cron 대체
+            </span>
+          </div>
+        </aside>
+      </section>
+
+      <footer>
+        <div class="footer-left">
+          <span>StockMail</span> · KOSPI / KOSDAQ Daily Auto Brief
+        </div>
+        <div class="footer-right">
+          <span class="footer-pill">장 마감 기준 분석</span>
+          <span class="footer-pill">AI 요약 &amp; 전망</span>
+          <span class="footer-pill">HTML 메일 템플릿</span>
+        </div>
+      </footer>
+    </div>
+  </main>
+</body>
+</html>
