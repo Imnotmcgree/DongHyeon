@@ -200,7 +200,7 @@ caption, .text-hide {
   text-indent: -9999em;
 }
 
-.contact-container .contact-info-wrap .contact-info-card, .about-slide .about-swiper .about-slide-content-img, .about-content .right .skills ul li, .about-content .left article .tag-list li, .main-nav .main-nav-list {
+.contact-container .contact-info-wrap .contact-info-card .profile-img, .contact-container .contact-info-wrap .contact-info-card, .about-slide .about-swiper .about-slide-content-img, .about-content .right .skills ul li, .about-content .left article .tag-list li, .main-nav .main-nav-list {
   box-shadow: 0 4px 4px 0 rgba(0, 0, 0, 0.25);
 }
 
@@ -1437,6 +1437,7 @@ caption, .text-hide {
   border-radius: 50%;
   -o-object-fit: cover;
      object-fit: cover;
+  top: -20px;
 }
 .card-section-wrap .card-section .profile-area .profile .profile-photo::after {
   content: "";
