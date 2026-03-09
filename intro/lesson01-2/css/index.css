@@ -1,0 +1,39 @@
+
+@import url(../common/css/basic.css);
+body{width: 840px;height: 473px; overflow: hidden;}
+#idg-viewer-wraper{position: relative;width: 840px;height: 473px; overflow: hidden}
+#idg-viewer-wraper {
+    overflow: hidden;
+    position: relative;
+    width: 840px; height: 473px;
+    background: url(../img/index/bg.jpg) no-repeat 0 0 / cover;
+    text-align: center;
+    display: flex; flex-direction: column;
+    justify-content: flex-end;
+    align-items: center;
+}
+#idg-viewer-wraper .title-banner{
+    position: absolute;
+    top: 185px;
+    left: 50%;
+    transform: translateX(-50%);
+}
+#idg-viewer-wraper .title-banner img{
+    height: 40px;
+}
+#idg-viewer-wraper .title-banner span{
+    position: absolute;
+    right: -6px;top: -3px;
+    padding: 13px 18px 0 0 ;
+    font-size: 13px; font-weight: 600;
+}
+#idg-viewer-wraper .btn-wrap{
+    position: absolute;
+    bottom: 150px;
+    left: 50%;
+    transform: translateX(-50%);
+}
+
+#idg-viewer-wraper #start-btn img{
+    height: 60px;
+}

@@ -1,0 +1,72 @@
+<html lang="ko-KR">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,minimum-scale=1,user-scalable=no"/>
+    <meta name="aidt-content-version" content="1.0.34">
+    <title>New school, New Friends</title>
+    <link rel="stylesheet" type="text/css" href="./css/index.css" />
+<!-- xAPI 통신 -->
+    <script defer src="./common/js/xapiCommunication.js"></script>
+</head>
+<body>
+    <div id="idg-viewer-wraper" scrolling="no">
+        <p class="title-banner">
+            <img src="./img/index/tit-bg.png" alt="big idea">
+            <span>학교생활</span>
+        </p>
+
+        <p class="btn-wrap">
+            <button type="button" id="start-btn"><img src="./img/index/start-btn.png" alt="시작하기"></button>
+        </p>
+    </div>
+</body>
+
+<script>
+    window.addEventListener("message", receiveMessage, false);
+
+    function receiveMessage(event) {
+
+        if (event.data.type == 'terminated') contentsClose();
+    }
+
+
+    function contentsClose(){
+        // deinit
+        const message = {
+            type: 'deinit'
+        };
+        window.parent.postMessage(message, '*');
+    }
+    function iframeset() {
+        // 페이지의 실제 높이 계산
+        const rootElement = document.getElementById('idg-viewer-wraper');
+        const pageHeight = rootElement.offsetHeight;
+
+        // 메시지 객체 생성
+        const message = {
+            type: 'iframeCurrentPage',
+            data: 1,
+            height: pageHeight
+        };
+
+        // 부모 창으로 메시지 전송
+        window.parent.postMessage(message, '*');
+    }
+
+    // DOM이 완전히 로드된 후 실행
+    document.addEventListener('DOMContentLoaded', function() {
+        iframeset();
+    });
+
+    // 창 크기가 변경될 때마다 높이 다시 계산
+    window.addEventListener('resize', function() {
+        iframeset();
+    });
+
+    const btnEle = document.getElementById("start-btn") ;
+    btnEle.addEventListener('click', () => {
+        window.open('frame.html', "newWin", "width="+screen.availWidth+",height="+screen.availHeight)
+    });
+    </script>
+</html>

@@ -1,0 +1,304 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" dir="ltr" lang="ko">
+
+<head>
+    <meta charset="utf-8" />
+    <meta content="width=1920,height=980" name="viewport" />
+    <title></title>
+    <link rel="stylesheet" type="text/css" href="./common/css/common.css" />
+    <script src="./common/js/jquery.min.js"></script>
+    <script defer src="./common/js/jquery-ui.min.js"></script>
+    <script defer src="./common/js/jquery.ui.touch-punch.min.js"></script>
+    <script defer src="./common/js/interaction.js"></script>
+    <script defer src="./common/js/bootstrap.min.js"></script>
+    <script defer src="./common/js/video-js.js"></script>
+    <script defer src="./common/js/common.js"></script>
+    <!-- 페이지별 -->
+    <script src="js/intro.js"></script>
+    <link rel="stylesheet" type="text/css" href="css/intro.css"/>
+
+    <!-- xAPI 통신 -->
+    <!-- <script defer src="./common/js/xapiCommunication.js"></script> -->
+</head>
+
+<body>
+
+
+
+<div id="idg-viewer-wraper">
+    <!-- <header id="hd">
+        <p class="lesson-title">
+            <strong>Lesson 8</strong>
+            Winter Is Coming!
+        </p>
+        <div class="hd-btns">
+            <button type="button" data-toggleclass="muted" class="icon hd-sound">sound</button>
+            <button type="button" data-active="start" class="icon hd-home">home</button>
+            <button type="button" data-toggle="modal" data-target="#vodModal" class="icon hd-video">video</button>
+            <button type="button" class="icon hd-close">close</button>
+        </div>
+    </header> -->
+
+    <main id="ct" data-step="start">
+        <div id="stage1">
+			<div class="title">
+                <p>
+                    <!-- 그림을보고 겨울에 해 보고 싶은 활동을 말해 봅시다. -->
+                </p>
+			</div>
+
+			<div class="motion">
+				<div class="stage1-motion">
+                    <img class="snowballfight" src="./img/intro/1-boy-default.png" alt="눈싸움중인 남자아이">
+                    <img class="snowballfight" src="./img/intro/1-boy-hand.png" alt="눈덩이를 던지는 팔">
+
+                    <img class="snowman" src="./img/intro/1-snowman-default.png" alt="눈사람">
+                    <img class="snowman" src="./img/intro/1-snowman-eyes.png" alt="눈사람의 눈">
+
+                    <img class="snowballfight" src="./img/intro/1-girl-default.png" alt="눈싸움중인 여자아이">
+                    <img class="snowballfight" src="./img/intro/1-girl-lhand.png" alt="눈덩이를 줍고있는 팔">
+                    <img class="snowballfight" src="./img/intro/1-girl-rhand.png" alt="눈덩이를 던지는 팔">
+
+				</div>
+
+				<div class="stage2-motion">
+                    <img src="./img/intro/2-girl-face.png" alt="낚시중인 여자아이의 얼굴">
+					<img src="./img/intro/2-girl-chair.png" alt="낚시의자1">
+					<img src="./img/intro/2-girl-default.png" alt="낚시중인 여자아이">
+					<img src="./img/intro/2-girl-mouth1.png" alt="여자아이의 입">
+
+					<img src="./img/intro/2-man-chair.png" alt="낚시의자2">
+					<img src="./img/intro/2-man-default.png" alt="물고기를 낚은 남자">
+					<img src="./img/intro/2-man-mouth.png" alt="남자의 입">
+				</div>
+
+				<div class="stage3-motion">
+                    <img src="./img/intro/3-sled.png" alt="눈썰매">
+                    <img src="./img/intro/3-boy-default.png" alt="눈썰매를 탄 남자아이">
+                    <img src="./img/intro/3-boy-mouth1.png" alt="남자아이의 입">
+                    <img src="./img/intro/3-girl-default.png" alt="눈썰매를 탄 여자아이">
+                    <img src="./img/intro/3-girl-mouth1.png" alt="여자아이의 입">
+
+                    <img src="./img/intro/4-lhand.png" alt="남자아이의 왼팔">
+                    <img src="./img/intro/4-rhand.png" alt="남자아이의 오른팔">
+                    <img src="./img/intro/4-lleg.png" alt="남자아이의 왼다리">
+                    <img src="./img/intro/4-rleg.png" alt="남자아이의 오른다리">
+                    <img src="./img/intro/4-default.png" alt="눈밭에서 천사를 그리는 남자아이">
+				</div>
+
+			</div>
+
+            <img class="click-icon" src="./img/intro/click.png" alt="" tabindex="1">
+
+			<!-- <button class="btn-reset" type="button" class="no-style img-button">
+                <img src="./common/img/btn-again.png" alt="다시하기">
+            </button> -->
+        </div>
+    </main>
+</div>
+
+<div id="snow-container"></div>
+
+<!-- 팝업 -->
+<div id="startModal" class="modal fade modal-message" aria-hidden="true" style="display: none;" data-backdrop="static">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <!-- <button type="button" class="icon icon-close" data-dismiss="modal">닫기</button> -->
+            <div class="modal-body">
+                <div class="text-center">
+                    <!-- <p><img src="./common/img/gatemodal-title.png" alt="환영합니다."></p> -->
+                    <p class="mt20">
+                        겨울에 해 보고 싶은 활동을 찾아 봅시다.
+                    </p>
+
+                    <p class="mt45">
+                        <button id="btnStart" type="button" data-active="stage1" class="no-style img-button">
+                            <img src="./common/img/btn-start.png" alt="시작하기">
+                            <img class="over" src="./common/img/btn-start-over.png" alt="시작하기">
+                        </button>
+                    </p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="btn-area">
+    <div class="btn-area-box">
+        <div class="q-content">
+            <p class="question-text">
+                그림을 보고 겨울에 해 보고 싶은 활동을 이야기해 봅시다.
+            </p>
+            <p class="answer-text">
+                I want to
+                <span class="answer">
+                </span>.
+                <button class="audio-btn">
+                    <img src="./img/intro/click.png" height="60" alt="">
+                </button>
+            </p>
+        </div>
+
+        <ul class="functions">
+            <li class="next-btn">
+                <button>
+                    <img height="100" src="./img/intro/next-btn-disable.png" alt="">
+                </button>
+            </li>
+            <!-- <li class="retry-btn">
+                <button>
+                    <img height="100" src="./img/intro/retry-btn.png" alt="">
+                </button>
+            </li> -->
+        </ul>
+    </div>
+    <ul class="answers">
+        <li>
+            <button data-answer="1">
+                <img height="70" src="./img/intro/1-default.png" alt="">
+            </button>
+        </li>
+        <li>
+            <button data-answer="3">
+                <img height="70" src="./img/intro/2-default.png" alt="">
+            </button>
+        </li>
+        <li>
+            <button data-answer="2">
+                <img height="70" src="./img/intro/3-default.png" alt="">
+            </button>
+        </li>
+    </ul>
+</div>
+
+        <!-- 완료모달 -->
+        <div id="finalModal" class="modal fade" data-backdrop="static">
+            <div class="modal-dialog modal-dialog-centered">
+                <div class="modal-content">
+                    <!-- <button type="button" class="icon icon-close" data-dismiss="modal">닫기</button> -->
+                    <div class="modal-body">
+                        <div class="text-center">
+                            <p><img src="./img/intro/title.png" alt="겨울이 되면 해 보고 싶은 일을 말해 봅시다." /></p>
+
+                            <ul class="nav ex-list">
+                                <li class="nav-item" data-name="snowball">
+                                    <a data-toggle="tab" class="nav-link" href="#ex1"><img src="./img/intro/snowball.png" alt="snowball"/></a>
+                                </li>
+                                <li class="nav-item" data-name="snowman">
+                                    <a data-toggle="tab" class="nav-link" href="#ex2"><img src="./img/intro/snowman.png" alt="snowman"/></a>
+                                </li>
+                                <li class="nav-item" data-name="snowangel">
+                                    <a data-toggle="tab" class="nav-link" href="#ex3"><img src="./img/intro/snowangel.png" alt="snowangel"/></a>
+                                </li>
+                                <li class="nav-item" data-name="fishing">
+                                    <a data-toggle="tab" class="nav-link" href="#ex4"><img src="./img/intro/fishing.png" alt="fishing"/></a>
+                                </li>
+                            </ul>
+
+                            <div class="tab-content ex-talk">
+                                <p id="ex1" class="tab-pane" data-name="snowball">
+                                    <button data-audio="./media/16_lee_8-1.mp3" class="script-text" onclick="playAudio('./media/16_lee_8-1.mp3');">
+                                        I want to have a snowball fight.
+                                    </button>
+                                </p>
+                                <p id="ex2" class="tab-pane" data-name="snowman">
+                                    <button data-audio="./media/16_lee_8-2.mp3" class="script-text" onclick="playAudio('./media/16_lee_8-2.mp3');">
+                                        I want to make a snowman.
+                                    </button>
+                                </p>
+                                <p id="ex3" class="tab-pane" data-name="snowangel">
+                                    <button data-audio="./media/16_lee_8-3.mp3" class="script-text" onclick="playAudio('./media/16_lee_8-3.mp3');">
+                                        I want to make a snow angel.
+                                    </button>
+                                </p>
+                                <p id="ex4" class="tab-pane" data-name="fishing">
+                                    <button data-audio="./media/16_lee_8-4.mp3" class="script-text" onclick="playAudio('./media/16_lee_8-4.mp3');">
+                                        I want to go ice fishing.
+                                    </button>
+                                </p>
+                            </div>
+
+                            <div class="btn-wrap">
+                                <button class="last btn-reset" type="button">
+                                    <img src="./common/img/btn-again.png" alt="다시하기" />
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+<!-- 영상 모달 -->
+
+<div id="vodModal" class="modal fade modal-vod" data-backdrop="static">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <button type="button" class="icon icon-close" data-dismiss="modal">닫기</button>
+            <!-- vod button -->
+            <button type="button" class="icon icon-vod icon-vtt">vtt</button>
+            <button type="button" class="icon icon-vod icon-script">script</button>
+            <div class="modal-body">
+                <video id="mainVod" class="video-js" controls preload="auto"  height="810" controls data-setup="{}">
+                    <source
+                    src="https://zwlkfvorupgj3657960.cdn.gov-ntruss.com/hls/~uZjyjVw5AqJ-XFY1RV2iQ__/lcms/559f95e3b82d41768fa1f2de89dfb5b9/559f95e3b82d41768fa1f2de89dfb5b9_,4000,2000,1000,k.mp4.smil/master.m3u8"
+                    type="application/x-mpegURL"
+                  />
+                    <track label="English" kind="subtitles" srclang="en" src="./media/L16_BYB.vtt" mode="hidden" default />
+                </video>
+
+                <article class="vod-script">
+                    <div>
+                        Winter Is Coming!<br>
+                        <br>
+                        Some friends are having fun outdoors in the winter.<br>
+                        <br>
+                        Let’s meet them.<br>
+                        <br>
+                        laughing~<br>
+                        <br>
+                        This one's for you!<br>
+                        <br>
+                        Ow!<br>
+                        <br>
+                        Ha ha!<br>
+                        <br>
+                        You got hit!<br>
+                        <br>
+                        I'll get you for that!<br>
+                        <br>
+                        Whee!<br>
+                        <br>
+                        Woo-hoo!<br>
+                        <br>
+                        This is the best!<br>
+                        <br>
+                        Woo-hoo!<br>
+                        <br>
+                        This is so cool!<br>
+                        <br>
+                        I have a bite!<br>
+                        <br>
+                        Wow!<br>
+                        <br>
+                        It's a big fish.<br>
+                        <br>
+                        Do you like winter?<br>
+                        <br>
+                        What do you want to do this winter?<br>
+                        <br>
+                      </div>
+                </article>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script src="./js/data.make.js"></script>
+<script src="./js/dragword.js"></script>
+<script src="./js/common.js"></script>
+<script src="./js/common.send.js"></script>
+<script src="./js/common.receive.js"></script>
+
+</body>
+</html>
